@@ -1,0 +1,17 @@
+/* styles.css */
+
+figure.centered {
+  text-align: center;  /* This centers the text inside the figure, including the caption */
+  margin: 0 auto;      /* Centers the figure itself */
+}
+
+figure.centered img {
+  display: block;      /* Makes the image a block element so it can be centered */
+  margin: 0 auto;      /* Centers the image horizontally */
+}
+
+figure.centered figcaption {
+  display: block;      /* Ensures the figcaption is treated as a block element */
+  text-align: center;  /* Centers the text inside the caption */
+  margin-top: 10px;    /* Optional: adds a little space between the image and caption */
+}
