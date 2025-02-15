@@ -16,7 +16,7 @@ figure.centered figcaption {
   margin-top: 10px;    /* Optional: adds a little space between the image and caption */
 }
 
-
+/* fixing buttons: written by Natalia Pacheco-Tallaj */
 #dark-mode-toggle, #typeface-toggle { 
   border: 0px;
   margin-top: 10px;
