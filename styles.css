@@ -15,3 +15,30 @@ figure.centered figcaption {
   text-align: center;  /* Centers the text inside the caption */
   margin-top: 10px;    /* Optional: adds a little space between the image and caption */
 }
+
+
+#dark-mode-toggle, #typeface-toggle { 
+  border: 0px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  padding-bottom:4px;
+  background-color: #eee;
+  transition: 0.5s ease;
+  padding-left:10px;
+  padding-right: 10px;
+}
+#dark-mode-toggle:hover, #typeface-toggle:hover {
+  background-color: #ccc;
+}
+
+.latex-dark #dark-mode-toggle, .latex-dark #typeface-toggle {
+  background-color: #393939;
+  color: white;
+  
+}
+
+.latex-dark #dark-mode-toggle:hover, .latex-dark #typeface-toggle:hover{
+  background-color: #4b4b4b;
+  
+}
