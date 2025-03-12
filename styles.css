@@ -48,3 +48,9 @@ figure.centered figcaption {
     color: black !important;  /* Force black color */
     text-decoration: none;    /* Remove underline */
 }
+
+/* Apply white color in dark mode */
+.latex-dark .no-style-link, 
+.latex-dark .no-style-link:visited { 
+    color: white !important;  /* Force white in dark mode */
+}
