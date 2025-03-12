@@ -17,7 +17,7 @@ figure.centered figcaption {
 }
 
 /* fixing buttons: written by Natalia Pacheco-Tallaj */
-#dark-mode-toggle, #typeface-toggle { 
+#dark-mode-toggle, #typeface-toggle, #home-button { 
   border: 0px;
   margin-top: 10px;
   margin-right: 10px;
@@ -28,17 +28,23 @@ figure.centered figcaption {
   padding-left:10px;
   padding-right: 10px;
 }
-#dark-mode-toggle:hover, #typeface-toggle:hover {
+#dark-mode-toggle:hover, #typeface-toggle:hover, #home-button:hover {
   background-color: #ccc;
 }
 
-.latex-dark #dark-mode-toggle, .latex-dark #typeface-toggle {
+.latex-dark #dark-mode-toggle, .latex-dark #typeface-toggle, .latex-dark #home-button{
   background-color: #393939;
   color: white;
   
 }
 
-.latex-dark #dark-mode-toggle:hover, .latex-dark #typeface-toggle:hover{
+.latex-dark #dark-mode-toggle:hover, .latex-dark #typeface-toggle:hover, .latex-dark #home-button:hover{
   background-color: #4b4b4b;
   
+}
+
+.no-style-link, 
+.no-style-link:visited { 
+    color: black !important;  /* Force black color */
+    text-decoration: none;    /* Remove underline */
 }
