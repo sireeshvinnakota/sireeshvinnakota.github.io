@@ -3,7 +3,9 @@
 
 <head>
   
-  <title>Sireesh Vinnakota</title>
+  <title>
+    Sireesh | Teaching and Outreach
+  </title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="prism/prism.css" />
@@ -11,9 +13,15 @@
 
 <body id="top">
   <header>
-    <h1><span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex</h1>
+    <h1>
+      <a href="index.html" class="no-style-link">
+          <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+      
+    </h1>
     <p class="author">
-      Sireesh Vinnakota <br />
+      <a href="index.html" class="no-style-link">Sireesh Vinnakota</a>
+       <br />
       Graduate Student in Mathematics
     </p>
   </header>
@@ -29,47 +37,48 @@
   <div class="abstract">
     <h2>Abstract</h2>
     <p>
-      I am a fourth year Ph. D. student at the University of California, Irvine, advised by 
-      <a href="https://jpwolfson.com">Jesse Wolfson</a>. I am really excited by connections between topology, arithmetic, and algebraic geometry. Here is my  <a href="https://drive.google.com/file/d/1lsNe0obZXzhlEyweCXdx13y-bCg-eXui/view?usp=share_link">CV</a>. <br /> 
-      <b>Office:</b> Rowland Hall <a href="https://classrooms.uci.edu/classrooms/rh/">(RH)</a>   510T<br />
-      <b>Email:</b> vinnakot [at] uci [dot] edu<br />
+      Welcome to my research page! I am broadly interested in the connections between topology, arithmetic, and algebraic geometry. I am currently thinking about problems in $p$-adic Hodge theory and essential dimension.
+      <br /> 
+      <button id="home-button">Home</button>
       <button id="dark-mode-toggle">Toggle dark mode</button> <button id="typeface-toggle">Current typeface: <span id="typeface">Latin Modern</span></button>
     </p>
   </div>
 
 
-
-
-  <nav role="navigation" class="toc">
+<nav role="navigation" class="toc">
     <h2>Contents</h2>
     <ol>
-      <li><a href="aboutme.html">About Me</a>
-          <ol>
-            <li><a href="aboutme.html#friends">Friends</a></li>
-          </ol>
-
-      </li> 
-      <li>
-        <a href="research.html">Research</a>
-        <ol>
-          <li><a href="research.html#papers">Papers and Preprints</a></li>
-          <li><a href="travel.html">Talks, Conferences, and Travel</a></li>
-      </li>
-    </ol>
-    <li><a href="teaching.html">Teaching</a>
-        <ol>
-          <li><a href="teaching.html#template">$\LaTeX$ Templates</a></li>
-        </ol>
-    </li>
-    
-    
+      <li><a href="#research">Research</a></li>
+      <li><a href="#papers">Papers and Preprints</a></li>
+    </ol>     
   </nav>
 
   <main>
     <article>
-      
+
+      <h2 id="research">Research</h2>
+
+      <figure class="centered">
+  <img src="./images/spread.jpeg" loading="lazy" alt="A hand-drawn commutative diagram" width="500" height="200" />
+  <figcaption>
+    The $p$-adic integers as a scheme. 
+  </figcaption>
+</figure>
+
+      <p>
+        With the interest of learning $p$-adic Hodge theory, I am currently completing reading in algebraic geometry, Hodge theory, complex geometry, and arithmetic topology. [more to come!]
+      </p>
+      <h2 id="papers">Papers and Preprints</h2>
+      <ol start="1">
+        <li><b>Extremal hypergraphs for the Erdos-Selfridge theorem using labelings of binary trees</b > with Kathryn Grossmann, Dongming (Merrick) Hua, Benjamin Pagano, Hannah Sheats, Eric Sundberg, Ann Thompson. <a href="https://doi.org/10.2140/involve.2024.17.845">(DOI)</a></li>
+      </ol>
 
       
+
+       
+
+    
+     
     </article>
   </main>
 Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.  <br />
@@ -91,6 +100,11 @@ Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig<
       document.body.classList.toggle('latex-dark')
     })
   </script>
+  <script>
+  document.getElementById('home-button').addEventListener('click', function() {
+    window.location.href = 'index.html';
+  });
+</script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script async src="prism/prism.js"></script>
 
