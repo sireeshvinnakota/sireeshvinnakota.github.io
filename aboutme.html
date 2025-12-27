@@ -194,30 +194,60 @@
   </main>
 Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.  <br />
   <script>
-    MathJax = {
-      tex: {
-        inlineMath: [['$', '$'],],
-      },
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'],],
+    },
+  }
+  
+  // Load saved preferences on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    // Restore dark mode preference
+    const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+    if (darkModeEnabled) {
+      document.body.classList.add('latex-dark');
     }
-    const typeFaceToggle = document.getElementById('typeface-toggle')
-    const typeface = document.getElementById('typeface')
-    typeFaceToggle.addEventListener('click', () => {
-      document.body.classList.toggle('libertinus')
-      typeface.textContent = document.body.classList.contains('libertinus') ? 'Libertinus' : 'Latin Modern'
-    })
-
-    const darkModeToggle = document.getElementById('dark-mode-toggle')
-    darkModeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('latex-dark')
-    })
-  </script>
-  <script>
-  document.getElementById('home-button').addEventListener('click', function() {
-    window.location.href = 'index.html';
+    
+    // Restore typeface preference
+    const isLibertinus = localStorage.getItem('typeface') === 'libertinus';
+    if (isLibertinus) {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
   });
+  
+  // Typeface toggle with persistence
+  const typeFaceToggle = document.getElementById('typeface-toggle');
+  const typeface = document.getElementById('typeface');
+  typeFaceToggle.addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const isLibertinus = document.body.classList.contains('libertinus');
+    typeface.textContent = isLibertinus ? 'Libertinus' : 'Latin Modern';
+    
+    // Save preference
+    localStorage.setItem('typeface', isLibertinus ? 'libertinus' : 'latin-modern');
+  });
+  
+  // Dark mode toggle with persistence
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    const isDarkMode = document.body.classList.contains('latex-dark');
+    
+    // Save preference
+    localStorage.setItem('darkMode', isDarkMode);
+  });
+  
+  // Home button functionality
+  const homeButton = document.getElementById('home-button');
+  if (homeButton) {
+    homeButton.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  }
 </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script async src="prism/prism.js"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script async src="prism/prism.js"></script>
 
 </body>
 
