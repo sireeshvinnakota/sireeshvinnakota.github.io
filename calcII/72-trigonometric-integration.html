@@ -23,6 +23,12 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+    /* Wide display equations scroll horizontally */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
     /* asset links (PDFs etc) — open in new tab */
     a.asset-link {
       color: var(--link-visited);
@@ -151,7 +157,7 @@
 
   <main>
     <article>
-<p>This section is just a fancy version of <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a>. We'll also need our <a href="calcII/54-indefinite-integrals.html" class="wiki-link" data-note="54-indefinite-integrals">trigonometric anti-derivatives</a> handy. <br>
+<p>This section is just a fancy version of <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a>. We'll also need our <a href="calcII/54-indefinite-integrals.html#adaaae" class="wiki-link" data-note="54-indefinite-integrals">trigonometric anti-derivatives</a> handy. <br>
 <h1 id="strategies-for-evaluating-latex11">Strategies for Evaluating $\int \sin^m (x) \cos^n(x)dx$:</h1><br>
 For integrals of this type, we break into three cases:<br>
 <ul><li><strong>Case 1, $n$ is odd:</strong> Since $n$ is odd, we can write $n = 2k+1$ for some $k$. Then we substitute:</li></ul>$$

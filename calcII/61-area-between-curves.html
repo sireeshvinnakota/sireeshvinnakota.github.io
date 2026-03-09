@@ -23,6 +23,12 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+    /* Wide display equations scroll horizontally */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
     /* asset links (PDFs etc) — open in new tab */
     a.asset-link {
       color: var(--link-visited);

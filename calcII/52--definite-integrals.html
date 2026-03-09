@@ -23,6 +23,12 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+    /* Wide display equations scroll horizontally */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
     /* asset links (PDFs etc) — open in new tab */
     a.asset-link {
       color: var(--link-visited);
@@ -155,7 +161,7 @@
 
 <div class="callout callout-definition"><div class="callout-title">Definition</div><div class="callout-body">A function $f$ is <strong>integrable</strong> on $[a,b]$ if it is continuous or has at most finitely many jump discontinuities on the interval. This means the definite integral exists.</div></div>
 
-<p>The following definition should remind you of <a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">exact area</a>- when a function is sufficiently nice (integrable) we will call this measure an integral.</p>
+<p>The following definition should remind you of <a href="calcII/51-areas-distances.html#f7f784" class="wiki-link" data-note="51-areas-distances">exact area</a>- when a function is sufficiently nice (integrable) we will call this measure an integral.</p>
 
 <div class="callout callout-definition"><div class="callout-title">Definition</div><div class="callout-body">The <strong>definite integral</strong> of a function $f(x)$ on the interval $[a,b]$ is: $$\int_a^b f(x) dx = \lim_{n \to \infty} \sum_{i = 1}^n f(x_i) \Delta x$$
 where $x_i$ can be taken as in the <em>left-</em> or <em>right-</em>hand sums. These have the properties:
@@ -165,7 +171,7 @@ where $x_i$ can be taken as in the <em>left-</em> or <em>right-</em>hand sums. T
 <ul><li><strong>Comparisons</strong> If $m \leq f(x) \leq M$ for all $a \leq x \leq b$, then $$m(b-a) \leq \int_a^b f(x)dx \leq M(b-a)$$Also if $f(x) \leq g(x)$ for all $a \leq x \leq b$, then $$\int_a^b f(x)dx \leq \int_a^b g(x) dx$$</div></div></li></ul>
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Consider the following integral: $$\int_0^1 7x^2 + 4$$
 <ul><li>Approximate the integral with $n=3$ left subintervals.</li><li>Express the integral as the limit of the Riemann sum</li><li>Compute the definite integral.</li></ul>
-<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">The final answer for $(c)$ should be $4 + \frac73$. For the first part, <a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">see this</a>, and use the formula in <a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">this</a>. Finally, evaluate the Riemann sum using the formulas <a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">here</a></div></details></div></div>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">The final answer for $(c)$ should be $4 + \frac73$. For the first part, <a href="calcII/51-areas-distances.html#3aff78" class="wiki-link" data-note="51-areas-distances">see this</a>, and use the formula in <a href="calcII/51-areas-distances.html#f7f784" class="wiki-link" data-note="51-areas-distances">this</a>. Finally, evaluate the Riemann sum using the formulas <a href="calcII/51-areas-distances.html#fe3bb0" class="wiki-link" data-note="51-areas-distances">here</a></div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following integral as the limit of a Riemann sum: $$ \int_{-2}^0 x^2 + x dx $$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Using $\Delta x = \frac{0 + 2}{n}$, $f(x) = x^2 + x$, and the summation formulas we have the following steps:
