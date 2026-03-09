@@ -194,6 +194,14 @@
 
     #note-body { font-size: 1rem; }
 
+    /* Wide display-math equations scroll horizontally rather than overflow */
+    #note-body .MJX-TEX,
+    #note-body mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+
     /* wiki-links inside note pane */
     #note-body a.wiki-link {
       color: var(--link-visited);
@@ -509,10 +517,6 @@
       });
       ro.observe(wrap);
     });
-
-    // Read dimensions AFTER layout is complete
-    const W = wrap.clientWidth;
-    const H = wrap.clientHeight;
 
     const svg = d3.select('#graph-svg')
       .attr('width', W)

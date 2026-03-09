@@ -194,19 +194,15 @@ def convert_wikilinks(text: str, all_note_slugs: set, assets: dict, notes_dir: P
         slug = note_name_to_slug(page)
         linked.append(slug)
 
-        # Block refs (^blockID or #^blockID): just link to the page.
-        # Block IDs are internal Obsidian identifiers — not meaningful to readers.
         if block:
-            href = f"calcII/{slug}.html"
-            display = alias or page
+            href = f"calcII/{slug}.html#{block}"
         elif heading:
             anchor = slugify(heading)
             href = f"calcII/{slug}.html#{anchor}"
-            display = alias or heading
         else:
             href = f"calcII/{slug}.html"
-            display = alias or page
 
+        display = alias or heading or block or page
         return f'<a href="{href}" class="wiki-link" data-note="{slug}">{display}</a>'
 
     converted = WIKILINK_RE.sub(replace, text)
@@ -567,6 +563,12 @@ PAGE_TEMPLATE = """\
     a.wiki-link {{
       color: var(--link-visited);
       text-decoration: underline dotted;
+    }}
+    /* Wide display equations scroll horizontally */
+    mjx-container[display="true"] {{
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
     }}
     /* asset links (PDFs etc) — open in new tab */
     a.asset-link {{
