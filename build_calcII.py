@@ -93,7 +93,12 @@ def strip_block_ids(text: str) -> tuple:
 # ── Markdown → HTML conversion ────────────────────────────────────────────────
 
 WIKILINK_RE = re.compile(
-    r"\[\[([^\]|#^]+?)(?:#([^\]|^]+?))?(?:\^([^\]|]+?))?(?:\|([^\]]+?))?\]\]"
+    r"\[\[([^\]|#^]+?)"          # page name
+    r"(?:#\^([^\]|]+?)"          # #^blockID  (Obsidian block ref syntax)
+    r"|#([^\]|^]+?)"             # #heading
+    r"|\^([^\]|]+?)"             # ^blockID   (bare block ref)
+    r")?"
+    r"(?:\|([^\]]+?))?\]\]"      # |alias
 )
 
 # Matches ![[image.png]], ![[image.png|alt text]], ![[image.png|300]] (Obsidian width syntax)
@@ -162,10 +167,14 @@ def convert_wikilinks(text: str, all_note_slugs: set, assets: dict, notes_dir: P
     linked: list = []
 
     def replace(m):
-        page    = m.group(1).strip()
-        heading = m.group(2)
-        block   = m.group(3)
-        alias   = m.group(4)
+        page      = m.group(1).strip()
+        hash_block = m.group(2)   # from #^blockID
+        heading    = m.group(3)   # from #heading
+        bare_block = m.group(4)   # from ^blockID
+        alias      = m.group(5)
+
+        # Resolve the block/heading reference
+        block = hash_block or bare_block
 
         # Check if this is a link to a known asset (PDF, image, etc.)
         asset_path = assets.get(page)
