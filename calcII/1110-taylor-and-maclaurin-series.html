@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§11.10 Taylor and Maclaurin Series | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§11.10 Taylor and Maclaurin Series</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>Taylor's theorem (below) completes the picture on the goal of representing functions as series, as mentioned in <a href="calcII/119-representing-functions-as-power-series.html" class="wiki-link" data-note="119-representing-functions-as-power-series">§11.9 Representing Functions as Power Series</a>.</p>
+
+<blockquote>[!theorem] Theorem
+If $f$ has a power series representation at $a$, that is, there is an $R$ such that$$f(x) = \sum_{n = 0}^\infty c_n (x - a)^n \quad \text{ for } \quad \left | x - a \right | < R$$
+then the coefficients are given by:
+$$c_n := \frac{f^{(n)}(a)}{n!}$$
+The series representation:
+$$f(x) = \sum_{n = 0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n$$
+is called the <em>Taylor series of the function $f$ at $a$</em>. When $a=0$, we call this the Maclaurin series.</blockquote>
+
+<blockquote>[!theorem] Theorem
+If $f(x)=T_n(x)+R_n(x)$, where $T_n$ is the $n$ th-degree Taylor polynomial of $f$ at $a$ and
+$$ \lim _{n \rightarrow \infty} R_n(x)=0 $$ for $|x-a|<R$, then $f$ is equal to the sum of its Taylor series on the interval $|x-a|<R$</blockquote>
+<blockquote>[!theorem] Theorem
+If $\left | f^{n+1}(x) \right | \leq M$ for $\left | x-a \right | \leq d$, then the remainder $R_n(x)$ of the Taylor series satisfies the inequality:
+$$ \left | R_n(x) \right | \leq \frac{M}{(n+1)!} \left | x-a \right |^{n+1}$$ for $\left | x-a \right | \leq d$</blockquote>
+<blockquote>[!theorem] Theorem
+The Taylor expansions important functions are below:
+$$ \begin{array}{|c|c|c|} \hline \text{Function} & \text{Taylor Series} & \hline{Expansion} \\ \hline \frac{1}{1-x} & \displaystyle \sum_{n=0}^{\infty} x^n & 1+x+x^2+x^3+\cdots \\ e^x & \displaystyle \sum_{n = 0}^\infty \frac{x^n}{n!} & 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} + \cdots \\  \sin (x) & \displaystyle \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n+1}}{(2 n+1) !} & x-\frac{x^3}{3 !}+\frac{x^5}{5 !}-\frac{x^7}{7 !}+\cdots \\ \cos(x) & \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n}}{(2 n) !} & 1-\frac{x^2}{2 !}+\frac{x^4}{4 !}-\frac{x^6}{6 !}+\cdots \\  \tan { }^{-1} x & \displaystyle \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n+1}}{2 n+1} & x-\frac{x^3}{3}+\frac{x^5}{5}-\frac{x^7}{7}+\cdots \\ \ln (1+x) & \displaystyle \sum_{n=1}^{\infty}(-1)^{n-1} \frac{x^n}{n} & x-\frac{x^2}{2}+\frac{x^3}{3}-\frac{x^4}{4}+\cdots \\ \hline \end{array} $$</blockquote>
+<blockquote>[!example] Example
+Provide a Taylor series for the function $f(x) = xe^x$ centered at $a = 0$</blockquote>>> [!success]- Solution
+>> Take the series from the table above and multiply by $x$: $$\sum_{n = 0}^\infty \frac{x^{n+1}}{n!} $$
+
+<blockquote>[!example] Problem
+Find the first four terms of the Taylor series centered at $a = 2$ of the function:
+$$
+> f(x) = \frac{1}{1 + x}
+> $$</blockquote>>> [!success]- Solution
+>> This is just computing a lot of derivatives.
+
+<blockquote>[!example] Problem
+Find the Taylor Series for $f(x)=\ln (3+4 x)$ about $x=0$.</blockquote>>> [!success]- Solution
+>[Link](https://tutorial.math.lamar.edu/Solutions/CalcII/TaylorSeries/Prob4.aspx)
+
+<p>Here’s another [helpful link](https://math.libretexts.org/Courses/Monroe<em>Community</em>College/MTH<em>211</em>Calculus<em>II/Chapter</em>Ch10%3A<em>Power</em>Series/10.3%3A<em>Taylor</em>and<em>Maclaurin</em>Series/10.3E%3A<em>Exercises</em>for<em>Taylor</em>Polynomials<em>and</em>Taylor_Series)</p>
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

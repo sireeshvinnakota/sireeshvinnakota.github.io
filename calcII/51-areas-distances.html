@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§5.1 Areas & Distances | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§5.1 Areas & Distances</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>The main idea of this section is that we can try to approximate areas of non-standard regions of the plane using rectangles, and then adding more rectangles to decrease error. First, we’ll review sigma notation:</p>
+
+<p>>[!note] Note (Sigma Notation)<br>
+>Sums can be concisely expressed using notation in which one utilizes an <em>index</em>, or variable that takes on consecutive number values. For example: $$\sum_{i = 4}^7 2i = 2(4) + 2(5) + 2(6) + 2(7) = 8 + 10 + 12 + 14 = 44$$ Recall that distributivity (pulling out constants) and associativity (splitting sums into two sums) both work. Also: $$\sum_{j= 1}^n j = \frac{n (n+1)}{2} \quad \text{,} \quad \sum_{j = 1} ^ {n} j^2 = \frac{n (n+1)(2n+1)}{6} \quad \text{ and } \quad \sum_{j= 1}^n j^3 = \left ( \frac{n (n+1)}{2} \right )^2$$</p>
+
+<p>^fe3bb0</p>
+
+<blockquote>[!definition] Definition (Riemann Sum)
+Let $f(x)$ be a continuous function. we <em>approximate</em> the area between $f(x)$ and the $x$-axis on the interval $[a,b]$ using $n$ rectangles via:
+$$
+> \sum_{i = 1}^n f(x_i^*) \Delta x
+> $$
+where:
+$$
+> x_i^* = \begin{cases}
+> a + (i-1) \Delta x & \text{ for Left-hand Sum, written } L_n\\
+> a + i \Delta x & \text{ for Right-hand Sum, written } R_n\\
+> a + \frac{i}{2} \Delta x & \text{ for Midpoint Sum, written } M_n\\
+> \end{cases}
+> \quad \text{ and } \quad \Delta x = \frac{b - a}{n}
+> $$</blockquote>
+^3aff78
+
+<blockquote>[!definition] Definition
+To compute the <em>exact area</em> of this region between $f(x)$ and the $x$-axis on the interval $[a,b]$, we use:
+$$
+> A = \lim_{n \to \infty} L_n =  \lim_{n \to \infty} R_n
+> $$</blockquote>
+^f7f784
+
+<blockquote>[!example] Example
+Expand the following sums:
+$$
+> \sum_{i=1}^7 i  \quad \text{ and } \quad \sum_{j=4}^7 (j^2 +k)
+> $$</blockquote>>>[!success]- Solution
+<blockquote>$$\sum_{i=1}^7 i = 1 + 2 + \cdots + 7 = 28$$and$$\sum_{j=4}^7 (j^2 +k) = 16 + \cdots + 49 + 4k$$</blockquote>
+
+<blockquote>[!example] Problem
+Complete the following parts of the problem with a friend:
+<ul><li>Sketch the graph of $f(x) = \frac{1}{x}$ from $a = 1$ to $b = 2$ </li><li>Compute the integral $\int \frac{1}{x}dx$ with four approximating rectangles using right end points.  (HINT: Use the picture from above!)</li><li>State whether your answer is an underestimation or an overestimation.</blockquote>> </li></ul>>> [!success]- Solution
+>> [Graph](https://www.desmos.com/calculator/ynmwlxf1cv)
+
+<blockquote>[!example] Problem
+Set up but <strong>do not evaluate</strong> a limit to approximate the area of the region between the function and the $x$-axis of:
+$$
+> f(x) := \frac{2x}{x^2+1} \quad \text{ on the interval } \quad [1,3]
+> $$</blockquote>>> [!success]- Solution
+>> We can take a right hand limit, so let’s set up $R_n$ first:$$\Delta x = \frac{3-1}{n} = \frac2n \quad \text{ and } \quad x_i^* = 1 + \frac{2i}{n}$$
+>> and just plug in:$$R_n = \sum_{i = 1}^n f\left ( 1 + \frac{2i}{n} \right )\cdot \frac{2}{n} = \sum_{i = 1}^n \frac{2 \left ( \frac{2i}{n} \right )}{\left ( \frac{2i}{n} \right )^2 + 1} \cdot \frac{2}{n}$$
+>> To complete our answer, just add a limit in:
+<blockquote>$$A = \lim_{n \to \infty} R_n =  \lim_{n \to \infty} \sum_{i = 1}^n \frac{2 \left ( 1 + \frac{2i}{n} \right )}{\left ( 1 + \frac{2i}{n} \right )^2 + 1} \cdot \frac{2}{n}$$</blockquote>>> Phew.
+>
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

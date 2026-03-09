@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§7.8 Improper Integrals | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§7.8 Improper Integrals</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>When we have to compute integrals over an infinite domain, like  $(a, \infty)$, our technology from <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a>. The big idea is that one can approximate infinite-area integrals with limits of finite ones. We’ll summarize these into three types:</p>
+
+<ul><li><strong>Case 1: Infinite Bounds</strong> $$\int_a^\infty f(x) dx = \lim_{b \to \infty} \int_a^b f(x)dx$$where the integral converges if the corresponding limit does, and diverges if the corresponding limit diverges. We can do this with one sided limits for discontinuities also. </li><li><strong>Case 2: Discontinuous Integrands</strong> When $f(x)$ is discontinuous at some $c$ with $a < c < b$, we write:$$\int_a^b f(x)dx = \lim_{e \to c^-} \int_a^e f(x) dx + \lim_{g \to c^+} \int_g^b f(x) dx$$and say that the integral <em>converges</em> if each of these limits converges when studied individually.</li></ul>
+<blockquote>[!theorem] Proposition ($p$-Test)
+We have that:
+$$
+> \int_{1}^\infty \frac{1}{x^p} dx \begin{cases}
+> \text{ converges if } & p > 1\\
+> \text{ diverges if } & p \leq 1
+> \end{cases}
+> $$</blockquote>
+^5e5594
+
+<blockquote>[!theorem] Theorem (Comparison Theorem)
+Suppose that $f$ and $g$ are continuous functions with $f(x) \geq g(x) \geq 0$ for all $x \geq a$:
+<ul><li>If $\int_a^\infty f(x) dx$ is convergent, then $\int_a^\infty g(x) dx$ is convergent.</li><li>If $\int_a^\infty g(x) dx$ is divergent, then $\int_a^\infty f(x) dx$ is divergent.</blockquote>></li></ul>
+<blockquote>[!example] Example
+Determine whether the following integrals are convergent or divergent:
+$$
+> \int_{3}^\infty \frac{1}{(x-2)^{3/2}} dx \quad \text{ and } \quad \int_{2}^\infty e^{-5p} dp
+> $$</blockquote>>> [!success]- Solution
+>> For the first integral, we can make the substitution $u = x - 2$ and notice $du = dx$; further, $$\int_3^\infty \frac{1}{(x-2)^{3/2}} = \int_1^\infty \frac{1}{u^{3/2}} du$$
+>> which converges by the $p$ test. For the second integral, we first have to take an antiderivative of the integrand:$$\int_{2}^\infty e^{-5p} dp = \lim_{b \to \infty}  \left. \frac{e^{-5p}}{-5} \vphantom{\big|} \right|_{{2}}^b = \lim_{b \to \infty} \frac{-1}{5} \left [ \frac{1}{e^{5b}} - \frac{1}{e^{10}} \right ]$$
+>> which surely converges:$$\int_{2}^\infty e^{-5p} dp = \frac{1}{5e^{10}}$$
+
+<blockquote>[!example] Problem
+Determine the convergence of the following integrals:
+[label=\alph*.]
+<ul><li>$\displaystyle \int_0^\infty \frac{x^2}{\sqrt{1+x^3}}dx$</li><li>$\displaystyle \int_1^\infty \frac{1}{x^2 + x}dx$</li><li>$\displaystyle \int_0^4 \frac{dx}{x^2 - x - 2}$</blockquote>></li></ul>>> [!success]- Solution
+>> For $(a)$, we can make the substitution: $u = 1 + x^3$, $du = 3x^2 dx$
+>> $$\int_0^\infty \frac{x^2}{\sqrt{1+x^3}}dx = \lim_{b \to \infty} \frac13 \int_1^\infty \frac{du}{\sqrt{u}}$$
+>> Without computation, this diverges by the $p$-test. 
+>> The second integral should suggest comparison; since we know that increasing the denominator decreases the function, we can bound $\frac{1}{x^2 + x} \leq \frac{1}{x^2}$ which we know converges by the $p$-test. Determining the actual value of this integral is quite challenging, but classifying whether or not it does is important. \\
+>> We show $(c)$. We have a polynomial in the denominator, so we factor and use <a href="calcII/74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a>. 
+>> $$\frac{1}{x^2 - x - 2} = \frac{1}{3(x-2)} - \frac{1}{3(x+1)}$$
+>> This means that our function has discontinuities at $x=-1$ and $x= 2$. Because only $x =2$ is in the range of our integral, this is a case 2 integral:
+>> $$\lim_{b \to 2^-} \int_0^b \frac{1}{x^2 - x + 2} dx + \lim_{b \to 2^+} \int_b ^4 \frac{1}{x^2 - x + 2} dx$$
+>> The remainder of the problem uses the partial fraction decomposition to compute these integrals. This integral <em>does not converge.</em> (Why? eliminate the integrals and study the resulting limits. )
+
+<blockquote>[!example] Problem
+[Some More Twists] Consider these slightly more challenging problems as well!
+<ul><li>Determine the values of $p$ for which the integral converges in:</li></ul>$$
+> \int_0^1 \frac{1}{x^p} dx
+> $$
+<ul><li>$\displaystyle \int_e^\infty \frac{1}{x (\ln (x))^2} dx$</li><li>$\displaystyle \int_0^1 \frac{dx}{\sqrt{1-x^2}}$</blockquote>></li></ul>>> [!success]- Solution
+>> (a) can be solved by just following the exact steps that we have been doing before- this function has a discontinuity at $0$, so we evaluate:
+>> $$\lim_{b \to 0^+} \int _0^1 x^{-p} = \lim_{b \to 0^+} \left. \frac{x^{1-p}}{1-p} \vphantom{\big|} \right|_{{b}}^1 = \left [ \frac{1}{1-p} - \lim_{b \to 0^+} \frac{b^{1-p}}{1-p} \right ]$$
+>> converges to $\frac{1}{1-p}$ when $p < 1$. \\
+>> (b) can be done with a direct substitution, this is an integral we have studied before. \\
+>> (c) can be done by recognizing it as a trigonometric substitution, this <em>does</em> converge!
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

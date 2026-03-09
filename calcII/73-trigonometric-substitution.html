@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§7.3 Trigonometric Substitution | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§7.3 Trigonometric Substitution</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>This section is also just really <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a><br>
+For additional help, practice problems, and intuition, consider watching [this video](https://www.youtube.com/watch?v=KGrMpamuVbw).For integrals of this form, we have a few steps:<br>
+<ul><li><strong>Identify:</strong> To recognize an integral that trigonometric substitution can work for, consider the following table:$$\begin{array}{|c|c|c|}\hline \text{Expression} & \text{Substitution} & \text{Identity} \\ \hline \sqrt{a^2 - x^2} & \displaystyle x = a \sin \theta, \theta \in \left [ \frac{-\pi}{2}, \frac\pi2 \right ] & 1 - \sin^2 \theta = \cos^2 \theta\\ \hline \sqrt{a^2 + x^2} & \displaystyle x = a \tan \theta, \theta \in \left ( \frac{-\pi}{2}, \frac\pi2 \right ) & 1 + \tan^2 \theta = \sec^2 \theta \\ \hline \sqrt{x^2 - a^2} & \displaystyle x = a \sec\theta,  \theta \in \left [ 0, \frac\pi2 \right ) \text{ or } \in \left [ \pi, \frac{3\pi}{2} \right ) & \sec^2\theta - 1 = \tan^2 \theta \\  \hline \end{array} $$Make the correct choice based on the integral, and complete the substitution.</li><li><strong>Integration:</strong> Compute the integral. </li><li><strong>Resubstitute:</strong> Using the triangle below and the substitution made above, express the antiderivative in terms of $x$. </li></ul>!<a href="calcII/trianglepng.html" class="wiki-link" data-note="trianglepng">triangle.png</a></p>
+
+<blockquote>[!example] Example
+Find the antiderivative of:
+$$
+> \int \frac{1}{x^2 \sqrt{x^2 + 4}} dx
+> $$</blockquote>>> [!success]- Solution
+>> Following the second column of the table above gives us the substitution $x = 2 \tan \theta$, $dx = 2 \sec^2 \theta d \theta$:
+<blockquote>We see that:</blockquote>>> $$\sqrt{x^2 + 4} = \left [ 4 (\underbrace{\tan^2 \theta + 1}_{\sec^2(\theta)}) \right ]^\frac12 = 2 \sec \theta$$
+>> When we make all of the necessary substitutions, we have:$$\int \frac{1}{x^2 \sqrt{x^2 + 4}} dx =  \int \frac{2 \sec^2 \theta d \theta}{(4 \tan^2 \theta) 2\sec\theta } = \frac14 \int \frac{\sec \theta d \theta}{\tan^2 \theta} = \frac14 \int \frac{\cos \theta}{\sin^2 \theta } d \theta$$
+>> This is a $u$-substitution integral, which we can compute as:
+>> $$-\frac{1}{4\sin \theta} + C = -\frac14\csc \theta  + C = - \frac{\sqrt{x^2 + 4}}{4x} + C$$
+
+<blockquote>[!example] Problem
+Evaluate the following:
+ - $\displaystyle \int \frac{x}{\sqrt{1+x^2}}dx$
+<ul><li>$\displaystyle \int \frac{\sqrt{x^2 - 1}}{x^4}dx$</blockquote>></li></ul>>> [!success]- Solution
+>> The first is a second row integral, so make the substitution $x = \tan \theta$. This gives you, after some simplification:
+>> $$\int \frac{x}{\sqrt{1+x^2}}dx = \int \frac{\tan(\theta)}{\sec(\theta)}  \sec^2 (\theta) d \theta = \int \sec(\theta) \tan (\theta) d \theta = \sec \theta + C$$
+>> Reversing our substitution, we solve:
+>> $$\int \frac{x}{\sqrt{1+x^2}}dx = \sqrt{x^2 + 1} + C$$
+>> The second integral can be rewritten using the third column:
+>> $$\int \frac{\sqrt{x^2 - 1}}{x^4} = \int \frac{\tan \theta}{\sec^4 \theta} \sec \theta \tan \theta d \theta = \int \tan^2 \theta \cos^3 \theta d \theta = \int \sin^2 \theta \cos \theta d \theta  = \frac{u^3}{3} + C$$
+>> for the $u$-substitution (<a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a>) $u = \sin \theta$. Going back through and reversing our substitutions, we have:$$\frac{\sin^3 \theta}{3} = \frac{\left ( x^2 - 1 \right )^{3/2}}{3 x^3} + C$$
+
+<blockquote>[!example] Problem
+Compute the following integral
+$$
+> \int \frac{dx}{\sqrt{9x^2 - 36x + 37}}
+> $$</blockquote>>> [!success]- Solution
+>> To begin, let’s study the polynomial inside the radical:
+>> $$9x^2 - 36x + 37 = 9 \left ( x^2 - 4x + \frac{37}{9} \right )$$
+>> Completing the square of what’s in the parenthesis, we see:
+>> $$9x^2 - 36x + 37 = 9 \left ( x^2 - 4x + 4 - 4 + \frac{37}{9} \right ) = 9 \left ( (x- 2)^2 + \frac19 \right ) = 9(x-2)^2 + 1$$
+>> Now we can replace the integrand with some that looks a bit more tractable: 
+>> $$\int \frac{dx}{\sqrt{9x^2 - 36x + 37}} = \int \frac{dx}{\sqrt{9(x-2)^2 + 1}} = \int \frac{du}{\sqrt{3u^2 + 1}}$$
+>> when $u = x-2$ and $du = dx$. By the table above, we may make the substitution $3u = \tan \theta$:
+>> $$u = \frac13 \tan \theta \quad \quad du = \frac13 \sec^2 \theta d \theta  \quad \quad \sqrt{3u^2 + 1} = \sec \theta$$
+>> Transform the integrand then into:
+>> $$\int \frac{\frac13 \sec^2 \theta d\theta}{\sec \theta} = \frac13 \int \sec \theta d \theta = \frac13 \ln \left | \sec \theta + \tan \theta \right | + C$$
+>> From here, we can make substitutions based on the triangle our substitution implied:
+>>!<a href="calcII/triangle2png.html" class="wiki-link" data-note="triangle2png">250</a> 
+>> This gives us the final answer:$$\int \frac{dx}{\sqrt{9x^2 - 36x + 37}} = \ln{\sqrt{3(x-2)^2+1} + 3(x-2)}$$
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

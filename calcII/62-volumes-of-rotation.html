@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§6.2 Volumes of Rotation | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§6.2 Volumes of Rotation</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>This is a source of <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></p>
+
+<p>Volumes by washers or disks are an important application of integration, and can be computed using the formulas:<br>
+$$
+\underbrace{V = \pi \int_a^b \left [ R(x) \right ]^2 dx}_{\text{Disk}} \quad \text{and} \quad \underbrace{V = \pi \int_a^b \left [ R(x)^2 - r(x)^2 \right ] dx}_{\text{Washer}}
+$$<br>
+where $R(x)$ represents the “radius” or distance between the function and the axis of rotation, and, in the case of the Washer method, $r(x)$ represents the “inner radius.”</p>
+
+<blockquote>[!example] Example
+Find the volume of the solid obtained by rotating the region bounded by the given curves about the specified line. Sketch the region, and state the method of integration before computing the integral:
+$$
+> y = 1-x^2 \quad \text{ about the } \quad x-\text{axis}
+> $$</blockquote>>> [!success]- Solution
+>> [Graph](https://www.geogebra.org/m/zBRtUVfR). This is the disk method, so we have the integral:
+>> $$ V = \pi \int_{-1}^1 \left ( 1-x^2 \right )^2 dx$$
+
+<blockquote>[!example] Problem
+Find the volume of the solid obtained by rotating the region bounded by the given curves about the specified line. Sketch the region, and state the method of integration before computing the integral:
+$$
+> y = 6 - x^2, \quad y = 2 \quad \text{ about the } \quad x\text{-axis}
+> $$</blockquote>>> [!success]- Solution
+>> The correct integral to set up is:
+<blockquote>$$V = \pi \int_{-2}^2 (6-x^2)^2 - (2)^2 dx$$</blockquote>>> using the <em>Washer</em> method. From here, integration is straightforward.
+
+<blockquote>[!example] Problem
+Find the volume of the solid obtained by rotating the region bounded by the given curves about the specified line. Sketch the region, and state the method of integration before computing the integral:
+<ul><li>$y = x^3, \quad y = 0, \quad x = 1 \quad \text{ about the } \quad x = 2$</li><li>$x = y^2, \quad x = 1-y^2 \quad \text{ about the } \quad x=3$</blockquote>></li></ul>>> [!success]- Solution
+>> Both need one to convert equations to functions of $y$.
+>> - Using $x = y^{1/3}$ we see:$$V = \pi \int_0^1 (y^{1/3})^2 - 1^2 dy$$
+>> - Our bounds of integration here are $y = \pm \sqrt{2}/2$ (we find these in the same way we found them in [[§6.1 Area Between Curves#^0bf336|§6.2]]):
+>> $$V = \pi \int_{-\sqrt{2}/2}^{\sqrt{2}/2} (y^2)^2 - (1-y^2)^2 dy$$
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

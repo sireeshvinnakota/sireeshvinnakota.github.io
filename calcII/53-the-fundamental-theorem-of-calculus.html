@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§5.3 The Fundamental Theorem of Calculus | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§5.3 The Fundamental Theorem of Calculus</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<blockquote>[!theorem] Theorem (Fundamental Theorem of Calculus)
+Suppose that $f$ is a continuous function on the interval $[a,b]$. Then:
+<ul><li>If $\displaystyle g(x) = \int_{a}^x f(t)dt$ then $g’(x) = f(x)$.</li><li>$\displaystyle \int_a^b f(x)dx = F(b) - F(a)$ for <em>any</em> function $F(x)$ satisfying $F’(x) = f(x)$.</blockquote></li></ul>^3e560b
+
+<p>A common problem in this section follows the form:<br>
+$$
+\frac{d}{dx} \int_{a(x)}^{b(x)} f(t)dt =  f(b(x))b’(x) - f(a(x))a’(x)
+$$</p>
+
+<p>^024a00<br>
+The goal of the second half of the course is to find these functions $F$ as in the second part of the fundamental theorem.</p>
+
+<blockquote>[!example] Example
+Define the function:
+$$
+> h(x) = \int_1^{e^x} \ln(t) dt,
+> $$
+compute $h’(x)$.</blockquote>>> [!success]- Solution
+>> Following [[§5.3 The Fundamental Theorem of Calculus#^024a00|this equation]]
+>> $$\frac{d}{dx} h(x) = \ln(e^x) \cdot e^x + 0 = xe^x $$
+
+<blockquote>[!example] Problem
+Given the function:
+$$
+> g(x) := \int_0^x \sqrt{t + t^3} dt,
+> $$
+compute the derivative $g’(x)$ and the slope of the line tangent to $g(x)$ at $x = 5$.</blockquote>>> [!success]- Solution 
+>> $\displaystyle g’(x) = \sqrt{x+x^3}$. Plug in to compute slope of the tangent line.
+
+<blockquote>[!example] Problem
+Compute the derivative of the function:
+$$
+> y (x) := \int_{\sqrt{x}}^{\pi/4}  \theta \tan \theta d\theta
+> $$</blockquote>>> [!success]- Solution
+>> $$y’(x) = - \sqrt{x} \tan\sqrt{x} \cdot \frac{1}{2 \sqrt{x}} = \frac{-1}{2} \tan\sqrt{x}$$
+
+<blockquote>[!example] Problem
+Evaluate the following integrals using the Fundamental Theorem of Calculus:
+<ul><li>$\displaystyle \int_{-1}^1 x^{100}$</li><li>$\displaystyle \int_{\pi/4}^{\pi/3} \csc^2 \theta d \theta$</blockquote>></li></ul>>> [!success]- Solution
+>> First is $[x^{101}/101]_{-1}^1 = \frac{2}{101}$ and second is $[-\cot(x)]_{\pi/4}^{\pi/3}$.
+
+<blockquote>[!example] Problem (<strong>Challenge</strong>)
+Evaluate the limit:
+$$
+> \lim_{n \to \infty} \sum_{i = 1}^n \left ( \frac{i^4}{n^5} + \frac{i}{n^2} \right )
+> $$</blockquote>>> [!success]- Solution
+>> The trick here is to evaluate this as an integral. First, factor out $1/n$ from the summand:$$\frac{i^4}{n^5} + \frac{i}{n^2} = \frac1n \left (  \left (i/n \right )^4 + (i/n) \right )$$from here, we see that $a = 0$, $\Delta x = 1/n$ so $b = 1$. We’re home free when we write down:$$\int_0^1 x^4 + x dx = \left [ \frac{x^5}{5} + \frac{x^2}{2} \right ]_0^1 = \frac{1}{5} + \frac12 = \frac{7}{10}$$
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

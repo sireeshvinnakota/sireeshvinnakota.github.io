@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§5.4 Indefinite Integrals | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§5.4 Indefinite Integrals</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>The big idea in this section is just to remember why we have to use $+C$ when we are taking antiderivatives: both $x^2 + 3$ and $x^2 + 5$ have the same derivative, even though they’re different functions. In general, derivatives tend to lose some information, and the $C$ accommodates for all possibilities of that lost constant. These functions with general constants</p>
+
+<p>>[!fact] Theorem (eluR rewoP)<br>
+>$\int x^n dx = \frac{1}{n+1}x^{n+1}$</p>
+
+<p>^5fcf9e</p>
+
+<p>Consult the table below for the antiderivatives associated to the trigonometric functions and their inverses:</p>
+
+<p>| Integrand                   | Antiderivative          |<br>
+| --------------------------- | ----------------------- |<br>
+| $\sin x$                    | $-\cos x + C$           |<br>
+| $\cos x$                    | $\sin x + C$            |<br>
+| $\sec^2 x$                  | $\tan x + C$            |<br>
+| $-\csc^2 x$                 | $\cot x + C$            |<br>
+| $\sec x \tan x$             | $\sec x + C$            |<br>
+| $-\csc x \cot x$            | $\csc x + C$            |<br>
+| $\dfrac{1}{\sqrt{1-x^2}}$   | $\arcsin x + C$         |<br>
+| $\dfrac{-1}{\sqrt{1-x^2}}$  | $\arccos x + C$         |<br>
+| $\dfrac{1}{1+x^2}$          | $\arctan x + C$         |<br>
+| $\dfrac{-1}{1+x^2}$         | $\text{arccot}\, x + C$ |<br>
+| $\dfrac{1}{x\sqrt{x^2-1}}$  | $\text{arcsec}\, x + C$ |<br>
+| $\dfrac{-1}{x\sqrt{x^2-1}}$ | $\text{arccsc}\, x + C$ |</p>
+
+<p>^adaaae</p>
+
+<blockquote>[!example] Example
+Complete the following table of antiderivatives
+$$
+> \begin{array}{|c|c|c|c|}
+> \hline
+> \text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline
+> x^n & & \frac{1}{x} &  \\
+> C & & e^x & \\
+> \cos(x) & & \sec^2(x) & \\
+> \csc(x)\cot(x) & & \frac{1}{\sqrt{1-x^2}} & \\ 
+> \frac{1}{x\sqrt{x^2 - 1}} & & \frac{-1}{\sqrt{1-x^2}} & \\ \hline
+> \end{array}
+> $$</blockquote>>> [!success]- Solution
+>> $$\begin{array}{|c|c|c|c|}\hline\text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline x^n & \frac{x^{n+1}}{n+1} +C & \frac{1}{x} & \ln|x| + C \\ C & Cx + D & e^x & e^x + C\\ \cos(x) & \sin(x) + C& \sec^2(x) & \tan(x) + C \\ \csc(x)\cot(x) & -\csc(x) + C & \frac{1}{\sqrt{1-x^2}} & \arcsin(x) + C \\ \frac{1}{x\sqrt{x^2-1}} & \sec^{-1}(x) + C & \frac{-1}{\sqrt{1-x^2}} & \arccos (x) + C \\ \hline\end{array}$$
+
+<blockquote>[!example] Problem
+Compute $f(x)$ when:
+$$
+> f''(x) = e^x -2\sin (x), \quad f(0)=3 \quad \text{ and} \quad f(\pi/2) = 0
+> $$</blockquote>>> [!success]- Solution
+>> We integrate:
+>> $$\int e^x -2 \sin(x) dx = e^x + 2\cos(x) + C = f’(x)$$
+>> ...and once more
+>> $$\int e^x + 2\cos(x) + C dx = e^x + 2\sin(x) + Cx + D = f(x)$$
+>> Now, using the $f(0)= 3$, we test:
+>> $$f(0) = e^0 + 2\sin(0) + C\cdot 0 + D = 1 + D = 3$$
+>> implying $D = 2$. Similarly, we use $f(\pi/2) = 0$ to find:
+>> $$f(\pi/2) = e^{\pi/2} + 2\sin(\pi/2) + C \cdot \pi/2 + 2 = 0$$
+>> implying that 
+>> $$C = -\frac{2}{\pi} \left ( e^{\pi/2} +4 \right )$$
+>> This gives us the final answer:
+>> $$\boxed{f(x) = e^x + 2\sin(x) + -\left ( \frac{2}{\pi} (e^{\pi/2} +4) \right )x + 2}$$
+
+<blockquote>[!example] Problem
+Compute the indefinite integral:
+$$
+> \int \frac{\cos x}{\sin^2 x} dx
+> $$</blockquote>>> [!success]- Solution
+>> We know that $\frac{\cos}{\sin} = \cot$, and what is left is a factor of $\frac1\sin = \csc$:
+>> $$\int \csc x \cot x dx = -\csc x + C$$
+
+<blockquote>[!example] Problem
+Evaluate the following definite integral:
+$$
+> \int_0^2 x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx
+> $$</blockquote>>> [!success]- Solution
+>> We compute the general antiderivative:$$\int x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx = \int x^{4/3} + x^{5/4}dx$$
+>> When we take the “reverse power rule” we have:
+>> $$\frac37 x^{7/3} + \frac49 x^{9/4} + C$$ and plug in:$$[\frac37 x^{7/3} + \frac49 x^{9/4} + C]_0^2 = 2^{7/3} + 2^{9/4}$$
+>
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

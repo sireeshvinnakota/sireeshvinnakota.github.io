@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§11.5 Alternating Series Test | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§11.5 Alternating Series Test</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<blockquote>[!theorem] Theorem (Alternating Series Test)
+If the alternating series:
+$$
+> \sum_{n = 1}^\infty \left ( -1 \right )^{n-1} b_n = b_1 - b_2 + b_3 - \cdots \quad \text{ with } \quad b_n > 0
+> $$
+satisfies the following conditions:
+<ul><li>$b_{n+1} \leq b_n$ for all $n$ and</li><li>$\lim_{n \to \infty} b_n = 0$</li></ul>Then the series converges. 
+!<a href="calcII/fig1png.html" class="wiki-link" data-note="fig1png">fig1.png</a></blockquote>
+<blockquote>[!theorem] Theorem (Alternating Series Estimation)
+If we have the alternating series $S = \sum (-1)^{n-1} b_n$ where $b_n >0$ satisfying $(i)$ and $(ii)$, then 
+$$
+> \left | R_n \right | = \left | s - s_n \right | \leq b_{n+1}
+> $$</blockquote>
+From the picture, we see that the terms in absolute value get close to the limit.
+
+<blockquote>[!example] Example
+Consider the alternating harmonic series:
+$$
+> \sum_{n = 1}^\infty \frac{(-1)^n}{n}
+> $$
+Determine whether this series diverges, and if so, determine the remainder at the $n = 5$ term.</blockquote>>> [!success]- Solution
+>> We’ll show that this series satisfies the conditions from Theorem:
+>> - We know that: $$\frac{1}{n+1} < \frac{1}{n} \checkmark$$
+>> - We also have that: $$\lim_{n \to \infty} \frac1n = 0 \checkmark$$
+>> Thus, by Theorem , we have convergence. To estimate at the $5$th term, we see:
+>> $$ \left | s - s_5 \right | \leq \frac{1}{5 + 1} \quad \text{ and thus } \quad -\frac16 \leq s - s_5 \leq \frac16 $$ Substituting for what we know, we have: $$ s_5 = \sum_{n = 1}^5 \frac1n = \frac{-47}{60} $$ This gives: $$ -\frac16 \leq s + \frac{47}{60}  \leq \frac16 \quad \text{ so } \quad -\frac16 - \frac{47}{60} \leq s   \leq \frac16 - \frac{47}{60} $$
+
+<blockquote>[!example] Problem
+Determine if the following series converges or diverges:
+$$
+> \sum_{n=1}^{\infty} \frac{(-1)^{n-1}}{7+2 n}
+> $$</blockquote>>> [!success]- Solution
+>> The sequence $\frac{1}{7 + 2n}$ is decreasing and has limit = 0, so converges by Theorem
+
+<blockquote>[!example] Problem
+Determine if the following series converges or diverges:
+$$
+> \sum_{n = 1}^\infty \frac{(-1)^{n-1} n^2}{n^3 + 4}
+> $$</blockquote>>> [!success]- Solution
+>> Converges by the same reason as the earlier problem.
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

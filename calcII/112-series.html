@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§11.2 Series | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§11.2 Series</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>A series is understood as a special kind of <a href="calcII/111-sequences.html" class="wiki-link" data-note="111-sequences">sequence</a>. The remainder of the course will be spent proving properties of series, and then studying a special class of them that help us describe functions: there’s a really cool [use of series]({https://www.desmos.com/calculator/dzp8ygiudo):</p>
+
+<blockquote>[!definition] Definition (Series)
+Given a sequence $\left ( a_n \right )_{n\in \mathbb{N}}$, we can define the $n$th <strong>partial sum</strong>:
+$$
+> s_n := \sum_{i = 1}^n a_i \quad \text{ with } \quad  \lim_{n \to \infty} s_n = \sum_{i = 1}^\infty a_i
+> $$
+If this sum converges, we say that the series converges, otherwise, we say it diverges.</blockquote>
+<blockquote>[!definition] Definition (Geometric Series)
+Consider a geometric sequence of the form:
+$$
+> a, ar, ar^2, ar^3, \cdots
+> $$
+If $-1 < r < 1$, the partial sums have:
+$$
+> s_n = \sum_{i = 0}^n ar^i = \frac{a (1-r^n)}{1-r} \quad \text{ and } \quad s = \lim_{n \to \infty} s_n = \sum_{i = 0}^n ar^i = \frac{a}{1-r}
+> $$
+If $\left | r \right | \geq 1$, the series diverges.</blockquote>
+^df9d00
+
+<blockquote>[!theorem] Theorem (Test for Divergence)
+If a series $\displaystyle \sum_{i = 1}^\infty a_n$ is convergent, then $\displaystyle \lim_{n \to \infty} a_n = 0$. Conversely, if $\displaystyle \lim_{n \to \infty} a_n \neq 0$, or if it diverges, then the series $\displaystyle \sum_{i = 1}^\infty a_n$ diverges as well.</blockquote>
+>[!warning] WARNING
+>The converse is false. Just because a sequence tends to zero, does not mean that the corresponding series of partial sums converges as well. As an example, the harmonic series, defined by:
+<blockquote>$$\sum_{i = 1}^\infty \frac1n = \infty,$$
+that is, the series diverges.</blockquote>
+
+<blockquote>[!theorem] Theorem
+We have the following properties:
+<ul><li>$\displaystyle \sum_{n=1}^{\infty} c a_n=c \sum_{n=1}^{\infty} a_n$</li><li>$\displaystyle \sum_{n=1}^{\infty}\left(a_n+b_n\right)=\sum_{n=1}^{\infty} a_n+\sum_{n=1}^{\infty} b_n$</li><li>$\displaystyle \sum_{n=1}^{\infty}\left(a_n-b_n\right)=\sum_{n=1}^{\infty} a_n-\sum_{n=1}^{\infty} b_n$</blockquote>></li></ul>
+<blockquote>[!example] Problem
+Provide an example of a convergent series and a divergent series. Why do these sequences converge/diverge? Draw a picture. ([Link](https://www.desmos.com/calculator/avy0qe8bm3?lang=fr))</blockquote>
+<blockquote>[!example] Problem
+Determine whether the following sequences converge, and compute their sum if they do:
+$$
+> \sum_{n=1}^{\infty} \frac{(-3)^{n-1}}{4^n} \quad \text{ and } \quad \sum_{n = 1}^\infty \frac{1}{n (n+1)}
+> $$</blockquote>>> [!success]- Solution
+>> First one is a convergent geometric series, with $a = \frac14$ and $r = \frac{-3}{4}$. This gives:
+>> $$ S = \frac{\frac14}{1 + \frac34} = \frac17 $$
+>> For the second, we apply <a href="calcII/74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a> first, to gain  $$\sum_{n = 1}^\infty \frac{1}{n (n+1)} = \sum_{n = 1}^\infty \left ( \frac{1}{n} - \frac{1}{n + 1} \right )$$If we expand, we get a telescoping sum!
+>> $$ S_n = \left ( \frac11 - \frac12 \right ) + \left ( \frac12 - \frac13 \right ) + \cdots  = 1 - \frac{1}{n+1}$$
+>> which approaches $1$ as $n \to \infty$.
+
+<blockquote>[!example] Problem
+Determine the convergence of the following series. If it converges, what does it converge to?
+$$
+> \sum_{n = 1}^ \infty \frac{3}{n (n + 3)}
+> $$</blockquote>>> [!success]- Solution
+>> Converges to $\frac{11}{6}$ by the same steps as the previous problem.
+
+<blockquote>[!example] Problem
+Determine the convergence of the following series. If it converges, what does it converge to?
+$$
+> \frac{1}{3}+\frac{2}{9}+\frac{1}{27}+\frac{2}{81}+\frac{1}{243}+\frac{2}{729}+\cdots
+> $$</blockquote>>> [!success]- Solution
+>> This is a sum of geometric series, separate terms that have numerator 1 and numerator 2, both have $r = \frac19$.
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

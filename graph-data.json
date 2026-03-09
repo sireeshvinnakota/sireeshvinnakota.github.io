@@ -1,0 +1,186 @@
+{
+  "nodes": [
+    {
+      "id": "51-areas-distances",
+      "label": "\u00a75.1 Areas & Distances"
+    },
+    {
+      "id": "52--definite-integrals",
+      "label": "\u00a75.2- Definite Integrals"
+    },
+    {
+      "id": "53-the-fundamental-theorem-of-calculus",
+      "label": "\u00a75.3 The Fundamental Theorem of Calculus"
+    },
+    {
+      "id": "54-indefinite-integrals",
+      "label": "\u00a75.4 Indefinite Integrals"
+    },
+    {
+      "id": "55-the-substitution-rule",
+      "label": "\u00a75.5 The Substitution Rule"
+    },
+    {
+      "id": "61-area-between-curves",
+      "label": "\u00a76.1 Area Between Curves"
+    },
+    {
+      "id": "62-volumes-of-rotation",
+      "label": "\u00a76.2 Volumes of Rotation"
+    },
+    {
+      "id": "65-average-value-of-a-function",
+      "label": "\u00a76.5 Average Value of a Function"
+    },
+    {
+      "id": "81-arc-length",
+      "label": "\u00a78.1 Arc Length"
+    },
+    {
+      "id": "71-integration-by-parts",
+      "label": "\u00a77.1 Integration by Parts"
+    },
+    {
+      "id": "72-trigonometric-integration",
+      "label": "\u00a77.2 Trigonometric Integration"
+    },
+    {
+      "id": "73-trigonometric-substitution",
+      "label": "\u00a77.3 Trigonometric Substitution"
+    },
+    {
+      "id": "74-partial-fraction-decomposition",
+      "label": "\u00a77.4 Partial Fraction Decomposition"
+    },
+    {
+      "id": "78-improper-integrals",
+      "label": "\u00a77.8 Improper Integrals"
+    },
+    {
+      "id": "111-sequences",
+      "label": "\u00a711.1 Sequences"
+    },
+    {
+      "id": "1110-taylor-and-maclaurin-series",
+      "label": "\u00a711.10 Taylor and Maclaurin Series"
+    },
+    {
+      "id": "112-series",
+      "label": "\u00a711.2 Series"
+    },
+    {
+      "id": "113-the-integral-test",
+      "label": "\u00a711.3 The Integral Test"
+    },
+    {
+      "id": "114-comparison-tests",
+      "label": "\u00a711.4 Comparison Tests"
+    },
+    {
+      "id": "115-alternating-series-test",
+      "label": "\u00a711.5 Alternating Series Test"
+    },
+    {
+      "id": "116-ratio-and-root-tests",
+      "label": "\u00a711.6 Ratio and Root Tests"
+    },
+    {
+      "id": "118-power-series",
+      "label": "\u00a711.8 Power Series"
+    },
+    {
+      "id": "119-representing-functions-as-power-series",
+      "label": "\u00a711.9 Representing Functions as Power Series"
+    }
+  ],
+  "links": [
+    {
+      "source": "61-area-between-curves",
+      "target": "52--definite-integrals"
+    },
+    {
+      "source": "61-area-between-curves",
+      "target": "51-areas-distances"
+    },
+    {
+      "source": "61-area-between-curves",
+      "target": "graph1png"
+    },
+    {
+      "source": "61-area-between-curves",
+      "target": "graph2png"
+    },
+    {
+      "source": "61-area-between-curves",
+      "target": "graph3png"
+    },
+    {
+      "source": "62-volumes-of-rotation",
+      "target": "52--definite-integrals"
+    },
+    {
+      "source": "65-average-value-of-a-function",
+      "target": "52--definite-integrals"
+    },
+    {
+      "source": "65-average-value-of-a-function",
+      "target": "55-the-substitution-rule"
+    },
+    {
+      "source": "81-arc-length",
+      "target": "52--definite-integrals"
+    },
+    {
+      "source": "71-integration-by-parts",
+      "target": "55-the-substitution-rule"
+    },
+    {
+      "source": "72-trigonometric-integration",
+      "target": "55-the-substitution-rule"
+    },
+    {
+      "source": "73-trigonometric-substitution",
+      "target": "55-the-substitution-rule"
+    },
+    {
+      "source": "73-trigonometric-substitution",
+      "target": "trianglepng"
+    },
+    {
+      "source": "73-trigonometric-substitution",
+      "target": "triangle2png"
+    },
+    {
+      "source": "74-partial-fraction-decomposition",
+      "target": "55-the-substitution-rule"
+    },
+    {
+      "source": "78-improper-integrals",
+      "target": "52--definite-integrals"
+    },
+    {
+      "source": "78-improper-integrals",
+      "target": "74-partial-fraction-decomposition"
+    },
+    {
+      "source": "1110-taylor-and-maclaurin-series",
+      "target": "119-representing-functions-as-power-series"
+    },
+    {
+      "source": "112-series",
+      "target": "111-sequences"
+    },
+    {
+      "source": "112-series",
+      "target": "74-partial-fraction-decomposition"
+    },
+    {
+      "source": "115-alternating-series-test",
+      "target": "fig1png"
+    },
+    {
+      "source": "119-representing-functions-as-power-series",
+      "target": "118-power-series"
+    }
+  ]
+}

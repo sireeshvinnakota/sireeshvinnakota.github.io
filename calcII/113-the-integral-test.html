@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§11.3 The Integral Test | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§11.3 The Integral Test</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<blockquote>[!theorem] Theorem (Integral Test)
+Suppose $f$ is a continuous, positive, decreasing function on $[1, \infty)$ and let $a_n=f(n)$. Then the series $\sum_{n=1}^{\infty} a_n$ is convergent if and only if the improper integral $\int_1^{\infty} f(x) d x$ is convergent. In other words:
+<ul><li>If $\int_1^{\infty} f(x) d x$ is convergent, then $\sum_{n=1}^{\infty} a_n$ is convergent.</li><li>If $\int_1^{\infty} f(x) d x$ is divergent, then $\sum_{n=1}^{\infty} a_n$ is divergent.</blockquote></li></ul>For some intuition on the previous statement, consider drawing a Riemann sum of the integral with $\Delta x = 1$ and start computing the area beneath the curve that way.
+
+<blockquote>[!theorem] Theorem ($p$-Series, compare with [[§7.8 Improper Integrals#^5e5594|the integral version]])
+The $p$-series 
+$$ \sum_{n = 1}^\infty \frac{1}{n^p} \quad \text{ is } \quad \begin{cases}\text{convergent } & p > 1\\ \text{divergent } & p \leq 1 \end{cases} $$</blockquote>
+<blockquote>[!example] Example
+Determine the convergence of the series:
+$$
+> \sum_{n = 1}^\infty \frac{\ln(n)}{n}
+> $$</blockquote>>> [!success]- Solution
+>> In order to pair this up with the corresponding function: $f(x) = \frac{\ln(x)}{x}$, we have to establish all of the prerequisite conditions:
+>> - <strong>$f$ is Continuous:</strong> $\ln(x), \frac1x$ are continuous on $(0,\infty)$, so their ratio is well defined and continuous. 
+>> - <strong>$f$ is Positive:</strong> Ratio of two positive functions on the domain $(0,\infty)$, so positive.
+>> - <strong>$f$ is Decreasing:</strong> Recall that it suffices to show that the derivative is negative. We see: $$ f’(x) = \frac{\frac1x (x) - \ln(x) \cdot 1}{x^2} = \frac{1 - \ln(x)}{x^2} < 0 $$ 
+>> for all $x \in (0, \infty)$. 
+>> These complete the conditions necessary for the Integral Test, so we can compute:
+>> $$ \int_{1}^\infty \frac{\ln(x)}{x} dx $$Since this integral diverges, the series must diverge as well.
+
+<blockquote>[!example] Problem
+Compute the convergence of the following series:
+$$
+> \sum_{n = 1}^\infty \frac{n}{n^2 + 1}
+> $$</blockquote>>> [!success]- Solution
+>> Corresponding integral diverges.
+
+<blockquote>[!example] Problem
+Compute the convergence of the following series:
+$$
+> \sum_{n = 1}^\infty \frac{1}{n^2 + 2n + 2}
+> $$</blockquote>>> [!success]- Solution
+>> Converges, use the corresponding function, and then partial fractions to compute the integral.
+
+<blockquote>[!example] Problem
+Can we use the integral test on the following function?
+$$
+> \sum_{n=1}^{\infty} \frac{\cos \pi n}{\sqrt{n}}
+> $$</blockquote>>> [!success]- Solution
+>> No, positivity fails.
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

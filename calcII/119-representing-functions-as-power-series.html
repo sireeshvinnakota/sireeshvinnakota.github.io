@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>§11.9 Representing Functions as Power Series | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>§11.9 Representing Functions as Power Series</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>Note that, from [[§11.2 Series#^df9d00|geometric series]], we have:$$
+\frac{1}{1-x} =1 + x + x ^2 + \cdots =\sum_{n = 0}^\infty x^n \quad \text{ whenever } \quad \left | x \right | < 1$$just by interpreting the $x$ as $r$ in that equation. This will be the key observation in putting an arbitrary function $f(x)$ into the form of <a href="calcII/118-power-series.html" class="wiki-link" data-note="118-power-series">§11.8 Power Series</a></p>
+
+<blockquote>[!theorem] Theorem
+If the power series $\Sigma c_n(x-a)^n$ has radius of convergence $R>0$, then the function $f$ defined by
+$$f(x)=c_0+c_1(x-a)+c_2(x-a)^2+\cdots=\sum_{n=0}^{\infty} c_n(x-a)^n$$
+is differentiable (and therefore continuous) on the interval $(a-R, a+R)$ and
+<ul><li>$f^{\prime}(x)=c_1+2 c_2(x-a)+3 c_3(x-a)^2+\cdots=\sum_{n=1}^{\infty} n c_n(x-a)^{n-1}$</li><li>$\int f(x) d x=C+c_0(x-a)+c_1 \frac{(x-a)^2}{2}+c_2 \frac{(x-a)^3}{3}+\cdots$</li></ul>$$=C+\sum_{n=0}^{\infty} c_n \frac{(x-a)^{n+1}}{n+1}$$</blockquote>> 
+<blockquote>The radii of convergence of the power series in Equations (i) and (ii) are both $R$.</blockquote>
+
+<blockquote>[!example] Example
+Find a power series expansion for the function $f(x) = \ln(1+x)$</blockquote>>> [!success]- Solution
+>> We can use the power series expansion for $\frac{1}{1+x}$ and integrate it.
+
+<blockquote>[!example] Problem
+Give a power series representation for the derivative of the following function.
+$$
+> g(x)=\frac{5 x}{1-3 x^5}
+> $$</blockquote>>> [!success]- Solution
+>> [Link](https://tutorial.math.lamar.edu/Solutions/CalcII/PowerSeriesandFunctions/Prob4.aspx)
+
+<blockquote>[!example] Problem
+Determine the power series of the following function, and provide its interval of convergence.
+$$
+> f(x)=\frac{3 x^2}{5-2 \sqrt[3]{x}}
+> $$</blockquote>>> [!success]- Solution
+>> [Link](https://tutorial.math.lamar.edu/Solutions/CalcII/PowerSeriesandFunctions/Prob3.aspx)
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>
