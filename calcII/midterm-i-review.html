@@ -23,6 +23,16 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+    /* asset links (PDFs etc) — open in new tab */
+    a.asset-link {
+      color: var(--link-visited);
+      text-decoration: underline;
+    }
+    a.asset-link::after {
+      content: " ↗";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
 
     /* ── Callouts ─────────────────────────────────────────────────────── */
     .callout {
@@ -142,7 +152,7 @@
   <main>
     <article>
 <p>This is a review of the course so far, running through sections <br>
-<ul><li><a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">§5.1 Areas & Distances</a> </li><li><a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></li><li><a href="calcII/53-the-fundamental-theorem-of-calculus.html" class="wiki-link" data-note="53-the-fundamental-theorem-of-calculus">§5.3 The Fundamental Theorem of Calculus</a></li><li><a href="calcII/54-indefinite-integrals.html" class="wiki-link" data-note="54-indefinite-integrals">§5.4 Indefinite Integrals</a></li><li><a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a></li><li><a href="calcII/61-area-between-curves.html" class="wiki-link" data-note="61-area-between-curves">§6.1 Area Between Curves</a></li><li><a href="calcII/62-volumes-of-rotation.html" class="wiki-link" data-note="62-volumes-of-rotation">§6.2 Volumes of Rotation</a></li><li><a href="calcII/65-average-value-of-a-function.html" class="wiki-link" data-note="65-average-value-of-a-function">§6.5 Average Value of a Function</a></li></ul>There are also handwritten solutions to a <a href="calcII/2b-midterm1-samplepdf.html" class="wiki-link" data-note="2b-midterm1-samplepdf">practice midterm</a> from several quarters ago available <a href="calcII/2b-midterm1-sample-solutionspdf.html" class="wiki-link" data-note="2b-midterm1-sample-solutionspdf">here</a>.</p>
+<ul><li><a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">§5.1 Areas & Distances</a> </li><li><a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></li><li><a href="calcII/53-the-fundamental-theorem-of-calculus.html" class="wiki-link" data-note="53-the-fundamental-theorem-of-calculus">§5.3 The Fundamental Theorem of Calculus</a></li><li><a href="calcII/54-indefinite-integrals.html" class="wiki-link" data-note="54-indefinite-integrals">§5.4 Indefinite Integrals</a></li><li><a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a></li><li><a href="calcII/61-area-between-curves.html" class="wiki-link" data-note="61-area-between-curves">§6.1 Area Between Curves</a></li><li><a href="calcII/62-volumes-of-rotation.html" class="wiki-link" data-note="62-volumes-of-rotation">§6.2 Volumes of Rotation</a></li><li><a href="calcII/65-average-value-of-a-function.html" class="wiki-link" data-note="65-average-value-of-a-function">§6.5 Average Value of a Function</a></li></ul>There are also handwritten solutions to a <a href="../notes/calcII/Midterm I Review/2B-Midterm1-Sample.pdf" class="asset-link" target="<em>blank">practice midterm</a> from several quarters ago available <a href="../notes/calcII/Midterm I Review/2B-Midterm1-Sample solutions.pdf" class="asset-link" target="</em>blank">here</a>.</p>
 
 <div class="callout callout-example"><div class="callout-title">Problem (<strong>Challenge</strong>)</div><div class="callout-body">[Challenge] Evaluate the limit:
 $$

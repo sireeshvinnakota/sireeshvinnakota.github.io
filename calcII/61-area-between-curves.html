@@ -23,6 +23,16 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+    /* asset links (PDFs etc) — open in new tab */
+    a.asset-link {
+      color: var(--link-visited);
+      text-decoration: underline;
+    }
+    a.asset-link::after {
+      content: " ↗";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
 
     /* ── Callouts ─────────────────────────────────────────────────────── */
     .callout {

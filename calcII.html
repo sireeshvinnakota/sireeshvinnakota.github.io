@@ -396,11 +396,21 @@
       return;
     }
 
-    const { nodes, links } = graphData;
+    const { nodes, links: rawLinks } = graphData;
     if (!nodes.length) {
       document.getElementById('graph-no-data').style.display = 'flex';
       return;
     }
+
+    // Filter out any links whose source or target doesn't exist in the node list.
+    // D3 forceLink crashes with "node not found" if a link references a missing node
+    // (e.g. wikilinks to PDFs or notes that haven't been written yet).
+    const nodeIds = new Set(nodes.map(n => n.id));
+    const links = rawLinks.filter(l => {
+      const s = typeof l.source === 'object' ? l.source.id : l.source;
+      const t = typeof l.target === 'object' ? l.target.id : l.target;
+      return nodeIds.has(s) && nodeIds.has(t);
+    });
 
     document.getElementById('graph-info').textContent =
       `${nodes.length} notes · ${links.length} links`;
@@ -416,9 +426,6 @@
       });
       ro.observe(wrap);
     });
-
-    const W   = wrap.clientWidth;
-    const H   = wrap.clientHeight;
 
     const svg = d3.select('#graph-svg')
       .attr('width', W)

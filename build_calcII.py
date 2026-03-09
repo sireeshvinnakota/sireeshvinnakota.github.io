@@ -50,6 +50,25 @@ def collect_notes(notes_dir: Path) -> dict:
         notes[name] = path
     return notes
 
+# Extensions treated as direct file links rather than note links
+FILE_EXTENSIONS = {'.pdf', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.zip', '.tex'}
+
+def collect_assets(notes_dir: Path) -> dict:
+    """
+    Returns {filename_stem: relative_path_from_notes_dir} for every
+    non-.md file in the vault (PDFs, images used as wikilinks, etc.).
+    Path is relative to notes_dir so we can compute the correct href
+    from the output calcII/ directory (one level up = '../').
+    """
+    assets = {}
+    for path in sorted(notes_dir.rglob("*")):
+        if path.is_file() and path.suffix.lower() in FILE_EXTENSIONS:
+            # Store the full filename (with extension) as key
+            assets[path.name] = path
+            # Also store stem as key for links written without extension
+            assets[path.stem] = path
+    return assets
+
 # ── Block-ID pre-pass ────────────────────────────────────────────────────────
 
 BLOCK_ID_RE = re.compile(r"(?<!\])\s+\^([\w-]+)\s*$")
@@ -133,26 +152,40 @@ def convert_image_embeds(text: str) -> str:
     return IMAGE_EMBED_RE.sub(replace, text)
 
 
-def convert_wikilinks(text: str, all_note_slugs: set) -> tuple:
+def convert_wikilinks(text: str, all_note_slugs: set, assets: dict, notes_dir: Path) -> tuple:
     """
     Replace [[wikilinks]] with <a> tags.
-    Returns (converted_text, list_of_linked_slugs).
+    - Links to .md notes → load in the note pane
+    - Links to PDFs/assets → direct href to the file (opens in new tab)
+    Returns (converted_text, list_of_linked_note_slugs).
     """
     linked: list = []
 
     def replace(m):
-        page   = m.group(1).strip()
+        page    = m.group(1).strip()
         heading = m.group(2)
         block   = m.group(3)
         alias   = m.group(4)
 
+        # Check if this is a link to a known asset (PDF, image, etc.)
+        asset_path = assets.get(page)
+        if asset_path is None and '.' in page:
+            # Try matching by stem if written with extension
+            asset_path = assets.get(Path(page).stem)
+
+        if asset_path is not None:
+            # Generated notes live in calcII/, so ../ = repo root.
+            # Assets live under notes/calcII/..., so href = ../notes/calcII/...
+            rel = asset_path.relative_to(notes_dir.parent.parent)  # relative to repo root
+            href = f"../{rel.as_posix()}"
+            display = alias or page
+            return f'<a href="{href}" class="asset-link" target="_blank">{display}</a>'
+
+        # Regular note link
         slug = note_name_to_slug(page)
         linked.append(slug)
 
-        # build href
         if block:
-            href = f"#{block}"           # points to id on current rendered page
-            # but for cross-note block refs we need the note too
             href = f"calcII/{slug}.html#{block}"
         elif heading:
             anchor = slugify(heading)
@@ -522,6 +555,16 @@ PAGE_TEMPLATE = """\
       color: var(--link-visited);
       text-decoration: underline dotted;
     }}
+    /* asset links (PDFs etc) — open in new tab */
+    a.asset-link {{
+      color: var(--link-visited);
+      text-decoration: underline;
+    }}
+    a.asset-link::after {{
+      content: " ↗";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }}
 
     /* ── Callouts ─────────────────────────────────────────────────────── */
     .callout {{
@@ -700,6 +743,7 @@ def build():
         return
 
     all_slugs  = {note_name_to_slug(n) for n in notes}
+    assets     = collect_assets(NOTES_DIR)
     graph_nodes = []
     graph_links = []
     seen_edges: set = set()
@@ -720,7 +764,7 @@ def build():
         raw = convert_image_embeds(raw)
 
         # Replace wikilinks
-        raw, linked_slugs = convert_wikilinks(raw, all_slugs)
+        raw, linked_slugs = convert_wikilinks(raw, all_slugs, assets, NOTES_DIR)
 
         # Convert markdown
         body_html = md_to_html(raw)
