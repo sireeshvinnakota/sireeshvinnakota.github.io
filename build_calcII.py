@@ -76,6 +76,62 @@ WIKILINK_RE = re.compile(
     r"\[\[([^\]|#^]+?)(?:#([^\]|^]+?))?(?:\^([^\]|]+?))?(?:\|([^\]]+?))?\]\]"
 )
 
+# Matches ![[image.png]], ![[image.png|alt text]], ![[image.png|300]] (Obsidian width syntax)
+IMAGE_EMBED_RE = re.compile(r"!\[\[([^\]|]+?)(?:\|([^\]]*))?\]\]")
+
+def convert_image_embeds(text: str) -> str:
+    """
+    Replace Obsidian ![[image.png]] embeds with <img> tags.
+
+    Obsidian stores images anywhere in the vault; we assume you've copied
+    your vault's attachment folder into notes/calcII/attachments/ (or the
+    repo root images/ folder). The build script looks for the image filename
+    in both locations and uses a relative path from calcII/<note>.html.
+
+    Supported syntax:
+        ![[photo.png]]              → <img src="../images/photo.png" alt="photo">
+        ![[photo.png|My caption]]   → <img> with alt="My caption"
+        ![[photo.png|300]]          → <img> with width="300"
+        ![[photo.png|300x200]]      → <img> with width="300" height="200"
+    """
+    def replace(m):
+        filename = m.group(1).strip()
+        modifier = (m.group(2) or "").strip()
+
+        # Determine alt text vs. size modifier
+        alt   = filename.rsplit(".", 1)[0]   # default alt = filename without extension
+        width_attr  = ""
+        height_attr = ""
+
+        if modifier:
+            # Pure number → width only, e.g. |300
+            if re.fullmatch(r"\d+", modifier):
+                width_attr = f' width="{modifier}"'
+            # WxH → width and height, e.g. |300x200
+            elif re.fullmatch(r"\d+x\d+", modifier):
+                w, h = modifier.split("x")
+                width_attr  = f' width="{w}"'
+                height_attr = f' height="{h}"'
+            else:
+                # Treat as alt text
+                alt = modifier
+
+        # Image src: generated notes live in calcII/, so go up one level
+        # to reach images/ at the repo root (or notes/calcII/attachments/).
+        # We try to find the file; if not found we still emit the tag with
+        # a sensible path so it works once the image is in the right place.
+        src = f"../images/{filename}"
+
+        return (
+            f'<figure class="centered">'
+            f'<img src="{src}" alt="{alt}"{width_attr}{height_attr} loading="lazy" />'
+            f'<figcaption>{alt}</figcaption>'
+            f'</figure>'
+        )
+
+    return IMAGE_EMBED_RE.sub(replace, text)
+
+
 def convert_wikilinks(text: str, all_note_slugs: set[str]) -> tuple[str, list[str]]:
     """
     Replace [[wikilinks]] with <a> tags.
@@ -336,6 +392,9 @@ def build():
 
         # Pre-pass: collect block IDs
         raw, block_map = strip_block_ids(raw)
+
+        # Convert image embeds BEFORE wikilinks (so ![[]] is handled first)
+        raw = convert_image_embeds(raw)
 
         # Replace wikilinks
         raw, linked_slugs = convert_wikilinks(raw, all_slugs)

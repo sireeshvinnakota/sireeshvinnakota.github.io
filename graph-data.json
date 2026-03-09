@@ -103,18 +103,6 @@
       "target": "51-areas-distances"
     },
     {
-      "source": "61-area-between-curves",
-      "target": "graph1png"
-    },
-    {
-      "source": "61-area-between-curves",
-      "target": "graph2png"
-    },
-    {
-      "source": "61-area-between-curves",
-      "target": "graph3png"
-    },
-    {
       "source": "62-volumes-of-rotation",
       "target": "52--definite-integrals"
     },
@@ -143,14 +131,6 @@
       "target": "55-the-substitution-rule"
     },
     {
-      "source": "73-trigonometric-substitution",
-      "target": "trianglepng"
-    },
-    {
-      "source": "73-trigonometric-substitution",
-      "target": "triangle2png"
-    },
-    {
       "source": "74-partial-fraction-decomposition",
       "target": "55-the-substitution-rule"
     },
@@ -173,10 +153,6 @@
     {
       "source": "112-series",
       "target": "74-partial-fraction-decomposition"
-    },
-    {
-      "source": "115-alternating-series-test",
-      "target": "fig1png"
     },
     {
       "source": "119-representing-functions-as-power-series",

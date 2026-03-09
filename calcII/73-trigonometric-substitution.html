@@ -54,7 +54,7 @@
     <article>
 <p>This section is also just really <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a><br>
 For additional help, practice problems, and intuition, consider watching [this video](https://www.youtube.com/watch?v=KGrMpamuVbw).For integrals of this form, we have a few steps:<br>
-<ul><li><strong>Identify:</strong> To recognize an integral that trigonometric substitution can work for, consider the following table:$$\begin{array}{|c|c|c|}\hline \text{Expression} & \text{Substitution} & \text{Identity} \\ \hline \sqrt{a^2 - x^2} & \displaystyle x = a \sin \theta, \theta \in \left [ \frac{-\pi}{2}, \frac\pi2 \right ] & 1 - \sin^2 \theta = \cos^2 \theta\\ \hline \sqrt{a^2 + x^2} & \displaystyle x = a \tan \theta, \theta \in \left ( \frac{-\pi}{2}, \frac\pi2 \right ) & 1 + \tan^2 \theta = \sec^2 \theta \\ \hline \sqrt{x^2 - a^2} & \displaystyle x = a \sec\theta,  \theta \in \left [ 0, \frac\pi2 \right ) \text{ or } \in \left [ \pi, \frac{3\pi}{2} \right ) & \sec^2\theta - 1 = \tan^2 \theta \\  \hline \end{array} $$Make the correct choice based on the integral, and complete the substitution.</li><li><strong>Integration:</strong> Compute the integral. </li><li><strong>Resubstitute:</strong> Using the triangle below and the substitution made above, express the antiderivative in terms of $x$. </li></ul>!<a href="calcII/trianglepng.html" class="wiki-link" data-note="trianglepng">triangle.png</a></p>
+<ul><li><strong>Identify:</strong> To recognize an integral that trigonometric substitution can work for, consider the following table:$$\begin{array}{|c|c|c|}\hline \text{Expression} & \text{Substitution} & \text{Identity} \\ \hline \sqrt{a^2 - x^2} & \displaystyle x = a \sin \theta, \theta \in \left [ \frac{-\pi}{2}, \frac\pi2 \right ] & 1 - \sin^2 \theta = \cos^2 \theta\\ \hline \sqrt{a^2 + x^2} & \displaystyle x = a \tan \theta, \theta \in \left ( \frac{-\pi}{2}, \frac\pi2 \right ) & 1 + \tan^2 \theta = \sec^2 \theta \\ \hline \sqrt{x^2 - a^2} & \displaystyle x = a \sec\theta,  \theta \in \left [ 0, \frac\pi2 \right ) \text{ or } \in \left [ \pi, \frac{3\pi}{2} \right ) & \sec^2\theta - 1 = \tan^2 \theta \\  \hline \end{array} $$Make the correct choice based on the integral, and complete the substitution.</li><li><strong>Integration:</strong> Compute the integral. </li><li><strong>Resubstitute:</strong> Using the triangle below and the substitution made above, express the antiderivative in terms of $x$. </li></ul><figure class="centered"><img src="../images/triangle.png" alt="triangle" loading="lazy" /><figcaption>triangle</figcaption></figure></p>
 
 <blockquote>[!example] Example
 Find the antiderivative of:
@@ -95,7 +95,7 @@ $$
 >> Transform the integrand then into:
 >> $$\int \frac{\frac13 \sec^2 \theta d\theta}{\sec \theta} = \frac13 \int \sec \theta d \theta = \frac13 \ln \left | \sec \theta + \tan \theta \right | + C$$
 >> From here, we can make substitutions based on the triangle our substitution implied:
->>!<a href="calcII/triangle2png.html" class="wiki-link" data-note="triangle2png">250</a> 
+>><figure class="centered"><img src="../images/triangle2.png" alt="triangle2" width="250" loading="lazy" /><figcaption>triangle2</figcaption></figure> 
 >> This gives us the final answer:$$\int \frac{dx}{\sqrt{9x^2 - 36x + 37}} = \ln{\sqrt{3(x-2)^2+1} + 3(x-2)}$$
     </article>
   </main>

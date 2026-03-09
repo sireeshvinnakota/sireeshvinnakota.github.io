@@ -403,7 +403,13 @@
 
     const wrap = document.getElementById('graph-canvas-wrap');
     const svg  = d3.select('#graph-svg');
-    const W = wrap.clientWidth, H = wrap.clientHeight;
+
+    // Defer until the browser has actually painted and sized the container.
+    // clientWidth/clientHeight are 0 if read too early (before layout).
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+    const W = wrap.clientWidth  || wrap.getBoundingClientRect().width  || 700;
+    const H = wrap.clientHeight || wrap.getBoundingClientRect().height || 420;
 
     // Zoom layer
     const g = svg.append('g');
