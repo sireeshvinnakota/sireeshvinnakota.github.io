@@ -1,0 +1,93 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{11.6}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+%\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Ratio and Root Tests}
+\end{center}
+
+\begin{defi}
+A series $\sum a_n$ is called absolutely convergent if the series of absolute values $\sum \lrabs{a_n}$ is convergent. 
+\end{defi}
+\begin{aun}
+This is a stronger condition than the usual sense of convergence, as all the terms are positive (think that nothing in the series cancels out). Intuitively, think about the series 
+\[
+\sum \frac1n \mte{ versus } \sum \frac{(-1)^n}{n}
+\]
+which diverge and converge, respectively. This gives the definition below, but note that \textbf{absolutely convergent implies conditionally convergent}
+\end{aun}
+
+\begin{defi}
+A series $\sum a_n$ is conditionally convergent if it is convergent but not absolutely convergent. 
+\end{defi}
+
+\begin{thm}[The Ratio Test] We have three cases:
+\begin{description}
+\item[\underline{$L < 1$:}] If $\lim _{n \rightarrow \infty}\left|\frac{a_{n+1}}{a_n}\right|=L<1$, then the series $\sum_{n=1}^{\infty} a_n$ is absolutely convergent (and therefore convergent).
+\item[\underline{$L > 1$:}] If $\lim _{n \rightarrow \infty}\left|\frac{a_{n+1}}{a_n}\right|=L>1$ or $\lim _{n \rightarrow \infty}\left|\frac{a_{n+1}}{a_n}\right|=\infty$, then the series $\sum_{n=1}^{\infty} a_n$ is divergent.
+\item[\underline{$L = 1$}:] If $\lim _{n \rightarrow \infty}\left|\frac{a_{n+1}}{a_n}\right|=1$, the Ratio Test is inconclusive; that is, no conclusion can be drawn about the convergence or divergence of $\sum a_n$.
+\end{description}
+\end{thm}
+
+\begin{aun}
+The Ratio test is really effective when things cancel out in fractions, like factorials or exponentials. 
+\end{aun}
+
+\begin{thm}[The Root Test] We have three cases:
+\begin{description}
+\item[\underline{$L < 1$:}] If $\lim _{n \rightarrow \infty} \sqrt[n]{\left|a_n\right|}=L<1$, then the series $\sum_{n=1}^{\infty} a_n$ is absolutely convergent (and therefore convergent).
+\item[\underline{$L > 1$:}] If $\lim _{n \rightarrow \infty} \sqrt[n]{\left|a_n\right|}=L>1$ or $\lim _{n \rightarrow \infty} \sqrt[n]{\left|a_n\right|}=\infty$, then the series $\sum_{n=1}^{\infty} a_n$ is divergent.
+\item[\underline{$L = 1$:}] If $\lim _{n \rightarrow \infty} \sqrt[n]{\left|a_n\right|}=1$, the Root Test is inconclusive.
+\end{description}
+\end{thm}
+
+\begin{aun}
+This test works really effective when you have a series with everything raised to the $n$th power. 
+\end{aun}
+
+\begin{exx}
+Test the convergence of the following series:
+\[
+\sum_{n = 1}^\infty \lrp{\frac{2n+3}{3n+4}}^n \mte{ and } \sum_{n = 1}^\infty \frac{n^n}{n!}
+\]
+\end{exx}
+\ans{Use the root test on the first, where the nth root gives:
+\[
+\lim_{n \to \infty} \sqrt[n]{\lrp{\frac{2n+3}{3n+4}}^n} = \lim_{n \to \infty} \frac{2n+3}{3n+4} = \frac23 < 1 \checkmark
+\]
+For the second, use the ratio test:
+\[
+\lim_{n \to \infty} \lrabs{\frac{a_{n + 1}}{a_n}} = \lrabs{\frac{ 
+\frac{(n+1)^{n+1}}{(n+1)!}
+}
+{
+\frac{(n)^{n}}{(n)!}
+}}= 
+\lim_{n \to \infty} \lrabs{ \frac{(n+1)^{n + 1}}{(n + 1)!} \cdot \frac{n!}{n^n}} 
+= \lim_{n \to \infty} \lrabs{ \frac{(n+1)^{n }}{n^n} } = e > 1
+\]
+so this diverges. 
+}
+
+\problembox{Test the following series for convergence:
+\[
+\sum_{n=1}^{\infty} \frac{n^{100} 100^n}{n !}
+\]
+}
+\ans{See a factorial, apply the ratio test. This converges.}
+
+\problembox{
+Test the following series for convergence:
+\[
+\sum_{n=1}^{\infty}\left(\frac{n^2+1}{2 n^2+1}\right)^n
+\]
+}
+\ans{See the power of $n$, take the root test. The inside limit is $\frac12$, so this converges. }
+
+\end{document}

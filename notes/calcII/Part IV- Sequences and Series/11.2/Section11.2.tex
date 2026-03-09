@@ -1,0 +1,99 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{11.2}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Series}
+\end{center}
+
+\begin{aun}
+What's the point? Here's a really cool use of series: \href{https://www.desmos.com/calculator/dzp8ygiudo}{Link}
+\end{aun}
+
+
+\begin{defi}[Series]
+Given a series $\lrp{a_n}_{n\in \N}$, we can define the $n$th \textbf{partial sum}:
+\[
+s_n := \sum_{i = 1}^n a_i \mte{ with }  \lim_{n \to \infty} s_n = \sum_{i = 1}^\infty a_i 
+\]
+If this sum converges, we say that the series converges, otherwise, we say it diverges. 
+\end{defi}
+\begin{defi}[Geometric Series]
+Consider a geometric sequence of the form:
+\[
+a, ar, ar^2, ar^3, \cdots
+\]
+If $-1 < r < 1$, the partial sums have:
+\[
+s_n = \sum_{i = 0}^n ar^i = \frac{a (1-r^n)}{1-r} \mte{ and } s = \lim_{n \to \infty} s_n = \sum_{i = 0}^n ar^i = \frac{a}{1-r}
+\]
+If $\lrabs{r} \geq 1$, the series diverges.
+\end{defi}
+\begin{thm}
+The harmonic series, defined by:
+\[
+\sum_{i = 1}^\infty \frac1n = \infty,
+\]
+that is, the series diverges.
+\end{thm}
+\begin{thm}
+If a series $\dst \sum_{i = 1}^\infty a_n$ is convergent, then $\dst \lim_{n \to \infty} a_n = 0$. Conversely, if $\dst \lim_{n \to \infty} a_n \neq 0$, or if it diverges, then the series $\dst \sum_{i = 1}^\infty a_n$ diverges as well. 
+\end{thm}
+
+\begin{thm}
+We have the following properties:
+\begin{enumerate}[label=\roman*.]
+\item $\dst \sum_{n=1}^{\infty} c a_n=c \sum_{n=1}^{\infty} a_n$
+\item $\dst \sum_{n=1}^{\infty}\left(a_n+b_n\right)=\sum_{n=1}^{\infty} a_n+\sum_{n=1}^{\infty} b_n$
+\item $\dst \sum_{n=1}^{\infty}\left(a_n-b_n\right)=\sum_{n=1}^{\infty} a_n-\sum_{n=1}^{\infty} b_n$
+\end{enumerate}
+
+\end{thm}
+
+
+\problembox{Provide an example of a convergent series and a divergent series. Why do these sequences converge/diverge? Draw a picture.}
+(\href{https://www.desmos.com/calculator/avy0qe8bm3?lang=fr}{Link})\\
+\newpage
+
+\problembox{Determine whether the following sequences converge, and compute their sum if they do:
+\[\sum_{n=1}^{\infty} \frac{(-3)^{n-1}}{4^n} \mte{ and } \sum_{n = 1}^\infty \frac{1}{n (n+1)}\]}
+
+\ans{First one is a convergent geometric series, with $a = \frac14$ and $r = \frac{-3}{4}$. This gives:
+\[
+S = \frac{\frac14}{1 + \frac34} = \frac17
+\]
+For the second, we apply partial fractions first, to gain 
+\[
+\sum_{n = 1}^\infty \frac{1}{n (n+1)} = \sum_{n = 1}^\infty \lrp{\frac{1}{n} - \frac{1}{n + 1}}
+\]
+If we expand, we get a telescoping sum!
+\[
+S_n = \lrp{\frac11 - \frac12} + \lrp{\frac12 - \frac13} + \cdots  = 1 - \frac{1}{n+1} 
+\]
+which approaches $1$ as $n \to \infty$. 
+}
+
+\problembox{Determine the convergence of the following series. If it converges, what does it converge to?
+\[
+\sum_{n = 1}^ \infty \frac{3}{n (n + 3)}
+\]
+}
+
+\ans{Converges to $\frac{11}{6}$ by the same steps as the previous problem.}
+
+\problembox{
+Determine the convergence of the following series. If it converges, what does it converge to?
+\[
+\frac{1}{3}+\frac{2}{9}+\frac{1}{27}+\frac{2}{81}+\frac{1}{243}+\frac{2}{729}+\cdots
+\]
+}
+
+\ans{This is a sum of geometric series, separate terms that have numerator 1 and numerator 2, both have $r = \frac19$. }
+
+\end{document}

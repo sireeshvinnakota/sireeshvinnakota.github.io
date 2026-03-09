@@ -1,0 +1,111 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{5.5}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+%\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{The Substitution Rule}
+\end{center}
+
+\begin{prop}[$u$-Substitution]
+If $g'$ is a continuous on $[a,b]$ and $f$ is continuous on the range of $u = g(x)$, then:
+\[
+\int_a^b f(g(x))g'(x)dx =  \int_{g(a)}^{g(b)} f(u)du
+\]
+For indefinite integrals, we have:
+\[
+\int f(g(x))g'(x)dx = \int f(u)du
+\]
+\end{prop}
+
+\begin{aun}[Symmetry]
+For functions that are even or odd, we have little shortcuts that can help us evaluate integrals quickly:\\
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Type} & \textbf{Definition} & \textbf{Integral Property} \\ \hline
+$f(x)$ is Even & $f(-x) = f(x)$ & $\int_{-a}^a f(x) dx = 2\int_0^a f(x)dx$\\
+$f(x)$ is Odd & $f(-x) = -f(x)$ & $\int_{-a}^a f(x) dx = 0$ \\ \hline
+\end{tabular}
+\end{center}
+Use this as a trick to potentially bypass tricky problems!
+\end{aun}
+
+
+\begin{exx}
+Compute the definite integral:
+\[
+\int_1^2 \frac{dx}{(3-5x)^2}
+\]
+\end{exx}
+
+\ans{Let $u = 3 - 5x$}
+
+\problembox{Compute the following definite integral:
+\[
+\int_e^{e^4} \frac{1}{x \sqrt{\ln(x)}}
+\]}
+
+\ans{Let $u = \ln(x)$}
+
+\problembox{Compute the following indefinite integrals
+\begin{enumerate}[label=$(\roman*)$]
+\item $\int \sin^2 \theta \cos \theta d\theta$
+\item $ \int \sec^2 2\theta d \theta$
+\item $\int \frac{\cos (\ln(t))}{t} dt$
+\item $\int \tan^2 \theta \sec^2 \theta d\theta $
+\end{enumerate}
+}
+
+\ans{We'll list the $u$ choices (I'll complete one to make sure we know what we're doing)
+\begin{enumerate}[label=$(\roman*)$]
+\item $u = \sin(x), du = \cos(x)dx$ We can directly make a substitution:
+\[
+\int \sin^2 \theta \cos(\theta) d\theta = \int u^2 du = \frac{u^3}{3} + C
+\]
+This is an answer in terms of $u$, so to complete the problem, we must substitute back:
+\[
+\frac{u^3}{3} + C = \frac13 \sin^3 (x) + C
+\]
+completing our solution.
+\item $u = 2\theta$
+\item $u = \ln(t)$
+\item $u = \tan(\theta)$
+\end{enumerate}}
+
+\problembox{[Challenge] Compute the following integral:
+\[
+\int_0^1 \frac{dx}{(1 + \sqrt{x})^4}
+\]}
+
+\ans{Final answer is $\frac16$. Here's a solution: Let $u = \sqrt{x} + 1$ and notice that $dx = 2(u-1)$ (rearrange the differentiated equation). This gives you the integral:
+\[
+\int_1^2 \frac{u-1}{u^4}du
+\]
+which can be split into two integrals, each of which are computable to us. 
+}
+
+\problembox{[Challenge] Compute the following indefinite integrals.
+\begin{enumerate}[label=$\roman*.$]
+\item $\displaystyle \int_{-\pi/2}^{\pi/2} \frac{x^2 \sin(x)}{x^6 + 1} dx $
+\item $ \displaystyle \int \sqrt{x-1}(x+3) dx $
+\item $\displaystyle \int \sqrt{x} \sin(\sqrt{x^3} +1)dx $
+\end{enumerate}
+}
+
+\ans{ The first is 0 since it is an odd function. Second, substitute $u = x -1$; then $x+ 3 = u + 4$ and $du = dx$. Finally, the last one is $u = \sqrt{x^3} + 1$ and $du = \frac32 \sqrt{x}$
+}
+
+\problembox{[Challenge] Suppose $f$ is a function with $\displaystyle \int_0^8 f(x)dx = 20$. What is the value of $\displaystyle \int_0^2 f(4x)dx$?}
+
+\ans{Using $u = 4x$, we see that:
+\[
+\int_0^2 f(4x) dx = \frac14 \int_0^8 f(u) du = \frac14 \cdot 20 = 5
+\]}
+
+\end{document}

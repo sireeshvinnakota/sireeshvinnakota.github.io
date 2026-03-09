@@ -1,0 +1,85 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{11.3}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{The Integral Test}
+\end{center}
+
+\begin{thm}[Integral Test]
+Suppose $f$ is a continuous, positive, decreasing function on $[1, \infty)$ and let $a_n=f(n)$. Then the series $\sum_{n=1}^{\infty} a_n$ is convergent if and only if the improper integral $\int_1^{\infty} f(x) d x$ is convergent. In other words:
+\begin{enumerate}[label= \roman*.]
+\item If $\int_1^{\infty} f(x) d x$ is convergent, then $\sum_{n=1}^{\infty} a_n$ is convergent.
+\item If $\int_1^{\infty} f(x) d x$ is divergent, then $\sum_{n=1}^{\infty} a_n$ is divergent. 
+\end{enumerate}
+\end{thm}
+
+\begin{aun}
+For some intuition on the previous statement, consider drawing a Riemann sum of the integral with $\Delta x = 1$ and start computing the area beneath the curve that way. 
+\end{aun}
+
+\begin{thm}[$p$ Series Test]
+The $p$-series 
+\[
+\sum_{n = 1}^\infty \frac{1}{n^p} \mte{ is } \begin{cases}
+\text{convergent } & p > 1\\
+\text{divergent } & p \leq 1
+\end{cases}
+\]
+\end{thm}
+
+\begin{exx}
+Determine the convergence of the series:
+\[
+\sum_{n = 1}^\infty \frac{\ln(n)}{n}
+\]
+\end{exx}
+
+\ans{In order to pair this up with the corresponding function: $f(x) = \frac{\ln(x)}{x}$, we have to establish all of the prerequisite conditions:
+\begin{description}
+\item[$f$ is Continuous:] $\ln(x), \frac1x$ are continuous on $(0,\infty)$, so their ratio is well defined and continuous. 
+\item[$f$ is Positive:] Ratio of two positive functions on the domain $(0,\infty)$, so positive.
+\item[$f$ is Decreasing:] Recall that it suffices to show that the derivative is negative. We see:
+\[
+f'(x) = \frac{\frac1x (x) - \ln(x) \cdot 1}{x^2} = \frac{1 - \ln(x)}{x^2} < 0 
+\]
+for all $x \in (0, \infty)$. 
+\end{description}
+These complete the conditions necessary for the Integral Test, so we can compute:
+\[
+\int_{1}^\infty \frac{\ln(x)}{x} dx
+\]
+Since this integral diverges, the series must diverge as well. 
+}
+
+
+\problembox{Compute the convergence of the following series:
+\[
+\sum_{n = 1}^\infty \frac{n}{n^2 + 1}
+\]}
+
+\ans{Corresponding integral diverges.}
+
+\problembox{Compute the convergence of the following series:
+\[
+\sum_{n = 1}^\infty \frac{1}{n^2 + 2n + 2}
+\]}
+
+\ans{Converges, use the corresponding function, and then partial fractions to compute the integral. }
+
+\problembox{Can we use the integral test on the following function?
+\[
+\sum_{n=1}^{\infty} \frac{\cos \pi n}{\sqrt{n}}
+\]
+}
+
+\ans{No, positivity fails. }
+
+
+\end{document}

@@ -1,0 +1,65 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{11.9}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Representing Functions as Power Series}
+\end{center}
+
+\begin{aun}
+	Note that, from geometric series, we have:
+	\[
+		\frac{1}{1-x} =1 + x + x ^2 + \cdots =\sum_{n = 0}^\infty x^n \mte{ whenever } \lrabs{x} < 1
+	\]
+	just by interpreting the $x$ as $r$ in that equation. 
+\end{aun}
+
+\begin{thm}[Differentiation and Integration] 
+If the power series $\Sigma c_n(x-a)^n$ has radius of convergence $R>0$, then the function $f$ defined by
+$$
+f(x)=c_0+c_1(x-a)+c_2(x-a)^2+\cdots=\sum_{n=0}^{\infty} c_n(x-a)^n
+$$
+is differentiable (and therefore continuous) on the interval $(a-R, a+R)$ and
+\begin{enumerate}[label=$(\roman*)$]
+	\item $f^{\prime}(x)=c_1+2 c_2(x-a)+3 c_3(x-a)^2+\cdots=\sum_{n=1}^{\infty} n c_n(x-a)^{n-1}$
+	\item $\int f(x) d x=C+c_0(x-a)+c_1 \frac{(x-a)^2}{2}+c_2 \frac{(x-a)^3}{3}+\cdots$
+$$
+=C+\sum_{n=0}^{\infty} c_n \frac{(x-a)^{n+1}}{n+1}
+$$
+\end{enumerate}
+The radii of convergence of the power series in Equations (i) and (ii) are both $R$.
+\end{thm}
+
+\begin{exx}
+	Find a power series expansion for the function $f(x) = \ln(1+x)$
+\end{exx}
+
+\ans{We can use the power series expansion for $\frac{1}{1+x}$ and integrate it.}
+
+\problembox{Give a power series representation for the derivative of the following function.
+$$
+g(x)=\frac{5 x}{1-3 x^5}
+$$
+}
+
+\ans{\href{https://tutorial.math.lamar.edu/Solutions/CalcII/PowerSeriesandFunctions/Prob4.aspx}{Link}}
+
+\problembox{Determine the power series of the following function, and provide its interval of convergence.
+\[
+f(x)=\frac{3 x^2}{5-2 \sqrt[3]{x}}
+\]
+}
+
+\ans{\href{https://tutorial.math.lamar.edu/Solutions/CalcII/PowerSeriesandFunctions/Prob3.aspx}{Link}}
+
+
+
+
+
+\end{document}

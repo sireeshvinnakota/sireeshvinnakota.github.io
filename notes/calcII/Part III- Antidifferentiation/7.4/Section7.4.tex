@@ -1,0 +1,113 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{7.4}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Partial Fraction Decomposition}
+\end{center}
+\begin{aun}
+In partial fractions, we have a rational function:
+\[
+\frac{P(x)}{Q(x)} = S(x)+ \frac{R(x)}{Q(x)}
+\]
+after long division. Note that, once we complete this, the degree of $R$ is less than the degree of $Q$. Integrating the second rational polynomial, we can break into a few cases based on what's going on with the denominator, $Q(x)$:
+\begin{description}
+\item[$Q(x)$ factors into distinct \underline{linear} factors:] We can write:
+\[
+Q(x)=\left(a_1 x+b_1\right)\left(a_2 x+b_2\right) \cdots\left(a_k x+b_k\right) \mte{ and } \frac{R(x)}{Q(x)}=\frac{A_1}{a_1 x+b_1}+\frac{A_2}{a_2 x+b_2}+\cdots+\frac{A_k}{a_k x+b_k}
+\]
+\item[$Q(x)$ has some repeated linear factors:] In this case, we need to account for the repetitions by adding extra fraction terms:
+\[
+Q(x)=\left(a_1 x+b_1\right)^r \mte{ and }  \frac{R(x)}{Q(x)} = \frac{A_1}{a_1 x+b_1}+\frac{A_2}{\left(a_1 x+b_1\right)^2}+\cdots+\frac{A_r}{\left(a_1 x+b_1\right)^r} + \cdots 
+\]
+\item[$Q(x)$ has some \underline{quadratic} factors:] In this case, our numerator will not only have constants, but needs to have an entire \emph{linear} function:
+\[
+Q(x) = \underbrace{ax^2 + bx + c}_{b^2 - 4ac < 0} \cdots (\text{other factors})\mte{ and } \frac{R(x)}{Q(x)} =  \frac{A x+B}{a x^2+b x+c} + \cdots
+\]
+\item[$Q(x)$ has repeated quadratic factors:] In this case, we just combine the techniques from the preceding two cases, where we have repeated linear terms for each time the quadratic is repeated:
+\[
+Q(x) = \underbrace{(ax^2 + bx + c)^r}_{b^2 - 4ac < 0} \cdots (\text{other factors}) \]
+and  
+\[
+\frac{R(x)}{Q(x)} = \frac{A_1x + B_1}{ax^2 + bx + c}+\frac{A_2x + B_2}{\left(ax^2 + bx + c\right)^2}+\cdots+\frac{A_rx + B_r}{\left(ax^2 + bx + c\right)^r} + \cdots 
+\]
+\end{description}
+\label{pfd}
+\end{aun}
+\begin{exx}
+Compute the following integral:
+\[
+\int \frac{4+x}{(1+2 x)(3-x)} dx
+\]
+\end{exx}
+\ans{Since we're in the case of distinct linear factors, we'll set up:
+\[
+\frac{4+x}{(1+2 x)(3-x)} = \frac{A}{2x + 1} + \frac{B}{3 - x}
+\]
+Clearing denominators gives us:
+\[
+4 + x = A (3 - x) + B(2x + 1)
+\]
+Plugging in $x = 3$, we see:
+\[
+4 + 3 = \cancelto{0}{A (3 - 3)} + B(2(3) + 1) \mte{ implying that } B = 1
+\]
+Plugging in $x = -\frac12$ gives us:
+\[
+4 - \frac12 = A (3 + \frac12) + \cancelto{0}{B (2 (-\frac12) + 1)} \mte{ implying } A = 1
+\]
+This allows us to simplify our integrand into two integrals:
+\[
+\int \frac{4+x}{(1+2 x)(3-x)} dx = \int \frac{dx}{2x + 1} + \int \frac{dx}{3 - x}
+\]
+}
+
+\problembox{Compute the following:
+\[
+\int \frac{x^3+4 x+3}{x^4+5 x^2+4} d x
+\]}
+\ans{
+Denominator factors into:
+\[
+\frac{x^3 + 4x + 3}{(x^2 + 4)(x^2 + 1)} = \frac{Ax + B}{x^2 + 4} + \frac{Cx + D}{x^2 + 1}
+\]
+We can solve for $A,B,C, D$ algebraically:
+\[
+(Ax+ B)(x^2 + 1) + (Cx + D)(x^2 + 4) = Ax^3 + Ax + Bx^2 + B + Cx^3 + 4 Cx + Dx^2 + 4D = x^3 + 0x^2 + 4x + 3 
+\]
+From here, just pair off our coefficients based on degree. The terms on both sides have:
+\[
+\begin{array}{|c|c|}
+\hline
+\textbf{Term} & \textbf{Coefficients} \\ \hline
+x^3 & A + C = 1\\
+x &  A + 4C = 4\\
+x^2 & B + D = 0 \\
+c & B + 4D = 3 \\ \hline
+\end{array}
+\]
+This is a system of equations in 4 variables, with the solution $A = 0$, $B = -1$, $C = 1$, $D = 1$, completing our decomposition. From here, we may rewrite the integrand as:
+\[
+\int \frac{-1}{x^2 + 4} + \frac{x + 1}{x^2 + 1} dx
+\]
+which we can integrate. 
+}
+
+\problembox{[Additional Practice] Consider the following integrals:
+\begin{enumerate}
+\item $\dst \int \frac{x^2-3 x+7}{\left(x^2-4 x+6\right)^2} d x$
+\item $\dst \int \frac{\sec ^2 t}{\tan ^2 t+3 \tan t+2} d t$
+\end{enumerate}}
+\ans{
+\begin{enumerate}
+\item A denominator like this is going to have repeated factors, so we need to remember to address this in our solution. 
+\item Use a $u$ substitution for $u = \tan t$ and then this condenses into a computation very similar to the first example. 
+\end{enumerate}
+}
+\end{document}

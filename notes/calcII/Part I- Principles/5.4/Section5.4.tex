@@ -1,0 +1,110 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{5.4}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+%\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Indefinite Integrals}
+\end{center}
+
+\begin{aun}
+The big idea in this section is just to remember why we have to use $+C$ when we are taking antiderivatives: both $x^2 + 3$ and $x^2 + 5$ have the same derivative, even though they're different functions. In general, derivatives tend to lose some information, and the $C$ accommodates for all possibilities of that lost constant. 
+\end{aun}
+
+
+\begin{exx}
+Complete the following table of antiderivatives
+\[
+\begin{array}{|c|c|c|c|}
+\hline
+\text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline
+x^n & & \frac{1}{x} &  \\
+C & & e^x & \\
+\cos(x) & & \sec^2(x) & \\
+\csc(x)\cot(x) & & \frac{1}{\sqrt{1-x^2}} & \\ 
+\frac{1}{x\sqrt{x^2 - 1}} & & \frac{-1}{\sqrt{1-x^2}} & \\\hline
+\end{array}
+\]
+\end{exx}
+
+\ans{
+\[
+\begin{array}{|c|c|c|c|}
+\hline
+\text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline
+x^n & \frac{x^{n+1}}{n+1} +C & \frac{1}{x} & \ln|x| + C \\
+C & Cx + D & e^x & e^x + C\\
+\cos(x) & \sin(x) + C& \sec^2(x) & \tan(x) + C \\
+\csc(x)\cot(x) & -\csc(x) + C & \frac{1}{\sqrt{1-x^2}} & \arcsin(x) + C \\
+\frac{1}{x\sqrt{x^2-1}} & \sec^{-1}(x) + C & \frac{-1}{\sqrt{1-x^2}} & \arccos (x) + C \\\hline
+\end{array}
+\]
+}
+
+\problembox{Compute $f(x)$ when:
+\[
+	f''(x) = e^x -2\sin (x), \quad f(0)=3 \quad \text{ and} \quad f(\pi/2) = 0
+\]}
+
+\ans{
+We integrate:
+\[
+\int e^x -2 \sin(x) dx = e^x + 2\cos(x) + C = f'(x)
+\]
+...and once more
+\[
+\int e^x + 2\cos(x) + C dx = e^x + 2\sin(x) + Cx + D = f(x)
+\]
+Now, using the $f(0)= 3$, we test:
+\[
+f(0) = e^0 + 2\sin(0) + C\cdot 0 + D = 1 + D = 3
+\]
+implying $D = 2$. Similarly, we use $f(\pi/2) = 0$ to find:
+\[
+f(\pi/2) = e^{\pi/2} + 2\sin(\pi/2) + C \cdot \pi/2 + 2 = 0
+\]
+implying that 
+\[
+C = -\frac{2}{\pi} \lrp{e^{\pi/2} +4}
+\]
+This gives us the final answer:
+\[
+\boxed{f(x) = e^x + 2\sin(x) + -\lrp{\frac{2}{\pi} \lrp{e^{\pi/2} +4}}x + 2}
+\]
+}
+
+\problembox{Compute the indefinite integral:
+\[
+\int \frac{\cos x}{\sin^2 x} dx
+\]}
+
+\ans{We know that $\frac{\cos}{\sin} = \cot$, and what is left is a factor of $\frac1\sin = \csc$:
+\[
+\int \csc x \cot x dx = -\csc x + C
+\]}
+
+\problembox{Evaluate the following definite integral:
+\[
+\int_0^2 x \lrp{\sqrt[3]{x} + \sqrt[4]{x}} dx
+\]}
+
+\ans{We compute the general antiderivative:
+\[
+\int x \lrp{\sqrt[3]{x} + \sqrt[4]{x}} dx = \int x^{4/3} + x^{5/4}dx
+\]
+When we take the ``reverse power rule'' we have:
+\[
+\frac37 x^{7/3} + \frac49 x^{9/4} + C
+\]
+and plug in:
+\[
+[\frac37 x^{7/3} + \frac49 x^{9/4} + C]_0^2 = 2^{7/3} + 2^{9/4} 
+\]
+}
+
+\end{document}

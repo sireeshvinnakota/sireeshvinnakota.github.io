@@ -1,0 +1,89 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{11.8}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Power Series}
+\end{center}
+
+\begin{defi}[Power Series]
+	A power series is a series of the form:
+	\[
+		\sum_{n =0}^\infty c_n x^n = c_0 + c_1 x + c_2 x^2 + \cdots 
+	\]
+	such that, for each value of $x$, we can test for convergence or divergence. More generally, the series:
+	\[
+		\sum_{n =0}^\infty c_n (x-a)^n = c_0 + c_1 (x-a) + c_2 (x-a)^2 + \cdots 
+	\]
+	is a power series centered at $x = a$. 
+\end{defi}
+
+\begin{thm}
+	For a given power series $\sum_{n=0}^{\infty} c_n(x-a)^n$, there are only three possibilities:
+	\begin{enumerate}[label=$(\roman*)$]
+		\item The series converges only when $x=a$.
+		\item The series converges for all $x$.
+		\item There is a positive number $R$ such that the series converges if $|x-a|<R$ and diverges if $|x-a|>R$.
+	\end{enumerate}
+	In the instance of $(iii)$, we call $R$ the \emph{radius of convergence}.
+\end{thm}
+
+\begin{exx}
+	Determine the radius of convergence of the following power series centered at $a = 0$:
+	\[
+		\sum_{n = 0}^\infty n! x^n
+	\]
+\end{exx}
+\ans{Whenever we see a factorial, our heads should immediately think: \emph{ratio test}:
+\[
+\lim_{n \to \infty} \lrabs{\frac{a_{n+1}}{a_n}} = \lim_{n \to \infty} \lrabs{\frac{(n+1)!x^n}{n! x^n}} = \lim_{n \to \infty} \lrabs{(n + 1)x} < \infty
+\]
+where the last inequality holds if and only if $x = 0$. 
+}
+
+\begin{exx}
+	Determine the radius of convergence and interval of convergence of the following power series. 
+	\[
+	\sum_{n = 0}^\infty \frac{n(x+2)^n}{3^{n+1}}
+	\]
+\end{exx}
+
+\ans{Note first that this series is centered at $a = -2$, so our interval of convergence will require an additional step. We'll use the Ratio test:
+\[
+\lim_{n \to \infty} \lrabs{\frac{a_{n +1}}{a_n}} = \lim_{n \to \infty} \lrabs{\frac{n+1 (x + 2)^{n+1}}{3^{n+2}} \cdot \frac{3^{n+1}}{n(x+2)^n}} = \lim_{n \to \infty} \lrabs{\frac{n+1}{3n}(x+2)} = \frac{\lrabs{x+2}}{3}
+\]
+Using the conclusion of the Ratio test, we see that:
+\[\sum_{n = 0}^\infty \frac{n(x+2)^n}{3^{n+1}}
+\begin{cases}
+	\text{converges}, &\text{ if } \frac{\lrabs{x+2}}{3} < 1\\
+	\text{diverges}, &\text{ if } \frac{\lrabs{x+2}}{3} > 1\\
+\end{cases}
+\]
+So we conclude that our $R = 3$ and the interval of convergence is $(-5, 1)$. As an exercise, test the points $-5, 1$ to see that the series doesn't converge at either, so we need not add either point to our interval of convergence. 
+}
+
+
+\problembox{
+	Determine the radius of convergence and interval of convergence of the following power series. 
+	\[
+	\sum_{n=0}^{\infty} \frac{n+1}{(2 n+1) !}(x-2)^n
+	\]
+}
+
+\ans{\href{https://tutorial.math.lamar.edu/Solutions/CalcII/PowerSeries/Prob3.aspx}{link}}
+
+\problembox{
+	Determine the radius of convergence and interval of convergence of the following power series. 
+	\[
+		\sum_{n=0}^{\infty} \frac{4^{1+2 n}}{5^{n+1}}(x+3)^n
+	\]
+}
+
+\ans{\href{https://tutorial.math.lamar.edu/Solutions/CalcII/PowerSeries/Prob4.aspx}{Link}}
+\end{document}

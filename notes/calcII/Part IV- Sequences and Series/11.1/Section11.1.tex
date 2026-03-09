@@ -1,0 +1,107 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{11.1}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Sequences}
+\end{center}
+
+\begin{defi}[Limit of a Sequence]
+A sequence (think list of numbers $a_1, a_2, \cdots$) has a limit $L$ if for every $\ee > 0$, there exists an integer $N$ such that for all $n > N$, $\lrabs{a_n - L} < \ee$.
+\end{defi}
+\begin{thm}
+If $\lim_{x \to \infty} f(x) = L$ and $f(n) = a_n$ for some sequence $a_n$, then $\lim_{n \to \infty} a_n = L$. 
+\label{limitfn}
+\end{thm}
+\begin{aun}
+Remember that limits preserve sums ($\lim (a+b) = \lim a + \lim b$), differences, products, quotients, scalar multiples, and powers (in a sense they just work really nicely for us). 
+\end{aun}
+\begin{thm}[Squeeze Theorem] If $a_n \leq b_n \leq c_n$ and we have
+\[
+L = \lim_{n \to \infty} a_n = \lim_{n \to \infty} c_n \mte{ then } \lim_{n \to \infty} b_n  = L
+\]
+\end{thm}
+\begin{thm}
+If $\lim \lrabs{a_n} = 0$ then $\lim a_n  = 0$.
+\label{conv}
+\end{thm}
+\begin{thm}
+If $\lim_{n \to \infty} a_n = L$ and the function $f$ is continuous at $L$, we then:
+\[
+\lim_{n \to \infty} f(a_n) = f(L)
+\]
+\end{thm}
+\begin{thm}[Geometric Sequences]
+The sequence $(r^n)_{n \in \N}$ is convergent if $-1 < r \leq 1$ and diverges for all other values:
+\[
+\lim _{n \to \infty} r^n = \begin{cases}
+0 & \lrabs{r} < 1\\
+1 & r = 1
+\end{cases}
+\]
+\end{thm}
+\begin{aun}
+I won't define bounded or monotonic really precisely here, but think ``bounded below'' as just a number that's lower than every point of the sequence, ``bounded above'' is a number above every point of the sequence, and monotonic just means the sequence is always increasing or always decreasing.
+\end{aun}
+\begin{aun}[Monotone Sequence Theorem] If we can show that a sequence is bounded and monotonic, then it converges.
+\end{aun}
+\begin{act}
+In groups of up to 3, draw pictures to help your intuition on \textbf{Theorems 5, 6, 8} and \textbf{Author's Note 4}. I will come around and discuss these with you!\\
+Once your group is finished, draw a picture of the sequence:
+\[
+a_1 = 2, \mte{ and } a_{n+1} = \frac{a_n}{1+ a_n}
+\]
+\end{act}
+
+\ans{\href{https://www.desmos.com/calculator/5rtmqiqpv2}{Use this link}}
+
+\problembox{Find a formula for the following sequences, assuming the pattern continues:
+\begin{enumerate}[label=\alph*.]
+\item $\lrsq{\frac12, \frac14, \frac{1}{6}, \frac{1}{8}, \frac{1}{10}, \cdots}$
+\item $\lrsq{1, 1, 2, 3, 5, 8, 13, 21, \cdots}$
+\item $\lrsq{\frac12, \frac{-4}{3}, \frac94, \frac{-16}{5}, \frac{25}{6}, \cdots}$
+\end{enumerate}
+}
+
+\ans{
+\begin{enumerate}[label=\alph*.]
+\item $a_n = \frac{1}{2n}$
+\item $a_{n} = a_{n - 1} + a_{n-2}$
+\item $\dst \frac{(-1)^{n+1} n^2}{n+1}$
+\end{enumerate}
+}
+
+\problembox{Determine whether the following sequences converge:
+\[
+\lrsq{\sin(n)} \mte{ and } a_n = \frac{(-1)^n}{2 \sqrt{n}}
+\]}
+
+\ans{
+First doesn't, it doesn't get ``close'' to anything.\\
+Second will converge. Using Theorem~\ref{conv}, we see that we can evaluate the limit of the absolute value first, which is:
+\[
+\lrabs{a_n} = \frac{1}{2 \sqrt{n}}
+\]
+Using Theorem~\ref{limitfn}, it suffices to check the end behavior of the function
+\[
+\lim_{x \to \infty} \frac{1}{2\sqrt{x}} = 0
+\]
+meaning that the sequence $(a_n)$ converges as well. 
+}
+
+\problembox{Consider the sequence:
+\[
+a_n = \arctan \lrp{ \ln (n)}
+\]
+Does it converge? If so, what to?
+}
+
+\ans{Yes, to $\frac{\pi}{2}$; use Theorem~\ref{limitfn}}
+
+\end{document} 

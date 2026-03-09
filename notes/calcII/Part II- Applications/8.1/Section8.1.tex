@@ -1,0 +1,43 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{8.1}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+%\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Arc Length}
+\end{center}
+
+\begin{aun}
+If $f'$ is a continuous function on the interval $[a,b]$, then the length of the curve $y = f(x)$ between $a \leq x \leq b$ is:
+\[
+L := \int_a^b \sqrt{1 + \lrb{f'(x)}^2} dx
+\]
+\end{aun}
+
+\begin{exx}
+Compute the length of the curve $y^2 = x^3$ between $(1,1)$ and $(4,8)$.
+\end{exx}
+\begin{ans}
+Since both of these coordinates are in Quadrant 1, our square root is well defined:
+\[
+y = x^\frac{3}{2}
+\]
+We can proceed just following the formula:
+\[
+L = \int_1^4 \sqrt{1 + \lrb{\frac32 x^{1/2}}^2}
+\]
+\end{ans}
+
+
+\problembox{}
+\problembox{}
+\problembox{}
+\problembox{}
+\problembox{}
+
+\end{document}
