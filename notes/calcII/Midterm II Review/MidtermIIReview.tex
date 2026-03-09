@@ -1,0 +1,426 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{7.1-7.8}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+%\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{MATH2B Midterm II Review}
+\end{center}
+
+\begin{ins}
+The key to this part of the course is mastering a few procedures dealing with integrals, and recognizing when to use them. Below is an itemized list of the sections covered since the last exam, each with a collection of associated problems. This table of contents should also serve as a guide to thought process: when faced with a new integral, use this as a hierarchy of methods to try. 
+\end{ins}
+
+\begin{aun}
+This document has \emph{a lot} of problems. If you have any questions, feel free to \href{mailto:vinnakot@uci.edu}{email me.}
+\end{aun}
+
+
+\tableofcontents
+
+
+\section{$u$-Substitution}
+\begin{aun}
+Thing to remember: Look for a composition of functions, and differentiate the inner function.
+\end{aun}
+
+\problembox{When integrating $\int x^3\left(x^4+1\right)^2 d x$ using the substitution method, we would begin by letting $u$ equal:
+\begin{enumerate}[label=\alph*.]
+\item $x^3$
+\item $x\left(x^4+1\right)$
+\item $\left(x^4+1\right)^2$
+\item $x^4+1$
+\end{enumerate}
+}
+\ans{Inner function here is $x^4 + 1$. }
+
+\problembox{Evaluate the integral:
+\[
+\int \frac{\lrp{\ln(x)}^6}{x}dx
+\]}
+\ans{ $\dst \frac17 \ln(x)^7 + C$ }
+
+\problembox{Using the substitution $u=x^2-3, \int_{-1}^4 x\left(x^2-3\right)^5 d x$, what is equal to?}
+
+\ans{$\dst \int_{-2}^{13} u^5 du$}
+
+
+\section{Integration by Parts}
+\begin{aun}
+Thing to remember:
+\[
+\int u dv = uv - \int v du
+\]
+\end{aun}
+
+\begin{aun}
+\href{https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/intbypartsdirectory/IntByParts.html}{Here's a link to review}
+\end{aun}
+
+
+\problembox{Compute
+\[
+\int x \cos(x) dx
+\]
+}
+\ans{$x \sin (x) + \cos (x) + C$}
+
+\problembox{Compute
+\[
+\int (\ln(x))^2 dx
+\]
+}
+\ans{Do this by $u$-substitution first: let $u = \ln(x)$ and $du = 1/x dx$
+\[
+	\int u^2 (e^u du)
+\]
+Do integration by parts twice to get:
+\[
+x ((\ln(x))^2-2 \ln(x)+2) + C
+\]
+ }
+
+\problembox{
+Evaluate the definite integral:
+\[
+\int_0^1 x^2 e^x dx
+\]
+}
+\ans{$e-2$}
+
+\problembox{
+Let $f$ be a differentiable function such that $\int f(x) \sin x d x=-f(x) \cos x+\int 4 x^3 \cos x d x$. What is a possibility for $f(x)$?
+}
+
+\ans{$x^4$}
+
+\section{Trigonometric Integration}
+\begin{aun}
+Thing to remember:
+\[
+\sin^2 (x) + \cos^2(x) = 1 \mte{ and } \tan^2 (x) + 1 = \sec^2 (x)
+\]
+Look for \emph{odd} powers on $\sin, \cos$ or factors of $\sec^2$ and $\sec \tan$. 
+\end{aun}
+\begin{aun}
+\href{https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/trigintdirectory/TrigInt.html}{Here's a link to review}, \href{https://tutorial.math.lamar.edu/classes/calcii/integralswithtrig.aspx}{here's another}
+\end{aun}
+
+\problembox{Integrate:
+\[\int (\sin(x) + \cos(x))^2 dx\]
+}
+
+\ans{
+Expand out the polynomial to get:
+\[
+	\underbrace{\sin^2(x) + \cos^2(x)}_{=1} + 2 \sin(x) \cos(x)
+\]
+The rest should be just $u$-substitution:
+\[
+x - 2\sin^2(x) + C
+\]
+}
+
+
+\problembox{Compute:
+\[
+\int\left(\sec ^2 x\right) \sqrt{5+\tan x} d x
+\]
+}
+\ans{Eyes should light up at the $\sec^2(x)$ term hanging out there, this is just a $u$-sub on $u = \tan(x)$. 
+\[
+= \frac23 (5 + \tan(x))^{3/2} + C
+\]
+}
+
+\section{Trigonometric Substitution}
+\begin{aun}
+Thing to remember:
+\[
+\begin{array}{|c|c|c|}
+\hline
+\text{Expression} & \text{Substitution} & \text{Identity} \\ \hline\hline 
+\sqrt{a^2 - x^2} & \displaystyle x = a \sin \theta, \theta \in \lrb{\frac{-\pi}{2}, \frac\pi2} & 1 - \sin^2 \theta = \cos^2 \theta\\ \hline 
+\sqrt{a^2 + x^2} & \displaystyle x = a \tan \theta, \theta \in \lrp{\frac{-\pi}{2}, \frac\pi2} & 1 + \tan^2 \theta = \sec^2 \theta \\ \hline
+\sqrt{x^2 - a^2} & \displaystyle x = a \sec\theta,  \theta \in \left [ 0, \frac\pi2 \right ) \text{ or } \in \left [ \pi, \frac{3\pi}{2} \right ) & \sec^2\theta - 1 = \tan^2 \theta \\ 
+\hline 
+\end{array}
+\]
+To complete problems, use a triangle.
+\end{aun}
+
+\begin{aun}
+\href{https://tutorial.math.lamar.edu/classes/calcii/TrigSubstitutions.aspx}{Here's a link to review} \href{https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/trigsubdirectory/TrigSub.html}{and another}
+\end{aun}
+
+\problembox{Compute
+\[
+\int \sqrt{1 - x^2} dx
+\]
+}
+\ans{Deceptively tricky! Make the substitution $x = \sin(\theta)$ to get the integrand:
+\[
+\int \cos^2(\theta) = \frac12 \int 1 + \cos(2\theta) d \theta
+\]
+with the latter equality from the \emph{power reduction} formula. Integrating gives:
+\[
+	\frac12 \theta + \frac14 \sin(2\theta) = \frac12 \theta + \frac12 \sin (\theta) \cos (\theta )
+\]
+Reversing the subsitution using the Pythagorean theorem gives:
+\[
+		\boxed{\frac12 \arcsin(x) + \frac12 x \sqrt{1-x^2} + C}
+\]
+}
+
+\problembox{Compute
+\[
+\int_0^1 \sqrt{x^2-2 x+1} d x
+\]}
+
+\ans{$\frac12$}
+
+\problembox{Compute
+\[
+\int_0^1\left(4-x^2\right)^{-\frac{3}{2}} d x=
+\]}
+
+\ans{Make the subsitution $x=2 \sin \theta \Rightarrow d x=2 \cos \theta d \theta$.
+$$
+\int_0^1\left(4-x^2\right)^{-3 / 2} d x=\int_0^{\pi / 6} \frac{2 \cos \theta}{8 \cos ^3 \theta} d \theta=\frac{1}{4} \int_0^{\pi / 6} \sec ^2 \theta d \theta=\left.\frac{1}{4} \tan \theta\right|_0 ^{\pi / 6}=\frac{1}{4} \cdot \frac{\sqrt{3}}{3}=\frac{\sqrt{3}}{12}
+$$}
+
+\section{Partial Fraction Decomposition}
+\begin{aun}
+Thing to remember: decompose:
+\[
+\frac{p(x)}{q(x)} = s(x) + \frac{r(x)}{q(x)}
+\]
+using polynomial long division. Then remember: ``constants for distinct linear factors and their repetitions, linear terms for the quadratics''
+\end{aun}
+\begin{aun}
+\href{https://www.math.ucdavis.edu/~kouba/CalcTwoDIRECTORY/partialfracdirectory/PartialFrac.html}{Here's a link to review}
+\end{aun}
+
+\problembox{Integrate:
+\[
+\int \frac{2x + 3}{x^2 - 9}
+\]}
+\ans{
+	\[
+		\frac12 \lrp{ 3\ln (3-x) + \ln (x+3)}
+	\]
+}
+
+\problembox{Compute:
+\[
+\int \frac{1}{x^2 - 6x + 8} dx
+\]}
+\ans{ 
+\[
+\frac12 \lrp{\ln \lrabs{x - 4} - \ln \lrabs{x - 2}}
+\]}
+
+\problembox{Compute the following: \[\int_0^1 \frac{5 x+8}{x^2+3 x+2} d x\]}
+\ans{$\ln(18)$}
+
+\section{Improper Integrals}
+\begin{aun}
+Thing to remember: does the integral have an infinite bound? if so, replace with $b$ and evaluate the limit $\lim_{b \to \infty}$. Does the function have discontinuities on the domain of integration? If so, approach with limits from either side. If any limit diverges, the integral diverges.
+\end{aun}
+
+\problembox{
+Evaluate the integral:
+\[
+\int_1^\infty e^{-3x}dx
+\]
+}
+\ans{$\dst \frac{1}{3e^3}$}
+
+\problembox{Compute the integral
+\[
+\int_0^\infty x^2 e^{-x^3} dx
+\]
+}
+
+\ans{
+\[
+\lim_{b \to \infty} \lrb{-\frac13 e^{-x^3} }^b_0 = \frac13
+\]
+}
+
+
+\section{The Grab Bag}
+\begin{aun}
+If I sort these into a category, it'll give away the answer
+\end{aun}
+
+\problembox{[True or False] Integrals of the form:
+\[
+\int_0^\infty f(x)dx
+\]
+have a finite numerical value.
+}
+\ans{False}
+
+
+\problembox{Evaluate the integral:
+\[
+\int\left(4 x^2-1\right) \cos \left(4 x^3-3 x\right) d x
+\]
+}
+\ans{$=-\frac{1}{3} \sin \left(3 x-4 x^3\right)+\text { constant }$}
+
+
+\problembox{Compute the integral:
+\[
+\int_0^1 \frac{x^2}{x^2 + 1}
+\]
+\textbf{HINT:} what's the derivative of $\arctan$?
+}
+\ans{$1 - \pi/4$}
+
+\problembox{Compute \[\int_1^e\left(\frac{x^2-1}{x}\right) d x=\]}
+\ans{$\frac12 (e^2 - 3)$; split this one into two integrals}
+
+\problembox{If $\frac{dy}{dx} = \sin(x) \cos^2 (x)dx$ and $y = 0$ when $x = \frac{\pi}{2}$, what is $y$ when $x$ is 0?}
+
+\ans{
+Using the antiderivative 
+\[
+y(x) = -\frac13 \cos^3 (x) + 0 \mte{ we have }-\frac13
+\]
+}
+
+\problembox{Compute
+\[
+\int_0^1 \sqrt{x} (x+1) dx
+\]
+}
+\ans{ $\frac{16}{15}$}
+
+\problembox{
+Compute
+\[\int_1^{\infty} \frac{x}{\left(1+x^2\right)^2} d x\]
+}
+\ans{
+\[
+\lim_{b \to \infty} \lrb{\frac14 - \frac{1}{2(1-b^2)} } = \frac14
+\]
+}
+
+\problembox{Compute 
+\[
+\int \sin^3 (x)dx
+\]
+}
+\ans{ Odd power of $\sin$ is good news, at least!
+\[
+\int( 1-\cos^2 (x)) \sin(x)dx = \int u^2 - 1 du ...
+\]
+Follow out the algebra to get 
+\[
+		-\cos(x) + \frac13 \cos^3(x) + C
+\]
+}
+
+\problembox{Compute
+\[
+\int \frac{\cos^2(x)}{1 + \sin(x)}
+\]
+}
+\ans{Conjugate the denominator:
+\[
+	\int \frac{\cos^2(x) (1-\sin(x))}{1- \sin^2(x)} = \int \frac{\cos^2(x) (1-\sin(x))}{\cos^2(x)} = \int 1- \sin(x) dx
+\]
+Finish it out from here to get:
+\[
+	x + \cos(x) + C
+\]
+}
+
+\problembox{Compute 
+\[
+\int \frac{d x}{(x-1)(x+3)}
+\]}
+
+\ans{ Use partial fractions
+\[
+\frac14 \ln \lrabs{\frac{x-1}{x+3}} + C
+\]
+}
+
+\problembox{Compute \[\int_4^{\infty} \frac{-2 x}{\sqrt[3]{9-x^2}} d x\]}
+\ans{DNE by comparison to $x^{2/3}$}
+
+\problembox{Compute \[\int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x\]}
+\ans{The radical should suggest a trig substitution:
+\[
+\int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x = \int \frac{(\sqrt{x^2 - 1})^3}{x} dx = \int \frac{\tan^3 \theta}{\sec \theta}
+\]
+over the substitution $x = \sec(\theta)$. 
+\[
+	\cdots = \frac13 \sqrt{x^2 - 1} (x^2 -4 ) + \arctan \lrp{\sqrt{x^2 - 1}} + C
+\]
+}
+
+
+\problembox{Integrate \[\int \frac{x}{\sqrt{x^2+4 x+5}} d x\]}
+\ans{Do a substitution after completing the square:
+\[
+	x^2 + 4x + 5 = (x+2)^2 + 1
+\]
+Get:
+\[
+	\sqrt{x^2+4 x+5} - 2\ln \lrabs{\sqrt{x^2+4 x+5} + x + 2} + C
+\]
+}
+
+
+\problembox{Compute 
+\[
+\int x^3 \ln (5x) dx
+\]
+}
+
+\ans{This is parts- get:
+\[
+\frac14 x^4 \ln \lrp{5x} - \frac{x^4}{16} + C
+\]}
+
+\problembox{Compute 
+\[
+\int x \sin (x) \cos (x)dx
+\]
+}
+\ans{Tricky tricky- see that:
+\[
+\int x \sin(x) \cos(x) dx = \frac12 \int x \sin(2x)dx
+\]
+Apply parts from here to get:
+\[
+	\frac12 \lrp{- \frac12 x \cos(2x) + \frac14 \sin(2x)} + C
+\]
+}
+
+\problembox{Integrate
+\[
+\int \frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2}
+\]
+}
+\ans{Start with polynomial long division:
+\[
+	\frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2} = x^2 + 3 + \frac{-3x+7}{x^2 + x -2}
+\]
+Continue by partial fractions:
+\[
+	= \frac13 x^3 + 3x + \frac43 \ln \lrabs{x-1} - \frac{13}{3} \ln \lrabs {x+2} + C
+\]
+}
+
+
+\end{document}

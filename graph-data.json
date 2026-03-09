@@ -1,6 +1,14 @@
 {
   "nodes": [
     {
+      "id": "midterm-i-review",
+      "label": "Midterm I Review"
+    },
+    {
+      "id": "midterm-ii-review",
+      "label": "Midterm II Review"
+    },
+    {
       "id": "51-areas-distances",
       "label": "\u00a75.1 Areas & Distances"
     },
@@ -94,6 +102,70 @@
     }
   ],
   "links": [
+    {
+      "source": "midterm-i-review",
+      "target": "51-areas-distances"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "52--definite-integrals"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "53-the-fundamental-theorem-of-calculus"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "54-indefinite-integrals"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "55-the-substitution-rule"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "61-area-between-curves"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "62-volumes-of-rotation"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "65-average-value-of-a-function"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "2b-midterm1-samplepdf"
+    },
+    {
+      "source": "midterm-i-review",
+      "target": "2b-midterm1-sample-solutionspdf"
+    },
+    {
+      "source": "midterm-ii-review",
+      "target": "55-the-substitution-rule"
+    },
+    {
+      "source": "midterm-ii-review",
+      "target": "71-integration-by-parts"
+    },
+    {
+      "source": "midterm-ii-review",
+      "target": "72-trigonometric-integration"
+    },
+    {
+      "source": "midterm-ii-review",
+      "target": "73-trigonometric-substitution"
+    },
+    {
+      "source": "midterm-ii-review",
+      "target": "74-partial-fraction-decomposition"
+    },
+    {
+      "source": "midterm-ii-review",
+      "target": "78-improper-integrals"
+    },
     {
       "source": "61-area-between-curves",
       "target": "52--definite-integrals"

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Midterm I Review | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>Midterm I Review</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>This is a review of the course so far, running through sections <br>
+<ul><li><a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">§5.1 Areas & Distances</a> </li><li><a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></li><li><a href="calcII/53-the-fundamental-theorem-of-calculus.html" class="wiki-link" data-note="53-the-fundamental-theorem-of-calculus">§5.3 The Fundamental Theorem of Calculus</a></li><li><a href="calcII/54-indefinite-integrals.html" class="wiki-link" data-note="54-indefinite-integrals">§5.4 Indefinite Integrals</a></li><li><a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a></li><li><a href="calcII/61-area-between-curves.html" class="wiki-link" data-note="61-area-between-curves">§6.1 Area Between Curves</a></li><li><a href="calcII/62-volumes-of-rotation.html" class="wiki-link" data-note="62-volumes-of-rotation">§6.2 Volumes of Rotation</a></li><li><a href="calcII/65-average-value-of-a-function.html" class="wiki-link" data-note="65-average-value-of-a-function">§6.5 Average Value of a Function</a></li></ul>There are also handwritten solutions to a <a href="calcII/2b-midterm1-samplepdf.html" class="wiki-link" data-note="2b-midterm1-samplepdf">practice midterm</a> from several quarters ago available <a href="calcII/2b-midterm1-sample-solutionspdf.html" class="wiki-link" data-note="2b-midterm1-sample-solutionspdf">here</a>.</p>
+
+<div class="callout callout-example"><div class="callout-title">Problem (<strong>Challenge</strong>)</div><div class="callout-body">[Challenge] Evaluate the limit:
+$$
+> \lim_{n \to \infty} \sum_{i = 1}^n \left ( \frac{i^4}{n^5} + \frac{i}{n^2} \right )
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">The trick here is to evaluate this as an integral. First, factor out $1/n$ from the summand:
+$$\frac{i^4}{n^5} + \frac{i}{n^2} = \frac1n \left (  (i/n)^4 + (i/n) \right )$$
+from here, we see that $a = 0$, $\Delta x = 1/n$ so $b = 1$. We’re home free when we write down:
+$$\int_0^1 x^4 + x dx = \left [ \frac{x^5}{5} + \frac{x^2}{2} \right ]_0^1 = \frac{1}{5} + \frac12 = \frac{7}{10}$$
+For more, see <a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">§5.1 Areas & Distances</a> and <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following antiderivative:
+$$
+> \int \cos^2 (x) - \sin^2(x) dx
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Use difference of squares and then $u$ substitution. For more, see <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a></div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">The area of the region bounded by the curve $y=e^{2 x}$, the $x$-axis, the $y$-axis, and the line $x=2$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">C: $\frac{e^4}{2}-\frac{1}{2}$ square units
+$$\begin{aligned}A & =\int_0^2 e^{2 x} d x=\frac{1}{2} \int_0^2 e^{2 x}(2) d x \\& =\frac{1}{2}\left[e^{2 x}\right]_0^2 \\& =\frac{1}{2}\left(e^4-e^0\right) \\& =\frac{e^4-1}{2} \\& =\frac{e^4}{2}-\frac{1}{2}\end{aligned}$$
+For more, see <a href="calcII/61-area-between-curves.html" class="wiki-link" data-note="61-area-between-curves">§6.1 Area Between Curves</a></div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">The average value of $y=e^{3 x}$ over the interval from $x=0$ to $x=4$ is
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$ \begin{aligned} \text { average value } & =\frac{1}{b-a} \int_a^b f(x) d x \\& =\frac{1}{4-0} \int_0^4 e^{3 x} d x \\ & =\frac{1}{4} \cdot \frac{1}{3} \int_0^4 e^{3 x} \cdot 3 d x \\ & =\frac{1}{12}\left[e^{3 x}\right]_0^4 \\ & =\frac{1}{12}\left(e^{12}-e^0\right) \\ & =\frac{e^{12}-1}{12}\end{aligned}$$
+For more, see <a href="calcII/65-average-value-of-a-function.html" class="wiki-link" data-note="65-average-value-of-a-function">§6.5 Average Value of a Function</a></div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Which of the following is equivalent to
+$$
+> \lim _{n \rightarrow \infty} \sum_{i=1}^n\left[\left(1+\frac{2 i}{n}\right)^2+1\right]\left(\frac{2}{n}\right) ?
+> $$
+<ul><li>A. $\int_2^4\left(x^2+1\right) d x$ </li><li>B. $\int_1^3 x^2 d x$ </li><li>C. $\int_1^2\left(x^2+1\right) d x$ </li><li>D. $\int_1^3\left(x^2-1\right) d x$ </li><li>E. $\int_1^3\left(x^2+1\right) d x$ </li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">E. For more, see <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">13. Let $A$ be the area bounded by one arch of the sine curve. Which of the following represents the volume of the solid generated when $A$ is revolved around the $x$-axis? \\
+<ul><li>A. $2 \pi \int_0^\pi x \sin x d x$</li><li>B. $\pi \int_0^\pi \sin ^2 x d x$</li><li>C. $\pi \int_0^\pi x \sin x d x$</li><li>D. $\pi \int_0^{2 \pi} \sin ^2 x d x$</li><li>E. $2 \pi \int_0^1 \arcsin y d y$</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">B. For more, see <a href="calcII/62-volumes-of-rotation.html" class="wiki-link" data-note="62-volumes-of-rotation">§6.2 Volumes of Rotation</a></div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Approximate the value of $\int_1^3 \ln x d x$ using 4 circumscribed rectangles.
+<ul><li>A. $1.007$</li><li>B. $1.296$</li><li>C. $1.557$</li><li>D. $2.015$</li><li>E. $3.114$</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body"></div></details>
+C
+<blockquote>$$\begin{aligned}\text { Area } & \approx \frac{1}{2} \ln \frac{3}{2}+\frac{1}{2} \ln 2+\frac{1}{2} \ln \frac{5}{2}+\frac{1}{2} \ln 3 \\& =\frac{1}{2}\left(\ln \frac{3}{2}+\ln 2+\ln \frac{5}{2}+\ln 3\right) \\& \approx 1.557\end{aligned}$$
+For more, see <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></blockquote></div></div>
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>

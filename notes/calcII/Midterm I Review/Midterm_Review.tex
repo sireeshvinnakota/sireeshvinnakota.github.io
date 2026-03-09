@@ -1,0 +1,107 @@
+\input{\string~/Documents/School/"UC Irvine"/ta_template2.0.tex}
+\rh{2B}{5.1-6.5}
+\chead{\today}
+\graphicspath{ {\string~/Desktop} }
+\usetikzlibrary{arrows}
+%============ANSWER KEY TOGGLE===========
+\newcommand{\ans}[1]{ \noindent {\color{red} \textbf{Answer:} #1}}
+%\renewcommand{\ans}[1]{\vspace{3in}}
+%==========================================
+\begin{document}
+\begin{center}
+\textbf{Midterm Practice Problems}
+\end{center}
+
+\ans{The source of these problems, and more like them, is \href{https://www.shorturl.at/ktyNY}{here}}
+
+\problembox{[Challenge] Evaluate the limit:
+\[
+\lim_{n \to \infty} \sum_{i = 1}^n \lrp{\frac{i^4}{n^5} + \frac{i}{n^2}}
+\]
+}
+
+\ans{The trick here is to evaluate this as an integral. First, factor out $1/n$ from the summand:
+\[
+\frac{i^4}{n^5} + \frac{i}{n^2} = \frac1n \lrp{ \lrp{i/n}^4 + (i/n)}
+\]
+from here, we see that $a = 0$, $\Delta x = 1/n$ so $b = 1$. We're home free when we write down:
+\[
+\int_0^1 x^4 + x dx = \lrb{\frac{x^5}{5} + \frac{x^2}{2}}_0^1 = \frac{1}{5} + \frac12 = \frac{7}{10}
+\]
+}
+
+\problembox{Compute the following antiderivative:
+\[
+\int \cos^2 (x) - \sin^2(x) dx
+\]
+}
+\ans{Use difference of squares and then $u$ substitution}
+
+\problembox{The area of the region bounded by the curve $y=e^{2 x}$, the $x$-axis, the $y$-axis, and the line $x=2$ }
+
+\ans{C: $\frac{e^4}{2}-\frac{1}{2}$ square units
+\[
+\begin{aligned}
+A & =\int_0^2 e^{2 x} d x=\frac{1}{2} \int_0^2 e^{2 x}(2) d x \\
+& =\frac{1}{2}\left[e^{2 x}\right]_0^2 \\
+& =\frac{1}{2}\left(e^4-e^0\right) \\
+& =\frac{e^4-1}{2} \\
+& =\frac{e^4}{2}-\frac{1}{2}
+\end{aligned}
+\]
+}
+
+
+\problembox{The average value of $y=e^{3 x}$ over the interval from $x=0$ to $x=4$ is}
+
+\ans{
+\[
+\text { average value } \begin{aligned}
+& =\frac{1}{b-a} \int_a^b f(x) d x \\
+& =\frac{1}{4-0} \int_0^4 e^{3 x} d x \\
+& =\frac{1}{4} \cdot \frac{1}{3} \int_0^4 e^{3 x} \cdot 3 d x \\
+& =\frac{1}{12}\left[e^{3 x}\right]_0^4 \\
+& =\frac{1}{12}\left(e^{12}-e^0\right) \\
+& =\frac{e^{12}-1}{12}
+\end{aligned}
+\]
+}
+
+\problembox{Which of the following is equivalent to
+$$
+\lim _{n \rightarrow \infty} \sum_{i=1}^n\left[\left(1+\frac{2 i}{n}\right)^2+1\right]\left(\frac{2}{n}\right) ?
+$$\\
+A. $\int_2^4\left(x^2+1\right) d x$ \\
+B. $\int_1^3 x^2 d x$ \\
+C. $\int_1^2\left(x^2+1\right) d x$ \\
+D. $\int_1^3\left(x^2-1\right) d x$ \\
+E. $\int_1^3\left(x^2+1\right) d x$ \\}
+
+\ans{E}
+
+\problembox{13. Let $A$ be the area bounded by one arch of the sine curve. Which of the following represents the volume of the solid generated when $A$ is revolved around the $x$-axis? \\
+A. $2 \pi \int_0^\pi x \sin x d x$\\
+B. $\pi \int_0^\pi \sin ^2 x d x$\\
+C. $\pi \int_0^\pi x \sin x d x$\\
+D. $\pi \int_0^{2 \pi} \sin ^2 x d x$\\
+E. $2 \pi \int_0^1 \arcsin y d y$}
+
+\ans{B}
+
+
+\problembox{16. Approximate the value of $\int_1^3 \ln x d x$ using 4 circumscribed rectangles.\\
+A. $1.007$\\
+B. $1.296$\\
+C. $1.557$\\
+D. $2.015$\\
+E. $3.114$}
+\ans{C
+\[
+\begin{aligned}
+\text { Area } & \approx \frac{1}{2} \ln \frac{3}{2}+\frac{1}{2} \ln 2+\frac{1}{2} \ln \frac{5}{2}+\frac{1}{2} \ln 3 \\
+& =\frac{1}{2}\left(\ln \frac{3}{2}+\ln 2+\ln \frac{5}{2}+\ln 3\right) \\
+& \approx 1.557
+\end{aligned}
+\]
+}
+\end{document}

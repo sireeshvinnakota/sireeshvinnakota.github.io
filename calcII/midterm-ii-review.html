@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Midterm II Review | Calc II Notes</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+  <style>
+    /* block-reference highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      transition: background 0.4s;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 40%, 25%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    /* wiki-links */
+    a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+    }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
+  </style>
+</head>
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Calculus II — <em>Midterm II Review</em><br />
+      <a href="../calcII.html">← Back to Calc II graph</a>
+      &nbsp;
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+<p>The key to this part of the course is mastering a few procedures dealing with integrals, and recognizing when to use them. Below is an itemized list of the sections covered since the last exam, each with a collection of associated problems. This table of contents should also serve as a guide to thought process: when faced with a new integral, use this as a hierarchy of methods to try:</p>
+
+<ul><li>First, try it directly using [[§5.4 Indefinite Integrals#^5fcf9e|Power Rule]] and [[§5.4 Indefinite Integrals#^adaaae|trigonometric substitutions]] </li><li>Then look for a composition of functions to use <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a> on</li><li>If there's a product of functions, use <a href="calcII/71-integration-by-parts.html" class="wiki-link" data-note="71-integration-by-parts">§7.1 Integration by Parts</a> </li><li>If the integrand is solely trigonometric functions, <a href="calcII/72-trigonometric-integration.html" class="wiki-link" data-note="72-trigonometric-integration">§7.2 Trigonometric Integration</a></li><li>If there's a quadratic under a radical, <a href="calcII/73-trigonometric-substitution.html" class="wiki-link" data-note="73-trigonometric-substitution">§7.3 Trigonometric Substitution</a></li><li>Finally, for ratios of polynomials, <a href="calcII/74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a> </li></ul>The other section to review are on <a href="calcII/78-improper-integrals.html" class="wiki-link" data-note="78-improper-integrals">§7.8 Improper Integrals</a> 
+<h2 id="latex62-substitution">$u$-Substitution</h2>
+Thing to remember: Look for a composition of functions, and differentiate the inner function.
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">When integrating $\int x^3\left(x^4+1\right)^2 d x$ using the substitution method, we would begin by letting $u$ equal to which of the following:
+<ul><li>$x^3$</li><li>$x\left(x^4+1\right)$</li><li>$\left(x^4+1\right)^2$</li><li>$x^4+1$</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Inner function here is $x^4 + 1$.</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the integral:
+$$
+> \int \frac{\left ( \ln(x) \right )^6}{x}dx
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$\displaystyle \frac17 \ln(x)^7 + C$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Using the substitution $u=x^2-3$, what is $\int_{-1}^4 x\left(x^2-3\right)^5 d x$,  equal to?
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$\displaystyle \int_{-2}^{13} u^5 du$</div></details></div></div>
+
+<h2 id="integration-by-parts">Integration by Parts</h2>
+Thing to remember:
+$$
+\int u dv = uv - \int v du
+$$
+Here's some [review](https://www.math.ucdavis.edu/ kouba/CalcTwoDIRECTORY/intbypartsdirectory/IntByParts.html)
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int x \cos(x) dx
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$x \sin (x) + \cos (x) + C$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int (\ln(x))^2 dx
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Do this by $u$-substitution first: let $u = \ln(x)$ and $du = 1/x dx$
+$$\int u^2 (e^u du)$$
+Do integration by parts twice to get:
+$$x ((\ln(x))^2-2 \ln(x)+2) + C$$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the definite integral:
+$$
+> \int_0^1 x^2 e^x dx
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$e-2$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Let $f$ be a differentiable function such that $$\int f(x) \sin x d x=-f(x) \cos x+\int 4 x^3 \cos x d x$$. What is a possibility for $f(x)$?
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$x^4$</div></details></div></div>
+
+<h2 id="trigonometric-integration">Trigonometric Integration</h2>
+Thing to remember:
+$$
+\sin^2 (x) + \cos^2(x) = 1 \quad \text{ and } \quad \tan^2 (x) + 1 = \sec^2 (x)
+$$
+Look for <em>odd</em> powers on $\sin, \cos$ or factors of $\sec^2$ and $\sec \tan$. Here's some [review](https://www.math.ucdavis.edu/ kouba/CalcTwoDIRECTORY/trigintdirectory/TrigInt.html) and some [more](https://tutorial.math.lamar.edu/classes/calcii/integralswithtrig.aspx)
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate:
+$$
+> \int (\sin(x) + \cos(x))^2 dx
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Expand out the polynomial to get:
+$$\underbrace{\sin^2(x) + \cos^2(x)}_{=1} + 2 \sin(x) \cos(x)$$
+The rest should be just $u$-substitution:
+$$x - 2\sin^2(x) + C$$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute:
+$$
+> \int\left(\sec ^2 x\right) \sqrt{5+\tan x} d x
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Eyes should light up at the $\sec^2(x)$ term hanging out there, this is just a $u$-sub on $u = \tan(x)$. </div></details>
+$$= \frac23 (5 + \tan(x))^{3/2} + C$$</div></div>
+
+<h2 id="trigonometric-substitution">Trigonometric Substitution</h2>
+Thing to remember:
+$$
+\begin{array}{|c|c|c|}
+\hline
+\text{Expression} & \text{Substitution} & \text{Identity} \\ \hline
+\sqrt{a^2 - x^2} & \displaystyle x = a \sin \theta, \theta \in \left [ \frac{-\pi}{2}, \frac\pi2 \right ] & 1 - \sin^2 \theta = \cos^2 \theta\\ \hline 
+\sqrt{a^2 + x^2} & \displaystyle x = a \tan \theta, \theta \in \left ( \frac{-\pi}{2}, \frac\pi2 \right ) & 1 + \tan^2 \theta = \sec^2 \theta \\ \hline
+\sqrt{x^2 - a^2} & \displaystyle x = a \sec\theta,  \theta \in \left [ 0, \frac\pi2 \right ) \text{ or } \in \left [ \pi, \frac{3\pi}{2} \right ) & \sec^2\theta - 1 = \tan^2 \theta \\ 
+\hline
+\end{array}
+$$
+To complete problems, use a triangle. Here's some [review](https://tutorial.math.lamar.edu/classes/calcii/TrigSubstitutions.aspx) and some [more](https://www.math.ucdavis.edu/ kouba/CalcTwoDIRECTORY/trigsubdirectory/TrigSub.html)
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int \sqrt{1 - x^2} dx
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Deceptively tricky! Make the substitution $x = \sin(\theta)$ to get the integrand:
+$$\int \cos^2(\theta) = \frac12 \int 1 + \cos(2\theta) d \theta$$
+with the latter equality from the <em>power reduction</em> formula. Integrating gives:
+$$\frac12 \theta + \frac14 \sin(2\theta) = \frac12 \theta + \frac12 \sin (\theta) \cos (\theta )$$
+Reversing the subsitution using the Pythagorean theorem gives:
+$$\boxed{\frac12 \arcsin(x) + \frac12 x \sqrt{1-x^2} + C}$$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int_0^1 \sqrt{x^2-2 x+1} d x
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$\frac12$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int_0^1\left(4-x^2\right)^{-\frac{3}{2}} d x=
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Make the subsitution $x=2 \sin \theta \Rightarrow d x=2 \cos \theta d \theta$.
+$$\int_0^1\left(4-x^2\right)^{-3 / 2} d x=\int_0^{\pi / 6} \frac{2 \cos \theta}{8 \cos ^3 \theta} d \theta=\frac{1}{4} \int_0^{\pi / 6} \sec ^2 \theta d \theta=\left.\frac{1}{4} \tan \theta\right|_0 ^{\pi / 6}=\frac{1}{4} \cdot \frac{\sqrt{3}}{3}=\frac{\sqrt{3}}{12}$$</div></details></div></div>
+
+<h2 id="partial-fraction-decomposition">Partial Fraction Decomposition</h2>
+Thing to remember: decompose:
+$$
+\frac{p(x)}{q(x)} = s(x) + \frac{r(x)}{q(x)}
+$$
+using polynomial long division. Then remember: “constants for distinct linear factors and their repetitions, linear terms for the quadratics.” Here's some [practice](https://www.math.ucdavis.edu/ kouba/CalcTwoDIRECTORY/partialfracdirectory/PartialFrac.html)
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate:
+$$
+> \int \frac{2x + 3}{x^2 - 9}
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$ \frac12 \left (  3\ln (3-x) + \ln (x+3) \right )$$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute:
+$$
+> \int \frac{1}{x^2 - 6x + 8} dx
+> $$
+[!success]- Solution
+$$
+> \frac12 \left ( \ln \left | x - 4 \right | - \ln \left | x - 2 \right | \right )
+> $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following: $$
+> \int_0^1 \frac{5 x+8}{x^2+3 x+2} d x
+> $$
+[!success]- Solution
+$\ln(18)$</div></div>
+
+<h2 id="improper-integrals">Improper Integrals</h2>
+\begin{aun}
+Thing to remember: does the integral have an infinite bound? if so, replace with $b$ and evaluate the limit $\lim_{b \to \infty}$. Does the function have discontinuities on the domain of integration? If so, approach with limits from either side. If any limit diverges, the integral diverges.
+\end{aun}
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the integral:
+$$
+> \int_1^\infty e^{-3x}dx
+> $$
+[!success]- Solution
+$\displaystyle \frac{1}{3e^3}$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the integral
+$$
+> \int_0^\infty x^2 e^{-x^3} dx
+> $$</div></div>
+
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$
+> \lim_{b \to \infty} \left [ -\frac13 e^{-x^3}  \right ]^b_0 = \frac13
+> $$</div></details>
+
+<h2 id="the-grab-bag">The Grab Bag</h2>
+\begin{aun}
+If I sort these into a category, it’ll give away the answer
+\end{aun}
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">[True or False] Integrals of the form:
+$$
+> \int_0^\infty f(x)dx
+> $$
+have a finite numerical value.
+[!success]- Solution
+False</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the integral:
+$$
+> \int\left(4 x^2-1\right) \cos \left(4 x^3-3 x\right) d x
+> $$
+[!success]- Solution
+$=-\frac{1}{3} \sin \left(3 x-4 x^3\right)+\text { constant }$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the integral:
+$$
+> \int_0^1 \frac{x^2}{x^2 + 1}
+> $$
+<strong>HINT:</strong> what’s the derivative of $\arctan$?
+[!success]- Solution
+$1 - \pi/4$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $$
+> \int_1^e\left(\frac{x^2-1}{x}\right) d x=
+> $$
+[!success]- Solution
+$\frac12 (e^2 - 3)$; split this one into two integrals</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">If $\frac{dy}{dx} = \sin(x) \cos^2 (x)dx$ and $y = 0$ when $x = \frac{\pi}{2}$, what is $y$ when $x$ is 0?</div></div>
+
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Using the antiderivative 
+$$
+> y(x) = -\frac13 \cos^3 (x) + 0 \quad \text{ we have } \quad-\frac13
+> $$</div></details>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int_0^1 \sqrt{x} (x+1) dx
+> $$
+[!success]- Solution
+$\frac{16}{15}$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int_1^{\infty} \frac{x}{\left(1+x^2\right)^2} d x
+> $$
+[!success]- Solution
+$$
+> \lim_{b \to \infty} \left [ \frac14 - \frac{1}{2(1-b^2)}  \right ] = \frac14
+> $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
+$$
+> \int \sin^3 (x)dx
+> $$
+[!success]- Solution
+Odd power of $\sin$ is good news, at least!
+$$
+> \int( 1-\cos^2 (x)) \sin(x)dx = \int u^2 - 1 du ...
+> $$
+Follow out the algebra to get 
+$$
+> -\cos(x) + \frac13 \cos^3(x) + C
+> $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
+$$
+> \int \frac{\cos^2(x)}{1 + \sin(x)}
+> $$
+[!success]- Solution
+Conjugate the denominator:
+$$
+> \int \frac{\cos^2(x) (1-\sin(x))}{1- \sin^2(x)} = \int \frac{\cos^2(x) (1-\sin(x))}{\cos^2(x)} = \int 1- \sin(x) dx
+> $$
+Finish it out from here to get:
+$$
+> x + \cos(x) + C
+> $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
+$$
+> \int \frac{d x}{(x-1)(x+3)}
+> $$</div></div>
+
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Use partial fractions
+$$
+> \frac14 \ln \left | \frac{x-1}{x+3} \right | + C
+> $$</div></details>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $$
+> \int_4^{\infty} \frac{-2 x}{\sqrt[3]{9-x^2}} d x
+> $$
+[!success]- Solution
+DNE by comparison to $x^{2/3}$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $$
+> \int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x
+> $$
+[!success]- Solution
+The radical should suggest a trig substitution:
+$$
+> \int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x = \int \frac{(\sqrt{x^2 - 1})^3}{x} dx = \int \frac{\tan^3 \theta}{\sec \theta}
+> $$
+over the substitution $x = \sec(\theta)$. 
+$$
+> \cdots = \frac13 \sqrt{x^2 - 1} (x^2 -4 ) + \arctan \left ( \sqrt{x^2 - 1} \right ) + C
+> $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate $$
+> \int \frac{x}{\sqrt{x^2+4 x+5}} d x
+> $$
+[!success]- Solution
+Do a substitution after completing the square:
+$$
+> x^2 + 4x + 5 = (x+2)^2 + 1
+> $$
+Get:
+$$
+> \sqrt{x^2+4 x+5} - 2\ln \left | \sqrt{x^2+4 x+5} + x + 2 \right | + C
+> $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
+$$
+> \int x^3 \ln (5x) dx
+> $$</div></div>
+
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">This is parts- get:
+$$
+> \frac14 x^4 \ln \left ( 5x \right ) - \frac{x^4}{16} + C
+> $$</div></details>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
+$$
+> \int x \sin (x) \cos (x)dx
+> $$
+[!success]- Solution
+Tricky tricky- see that:
+$$
+> \int x \sin(x) \cos(x) dx = \frac12 \int x \sin(2x)dx
+> $$
+Apply parts from here to get:
+$$
+> \frac12 \left ( - \frac12 x \cos(2x) + \frac14 \sin(2x) \right ) + C
+> $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate
+$$
+> \int \frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2}
+> $$
+[!success]- Solution
+Start with polynomial long division:
+$$
+> \frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2} = x^2 + 3 + \frac{-3x+7}{x^2 + x -2}
+> $$
+Continue by partial fractions:
+$$
+> = \frac13 x^3 + 3x + \frac43 \ln \left | x-1 \right | - \frac{13}{3} \ln \lrabs {x+2} + C
+> $$</div></div>
+    </article>
+  </main>
+
+  <footer>
+    <p>Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.</p>
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$','$']] } };
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+    // highlight block-ref targets (URL hash like #blockID)
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) el.classList.add('block-ref-target');
+    }
+  });
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+</body>
+</html>
