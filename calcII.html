@@ -380,6 +380,10 @@
 
   <script>
   // ── Graph ──────────────────────────────────────────────────────────────────
+
+  // Fetch graph data immediately, but defer D3 rendering until the container
+  // has real pixel dimensions. clientWidth/clientHeight return 0 when read
+  // before layout completes, which stacks all nodes invisibly at (0,0).
   (async function buildGraph() {
 
     let graphData;
@@ -402,14 +406,20 @@
       `${nodes.length} notes · ${links.length} links`;
 
     const wrap = document.getElementById('graph-canvas-wrap');
-    const svg  = d3.select('#graph-svg');
 
-    // Defer until the browser has actually painted and sized the container.
-    // clientWidth/clientHeight are 0 if read too early (before layout).
-    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    // Block until the container has a painted, non-zero size.
+    await new Promise(resolve => {
+      if (wrap.clientWidth > 0 && wrap.clientHeight > 0) { resolve(); return; }
+      const ro = new ResizeObserver((entries, observer) => {
+        const { width, height } = entries[0].contentRect;
+        if (width > 0 && height > 0) { observer.disconnect(); resolve(); }
+      });
+      ro.observe(wrap);
+    });
 
-    const W = wrap.clientWidth  || wrap.getBoundingClientRect().width  || 700;
-    const H = wrap.clientHeight || wrap.getBoundingClientRect().height || 420;
+    const svg = d3.select('#graph-svg');
+    const W   = wrap.clientWidth;
+    const H   = wrap.clientHeight;
 
     // Zoom layer
     const g = svg.append('g');
