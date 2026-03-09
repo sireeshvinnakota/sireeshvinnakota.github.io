@@ -23,6 +23,7 @@ import re
 import json
 import shutil
 from pathlib import Path
+from typing import Optional
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 NOTES_DIR   = Path("notes/calcII")
@@ -41,7 +42,7 @@ def slugify(name: str) -> str:
 def note_name_to_slug(name: str) -> str:
     return slugify(name)
 
-def collect_notes(notes_dir: Path) -> dict[str, Path]:
+def collect_notes(notes_dir: Path) -> dict:
     """Returns {note_name: path} for every .md file found."""
     notes = {}
     for path in sorted(notes_dir.rglob("*.md")):
@@ -53,13 +54,13 @@ def collect_notes(notes_dir: Path) -> dict[str, Path]:
 
 BLOCK_ID_RE = re.compile(r"(?<!\])\s+\^([\w-]+)\s*$")
 
-def strip_block_ids(text: str) -> tuple[str, dict[str, int]]:
+def strip_block_ids(text: str) -> tuple:
     """
     Remove ^blockID markers from end of lines.
     Returns cleaned text and a dict {blockID: line_number (0-indexed)}.
     """
     lines = text.split("\n")
-    block_map: dict[str, int] = {}
+    block_map: dict = {}
     clean_lines = []
     for i, line in enumerate(lines):
         m = BLOCK_ID_RE.search(line)
@@ -132,12 +133,12 @@ def convert_image_embeds(text: str) -> str:
     return IMAGE_EMBED_RE.sub(replace, text)
 
 
-def convert_wikilinks(text: str, all_note_slugs: set[str]) -> tuple[str, list[str]]:
+def convert_wikilinks(text: str, all_note_slugs: set) -> tuple:
     """
     Replace [[wikilinks]] with <a> tags.
     Returns (converted_text, list_of_linked_slugs).
     """
-    linked: list[str] = []
+    linked: list = []
 
     def replace(m):
         page   = m.group(1).strip()
@@ -200,7 +201,7 @@ CALLOUT_STYLES = {
     "exercise"       : ("callout-exercise",  "Exercise"),
 }
 
-def parse_callout_block(lines: list[str]) -> tuple[str, bool, str, list[str]] | None:
+def parse_callout_block(lines: list) -> Optional[tuple]:
     """
     Given a list of raw lines (with leading '> ' stripped one level),
     detect if the first line is an Obsidian callout header: [!type] Title
@@ -243,7 +244,7 @@ def convert_callouts_and_blockquotes(text: str) -> str:
         > > > The solution goes here
     """
 
-    def extract_quote_block(lines: list[str], start: int) -> tuple[list[str], int]:
+    def extract_quote_block(lines: list, start: int) -> tuple:
         """
         Extract a contiguous run of '> ...' lines starting at `start`.
         Returns (block_lines_with_prefix_stripped_one_level, end_index).
@@ -261,7 +262,7 @@ def convert_callouts_and_blockquotes(text: str) -> str:
                 break
         return block, i
 
-    def render_block(inner_lines: list[str]) -> str:
+    def render_block(inner_lines: list) -> str:
         """
         Given lines with one quote-level stripped, render as either a
         callout or a plain blockquote, recursively handling nested quotes.
@@ -291,7 +292,7 @@ def convert_callouts_and_blockquotes(text: str) -> str:
                 f'</div>'
             )
 
-    def process_lines(lines: list[str]) -> str:
+    def process_lines(lines: list) -> str:
         """
         Walk a list of lines, pulling out quote blocks and rendering them,
         leaving everything else as plain text to be joined.
@@ -336,7 +337,7 @@ def convert_md_table(text: str) -> str:
         if len(raw_lines) < 2:
             return block
 
-        def split_row(line: str) -> list[str]:
+        def split_row(line: str) -> list:
             line = line.strip().strip("|")
             return [c.strip() for c in line.split("|")]
 
@@ -399,7 +400,7 @@ def md_to_html(text: str) -> str:
     LaTeX ($...$, $$...$$) is left untouched for MathJax.
     """
     # ── 1. Protect fenced code blocks ────────────────────────────────────────
-    code_blocks: list[tuple[str, str]] = []
+    code_blocks: list = []
     def stash_code(m):
         lang = m.group(1) or ""
         code = m.group(2)
@@ -409,7 +410,7 @@ def md_to_html(text: str) -> str:
     text = re.sub(r"```(\w*)\n(.*?)```", stash_code, text, flags=re.DOTALL)
 
     # ── 2. Protect display LaTeX ($$...$$) then inline ($...$) ───────────────
-    latex_stash: list[str] = []
+    latex_stash: list = []
     def stash_latex(m):
         latex_stash.append(m.group(0))
         return f"\x00LATEX{len(latex_stash)-1}\x00"
@@ -701,7 +702,7 @@ def build():
     all_slugs  = {note_name_to_slug(n) for n in notes}
     graph_nodes = []
     graph_links = []
-    seen_edges: set[tuple[str, str]] = set()
+    seen_edges: set = set()
 
     print(f"Found {len(notes)} notes. Building…")
 
