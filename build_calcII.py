@@ -475,7 +475,14 @@ def md_to_html(text: str) -> str:
 
     text = re.sub(r"^(#{1,6})\s+(.+)$", heading, text, flags=re.MULTILINE)
 
-    # ── 6. Bold / italic ──────────────────────────────────────────────────────
+    # ── 6. Standard Markdown links [text](url) ────────────────────────────────
+    text = re.sub(
+        r"\[([^\]]+)\]\((https?://[^\)]+)\)",
+        r'<a href="\2" target="_blank" rel="noopener noreferrer">\1</a>',
+        text
+    )
+
+    # ── 7. Bold / italic ──────────────────────────────────────────────────────
     text = re.sub(r"\*\*\*(.+?)\*\*\*", r"<strong><em>\1</em></strong>", text)
     text = re.sub(r"\*\*(.+?)\*\*",     r"<strong>\1</strong>",          text)
     text = re.sub(r"\*(.+?)\*",         r"<em>\1</em>",                  text)
