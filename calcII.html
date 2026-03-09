@@ -417,6 +417,9 @@
       ro.observe(wrap);
     });
 
+    const W   = wrap.clientWidth;
+    const H   = wrap.clientHeight;
+
     const svg = d3.select('#graph-svg')
       .attr('width', W)
       .attr('height', H)
