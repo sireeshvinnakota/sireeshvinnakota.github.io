@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Sireesh | Calculus II Notes</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="prism/prism.css" />
+  <style>
+    /* ── Graph container ─────────────────────────────────────────────────── */
+    #graph-section {
+      margin-top: 2rem;
+      margin-bottom: 0;
+    }
+
+    #graph-section h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    #graph-hint {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--body-color);
+      opacity: 0.6;
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+    }
+
+    #graph-canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      border-radius: 6px;
+      overflow: hidden;
+      /* dark-ish canvas that works on both light and dark body */
+      background: hsl(220, 15%, 13%);
+      border: 1px solid hsl(220, 10%, 22%);
+    }
+
+    /* light mode: slightly lighter background */
+    body:not(.latex-dark) #graph-canvas-wrap {
+      background: hsl(220, 18%, 11%);
+      border-color: hsl(220, 10%, 20%);
+    }
+
+    #graph-canvas-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* D3 elements */
+    .graph-link {
+      stroke: hsl(220, 15%, 38%);
+      stroke-width: 1.2px;
+      stroke-opacity: 0.7;
+    }
+    .graph-link.highlighted {
+      stroke: hsl(48, 95%, 65%);
+      stroke-width: 2px;
+      stroke-opacity: 1;
+    }
+
+    .graph-node circle {
+      cursor: pointer;
+      stroke-width: 1.5px;
+      transition: r 0.15s ease;
+    }
+    .graph-node circle.default {
+      fill: hsl(220, 10%, 50%);
+      stroke: hsl(220, 10%, 65%);
+    }
+    .graph-node circle.active {
+      fill: hsl(48, 95%, 65%);
+      stroke: hsl(48, 100%, 80%);
+      filter: drop-shadow(0 0 6px hsl(48, 95%, 65%));
+    }
+    .graph-node circle.neighbor {
+      fill: hsl(200, 70%, 60%);
+      stroke: hsl(200, 80%, 75%);
+    }
+    .graph-node circle.dimmed {
+      fill: hsl(220, 8%, 32%);
+      stroke: hsl(220, 8%, 40%);
+      opacity: 0.4;
+    }
+
+    .graph-node text {
+      fill: hsl(220, 5%, 80%);
+      font-family: 'Latin Modern', Georgia, serif;
+      font-size: 11px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .graph-node text.active {
+      fill: hsl(48, 95%, 85%);
+      font-weight: bold;
+    }
+    .graph-node text.dimmed {
+      opacity: 0.3;
+    }
+
+    /* search box on graph */
+    #graph-search-wrap {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+    }
+    #graph-search {
+      background: hsl(220, 12%, 18%);
+      border: 1px solid hsl(220, 10%, 30%);
+      border-radius: 4px;
+      color: hsl(220, 5%, 85%);
+      font-family: 'Latin Modern', Georgia, serif;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      width: 160px;
+      outline: none;
+    }
+    #graph-search::placeholder { color: hsl(220, 5%, 50%); }
+    #graph-search:focus { border-color: hsl(48, 80%, 55%); }
+
+    /* graph controls */
+    #graph-controls {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+    .graph-btn {
+      background: hsl(220, 12%, 20%);
+      border: 1px solid hsl(220, 10%, 32%);
+      color: hsl(220, 5%, 75%);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: 'Latin Modern', Georgia, serif;
+    }
+    .graph-btn:hover { background: hsl(220, 12%, 28%); }
+
+    /* node count badge */
+    #graph-info {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      font-family: 'Latin Modern', Georgia, serif;
+      font-size: 0.75rem;
+      color: hsl(220, 5%, 50%);
+    }
+
+    /* ── Divider ─────────────────────────────────────────────────────────── */
+    #content-divider {
+      border: none;
+      border-top: 1px solid var(--footnotes-border-color);
+      margin: 2rem 0 1.5rem;
+      opacity: 0.4;
+    }
+
+    /* ── Note content pane ───────────────────────────────────────────────── */
+    #note-pane {
+      min-height: 120px;
+      transition: opacity 0.2s ease;
+    }
+
+    #note-pane.loading {
+      opacity: 0.4;
+    }
+
+    #note-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      font-style: italic;
+      color: var(--body-color);
+      opacity: 0.7;
+    }
+    #note-breadcrumb span { opacity: 1; font-style: normal; }
+
+    #note-title-bar {
+      display: none;
+      align-items: baseline;
+      gap: 1rem;
+      border-bottom: 1px solid var(--footnotes-border-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    #note-title-bar.visible { display: flex; }
+    #note-title-bar h2 { margin-top: 0; }
+
+    #note-body { font-size: 1rem; }
+
+    /* wiki-links inside note pane */
+    #note-body a.wiki-link {
+      color: var(--link-visited);
+      text-decoration: underline dotted;
+      cursor: pointer;
+    }
+
+    /* empty state */
+    #note-empty {
+      text-align: center;
+      padding: 2.5rem 0;
+      font-style: italic;
+      opacity: 0.5;
+      font-size: 0.95rem;
+    }
+
+    /* block-ref highlight */
+    .block-ref-target {
+      background: hsl(55, 90%, 85%);
+      border-left: 3px solid hsl(45, 90%, 50%);
+      padding: 2px 6px;
+      border-radius: 2px;
+      animation: blockpulse 1.8s ease forwards;
+    }
+    .latex-dark .block-ref-target {
+      background: hsl(45, 35%, 22%);
+      border-left-color: hsl(45, 80%, 55%);
+    }
+    @keyframes blockpulse {
+      0%   { box-shadow: 0 0 0 0 hsl(48, 95%, 65% / 0.5); }
+      50%  { box-shadow: 0 0 0 8px hsl(48, 95%, 65% / 0); }
+      100% { box-shadow: none; }
+    }
+
+    /* ── Loading skeleton ────────────────────────────────────────────────── */
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+    .skeleton-line {
+      height: 0.9em;
+      border-radius: 3px;
+      margin: 0.55em 0;
+      background: linear-gradient(90deg,
+        hsl(220,8%,20%) 25%,
+        hsl(220,8%,28%) 50%,
+        hsl(220,8%,20%) 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    body:not(.latex-dark) .skeleton-line {
+      background: linear-gradient(90deg,
+        hsl(0,0%,88%) 25%,
+        hsl(0,0%,94%) 50%,
+        hsl(0,0%,88%) 75%);
+      background-size: 600px 100%;
+    }
+
+    /* graph: no-data message */
+    #graph-no-data {
+      display: none;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Latin Modern', Georgia, serif;
+      font-size: 0.9rem;
+      color: hsl(220, 5%, 55%);
+      font-style: italic;
+      text-align: center;
+      padding: 2rem;
+    }
+  </style>
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Interactive notes for <em>Calculus II: Single-Variable Integration</em> (MATH 2B).<br />
+      Nodes represent topics; edges are wikilinks between them. Click any node to read.
+      <br /><br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#graph-section">Topic Graph</a></li>
+      <li><a href="#content-divider">Note Viewer</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+
+      <section id="graph-section">
+        <h2>Topic Graph</h2>
+        <p id="graph-hint">Click a node to load that note below. Scroll/pinch to zoom. Drag nodes to rearrange.</p>
+
+        <div id="graph-canvas-wrap">
+          <svg id="graph-svg"></svg>
+          <div id="graph-search-wrap">
+            <input id="graph-search" type="text" placeholder="Search topics…" autocomplete="off" />
+          </div>
+          <div id="graph-controls">
+            <button class="graph-btn" id="btn-reset">Reset view</button>
+            <button class="graph-btn" id="btn-reheat">Reheat</button>
+          </div>
+          <div id="graph-info"></div>
+          <div id="graph-no-data">
+            No graph data found.<br />
+            Run <code>python build_calcII.py</code> to generate <code>graph-data.json</code>.
+          </div>
+        </div>
+      </section>
+
+      <hr id="content-divider" />
+
+      <section id="note-pane">
+        <div id="note-empty">
+          ← Select a node in the graph to read a note here.
+        </div>
+        <div id="note-title-bar">
+          <h2 id="note-title"></h2>
+          <a id="note-standalone-link" href="#" target="_blank" style="font-size:0.8rem; opacity:0.6;">open standalone ↗</a>
+        </div>
+        <div id="note-body"></div>
+      </section>
+
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <!-- D3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+
+  <script>
+  // ── Preferences ────────────────────────────────────────────────────────────
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+  </script>
+
+  <script>
+  // ── Graph ──────────────────────────────────────────────────────────────────
+  (async function buildGraph() {
+
+    let graphData;
+    try {
+      const resp = await fetch('graph-data.json');
+      if (!resp.ok) throw new Error('not found');
+      graphData = await resp.json();
+    } catch {
+      document.getElementById('graph-no-data').style.display = 'flex';
+      return;
+    }
+
+    const { nodes, links } = graphData;
+    if (!nodes.length) {
+      document.getElementById('graph-no-data').style.display = 'flex';
+      return;
+    }
+
+    document.getElementById('graph-info').textContent =
+      `${nodes.length} notes · ${links.length} links`;
+
+    const wrap = document.getElementById('graph-canvas-wrap');
+    const svg  = d3.select('#graph-svg');
+    const W = wrap.clientWidth, H = wrap.clientHeight;
+
+    // Zoom layer
+    const g = svg.append('g');
+    svg.call(d3.zoom()
+      .scaleExtent([0.25, 4])
+      .on('zoom', e => g.attr('transform', e.transform)));
+
+    // Build adjacency for neighbour highlighting
+    const adj = new Map(nodes.map(n => [n.id, new Set()]));
+    links.forEach(l => {
+      const s = typeof l.source === 'object' ? l.source.id : l.source;
+      const t = typeof l.target === 'object' ? l.target.id : l.target;
+      adj.get(s)?.add(t);
+      adj.get(t)?.add(s);
+    });
+
+    // Node radius: larger for more-connected nodes
+    const degree = new Map(nodes.map(n => [n.id, 0]));
+    links.forEach(l => {
+      const s = typeof l.source === 'object' ? l.source.id : l.source;
+      const t = typeof l.target === 'object' ? l.target.id : l.target;
+      degree.set(s, (degree.get(s) || 0) + 1);
+      degree.set(t, (degree.get(t) || 0) + 1);
+    });
+    const rScale = d3.scaleSqrt()
+      .domain([0, d3.max([...degree.values()]) || 1])
+      .range([5, 14]);
+
+    // Force simulation
+    const simulation = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links)
+        .id(d => d.id)
+        .distance(80)
+        .strength(0.4))
+      .force('charge', d3.forceManyBody().strength(-180))
+      .force('center', d3.forceCenter(W / 2, H / 2))
+      .force('collision', d3.forceCollide().radius(d => rScale(degree.get(d.id) || 0) + 6));
+
+    // Links
+    const linkSel = g.append('g')
+      .selectAll('line')
+      .data(links)
+      .join('line')
+      .attr('class', 'graph-link');
+
+    // Nodes
+    const nodeSel = g.append('g')
+      .selectAll('g')
+      .data(nodes)
+      .join('g')
+      .attr('class', 'graph-node')
+      .call(d3.drag()
+        .on('start', (event, d) => {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x; d.fy = d.y;
+        })
+        .on('drag', (event, d) => { d.fx = event.x; d.fy = event.y; })
+        .on('end', (event, d) => {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null; d.fy = null;
+        }));
+
+    nodeSel.append('circle')
+      .attr('r', d => rScale(degree.get(d.id) || 0))
+      .attr('class', 'default');
+
+    nodeSel.append('text')
+      .attr('dy', d => rScale(degree.get(d.id) || 0) + 12)
+      .attr('text-anchor', 'middle')
+      .text(d => d.label);
+
+    // Tick
+    simulation.on('tick', () => {
+      linkSel
+        .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+      nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
+    });
+
+    // ── Active node state ────────────────────────────────────────────────────
+    let activeId = null;
+
+    function setActive(nodeId) {
+      activeId = nodeId;
+      const neighbours = adj.get(nodeId) || new Set();
+
+      nodeSel.selectAll('circle')
+        .attr('class', d => {
+          if (d.id === nodeId) return 'active';
+          if (neighbours.has(d.id)) return 'neighbor';
+          return 'dimmed';
+        });
+      nodeSel.selectAll('text')
+        .attr('class', d => {
+          if (d.id === nodeId) return 'active';
+          if (neighbours.has(d.id)) return '';
+          return 'dimmed';
+        });
+      linkSel
+        .attr('class', d => {
+          const s = typeof d.source === 'object' ? d.source.id : d.source;
+          const t = typeof d.target === 'object' ? d.target.id : d.target;
+          return (s === nodeId || t === nodeId) ? 'graph-link highlighted' : 'graph-link';
+        });
+    }
+
+    function clearActive() {
+      activeId = null;
+      nodeSel.selectAll('circle').attr('class', 'default');
+      nodeSel.selectAll('text').attr('class', '');
+      linkSel.attr('class', 'graph-link');
+    }
+
+    // Click handler — loads note
+    nodeSel.on('click', (event, d) => {
+      event.stopPropagation();
+      setActive(d.id);
+      loadNote(d.id, d.label);
+    });
+
+    // Click on background → deselect
+    svg.on('click', () => clearActive());
+
+    // ── Controls ─────────────────────────────────────────────────────────────
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      svg.transition().duration(500).call(
+        d3.zoom().transform, d3.zoomIdentity
+      );
+    });
+    document.getElementById('btn-reheat').addEventListener('click', () => {
+      simulation.alpha(0.5).restart();
+    });
+
+    // ── Search ────────────────────────────────────────────────────────────────
+    document.getElementById('graph-search').addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      if (!q) { clearActive(); return; }
+      const match = nodes.find(n =>
+        n.label.toLowerCase().includes(q) || n.id.includes(q)
+      );
+      if (match) {
+        setActive(match.id);
+        // pan to that node
+        const t = d3.zoomTransform(svg.node());
+        svg.transition().duration(400).call(
+          d3.zoom().transform,
+          d3.zoomIdentity.translate(W/2 - match.x, H/2 - match.y)
+        );
+      }
+    });
+
+  })();
+  </script>
+
+  <script>
+  // ── Note loader ────────────────────────────────────────────────────────────
+  let currentNoteId = null;
+
+  async function loadNote(slug, label, anchor) {
+    if (slug === currentNoteId && !anchor) return;
+    currentNoteId = slug;
+
+    const pane      = document.getElementById('note-pane');
+    const empty     = document.getElementById('note-empty');
+    const titleBar  = document.getElementById('note-title-bar');
+    const titleEl   = document.getElementById('note-title');
+    const bodyEl    = document.getElementById('note-body');
+    const standaloneLink = document.getElementById('note-standalone-link');
+
+    // Show skeleton while loading
+    empty.style.display = 'none';
+    titleBar.classList.remove('visible');
+    bodyEl.innerHTML = [80, 95, 70, 90, 60].map(w =>
+      `<div class="skeleton-line" style="width:${w}%"></div>`
+    ).join('');
+    pane.classList.add('loading');
+
+    let html;
+    try {
+      const resp = await fetch(`calcII/${slug}.html`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      html = await resp.text();
+    } catch (e) {
+      bodyEl.innerHTML = `<p style="opacity:0.6;font-style:italic;">
+        Could not load <code>${slug}.html</code>. Have you run the build script?
+      </p>`;
+      pane.classList.remove('loading');
+      return;
+    }
+
+    // Extract just the <article> body from the fetched page
+    const parser = new DOMParser();
+    const doc    = parser.parseFromString(html, 'text/html');
+    const article = doc.querySelector('article');
+    const noteBody = article ? article.innerHTML : html;
+
+    // Update UI
+    titleEl.textContent = label;
+    standaloneLink.href = `calcII/${slug}.html`;
+    titleBar.classList.add('visible');
+    bodyEl.innerHTML = noteBody;
+    pane.classList.remove('loading');
+
+    // Re-wire internal wiki-links to load in pane instead of navigating away
+    bodyEl.querySelectorAll('a.wiki-link').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const targetSlug = a.dataset.note;
+        const href = a.getAttribute('href');
+        // extract anchor from href if any
+        const hashIdx = href.lastIndexOf('#');
+        const noteAnchor = hashIdx > -1 ? href.slice(hashIdx + 1) : null;
+        const targetLabel = targetSlug.replace(/-/g, ' ')
+          .replace(/\b\w/g, c => c.toUpperCase());
+
+        // update graph active state
+        if (typeof setActive === 'function') setActive(targetSlug);
+        loadNote(targetSlug, targetLabel, noteAnchor);
+      });
+    });
+
+    // Scroll note pane into view smoothly
+    document.getElementById('content-divider').scrollIntoView({ behavior: 'smooth' });
+
+    // MathJax re-render
+    if (window.MathJax && MathJax.typesetPromise) {
+      await MathJax.typesetPromise([bodyEl]);
+    }
+
+    // Prism re-highlight
+    if (window.Prism) Prism.highlightAllUnder(bodyEl);
+
+    // Block/heading anchor scroll
+    if (anchor) {
+      await new Promise(r => setTimeout(r, 80)); // wait for layout
+      const target = bodyEl.querySelector(`#${CSS.escape(anchor)}`);
+      if (target) {
+        target.classList.add('block-ref-target');
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }
+
+  // expose setActive for cross-closure use in wiki-link clicks
+  // (it's defined inside the IIFE above; we bridge it here)
+  let _setActiveExternal = null;
+  const _origSetActive = window.setActive;
+  Object.defineProperty(window, 'setActive', {
+    get: () => _setActiveExternal,
+    set: v => { _setActiveExternal = v; }
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="prism/prism.js"></script>
+</body>
+</html>
