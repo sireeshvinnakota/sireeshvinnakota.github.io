@@ -23,6 +23,95 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
   </style>
 </head>
 <body id="top">
@@ -54,68 +143,58 @@
     <article>
 <p>This is the first of many techniques that we will learn to find functions $F$, corresponding to a given function $f$, as in [[§5.3 The Fundamental Theorem of Calculus#^3e560b|the FTC]].</p>
 
-<blockquote>[!theorem] Proposition
-If $g’$ is a continuous on $[a,b]$ and $f$ is continuous on the range of $u = g(x)$, then:
+<div class="callout callout-theorem"><div class="callout-title">Proposition</div><div class="callout-body">If $g’$ is a continuous on $[a,b]$ and $f$ is continuous on the range of $u = g(x)$, then:
 $$
 > \int_a^b f(g(x))g’(x)dx =  \int_{g(a)}^{g(b)} f(u)du
 > $$
 For indefinite integrals, we have:
 $$
 > \int f(g(x))g’(x)dx = \int f(u)du
-> $$</blockquote>
-For functions that are even or odd, we have little shortcuts that can help us evaluate integrals quickly:
+> $$</div></div>
+
+<p>For functions that are even or odd, we have little shortcuts that can help us evaluate integrals quickly:<br>
 $$ \begin{array}
 {|c|c|c|}
 \hline
 \text{Type} & \text{Definition} & \text{Integral Property} \\ \hline
 \text{$f(x)$ is Even} & f(-x) = f(x) & \displaystyle\int_{-a}^a f(x) dx = 2\int_0^a f(x)dx \\
 \text{$f(x)$ is Odd} & f(-x) = -f(x) & \displaystyle \int_{-a}^a f(x) dx = 0 \\ \hline
-\end{array} $$
-Use this as a trick to potentially bypass tricky problems!
+\end{array} $$<br>
+Use this as a trick to potentially bypass tricky problems!</p>
 
-<blockquote>[!example] Example
-Compute the definite integral:
+<div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Compute the definite integral:
 $$
 > \int_1^2 \frac{dx}{(3-5x)^2}
-> $$</blockquote>>> [!success]- Solution
->> Let $u = 3 - 5x$, for which the problem reduces to [[§5.4 Indefinite Integrals#^5fcf9e]].
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Let $u = 3 - 5x$, for which the problem reduces to [[§5.4 Indefinite Integrals#^5fcf9e]].</div></details></div></div>
 
-<blockquote>[!example] Problem
-Compute the following definite integral:
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following definite integral:
 $$
 > \int_e^{e^4} \frac{1}{x \sqrt{\ln(x)}}
-> $$</blockquote>>> [!success]- Solution
->> Let $u = \ln(x)$, then [[§5.4 Indefinite Integrals#^5fcf9e]]
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Let $u = \ln(x)$, then [[§5.4 Indefinite Integrals#^5fcf9e]]</div></details></div></div>
 
-<blockquote>[!example] Problem
-Compute the following indefinite integrals
-<ul><li>$\int \sin^2 \theta \cos \theta d\theta$</li><li>$\int \sec^2 2\theta d \theta$</li><li>$\int \frac{\cos (\ln(t))}{t} dt$</li><li>$\int \tan^2 \theta \sec^2 \theta d\theta$</blockquote>></li></ul>>> [!success]- Solution
->> We’ll list the $u$ choices (I’ll complete one to make sure we know what we’re doing)
->> - $u = \sin(x), du = \cos(x)dx$ We can directly make a substitution:
->> $$\int \sin^2 \theta \cos(\theta) d\theta = \int u^2 du = \frac{u^3}{3} + C$$
->> This is an answer in terms of $u$, so to complete the problem, we must substitute back:
->> $$\frac{u^3}{3} + C = \frac13 \sin^3 (x) + C$$
->> completing our solution.
->> - $u = 2\theta$
->> - $u = \ln(t)$
->> - $u = \tan(\theta)$
->> Refer to the [[§5.4 Indefinite Integrals#^adaaae|trig table]] when needed
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following indefinite integrals
+<ul><li>$\int \sin^2 \theta \cos \theta d\theta$</li><li>$\int \sec^2 2\theta d \theta$</li><li>$\int \frac{\cos (\ln(t))}{t} dt$</li><li>$\int \tan^2 \theta \sec^2 \theta d\theta$</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We’ll list the $u$ choices (I’ll complete one to make sure we know what we’re doing)
+<ul><li>$u = \sin(x), du = \cos(x)dx$ We can directly make a substitution:</li></ul>$$\int \sin^2 \theta \cos(\theta) d\theta = \int u^2 du = \frac{u^3}{3} + C$$
+This is an answer in terms of $u$, so to complete the problem, we must substitute back:
+$$\frac{u^3}{3} + C = \frac13 \sin^3 (x) + C$$
+completing our solution.
+<ul><li>$u = 2\theta$</li><li>$u = \ln(t)$</li><li>$u = \tan(\theta)$</li></ul>Refer to the [[§5.4 Indefinite Integrals#^adaaae|trig table]] when needed</div></details></div></div>
 
-<blockquote>[!example] Problem (<strong>Challenge</strong>)
-Compute the following integral:
-$$\int_0^1 \frac{dx}{(1 + \sqrt{x})^4}$$</blockquote>>> [!success]- Solution
->> Final answer is $\frac16$. Here’s a solution: Let $u = \sqrt{x} + 1$ and notice that $dx = 2(u-1)$ (rearrange the differentiated equation). This gives you the integral:
->> $$\int_1^2 \frac{u-1}{u^4}du$$which can be split into two integrals, each of which are computable to us.
+<div class="callout callout-example"><div class="callout-title">Problem (<strong>Challenge</strong>)</div><div class="callout-body">Compute the following integral:
+$$\int_0^1 \frac{dx}{(1 + \sqrt{x})^4}$$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Final answer is $\frac16$. Here’s a solution: Let $u = \sqrt{x} + 1$ and notice that $dx = 2(u-1)$ (rearrange the differentiated equation). This gives you the integral:
+$$\int_1^2 \frac{u-1}{u^4}du$$which can be split into two integrals, each of which are computable to us.</div></details></div></div>
 
-<blockquote>[!example] Problem (<strong>Challenge</strong>)
-Compute the following indefinite integrals.
-<ul><li>$\displaystyle \int_{-\pi/2}^{\pi/2} \frac{x^2 \sin(x)}{x^6 + 1} dx$</li><li>$\displaystyle \int \sqrt{x-1}(x+3) dx$</li><li>$\displaystyle \int \sqrt{x} \sin(\sqrt{x^3} +1)dx$</blockquote>></li></ul>>> [!success]- Solution
->> The first is 0 since it is an odd function. Second, substitute $u = x -1$; then $x+ 3 = u + 4$ and $du = dx$. Finally, the last one is $u = \sqrt{x^3} + 1$ and $du = \frac32 \sqrt{x}$
+<div class="callout callout-example"><div class="callout-title">Problem (<strong>Challenge</strong>)</div><div class="callout-body">Compute the following indefinite integrals.
+<ul><li>$\displaystyle \int_{-\pi/2}^{\pi/2} \frac{x^2 \sin(x)}{x^6 + 1} dx$</li><li>$\displaystyle \int \sqrt{x-1}(x+3) dx$</li><li>$\displaystyle \int \sqrt{x} \sin(\sqrt{x^3} +1)dx$</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">The first is 0 since it is an odd function. Second, substitute $u = x -1$; then $x+ 3 = u + 4$ and $du = dx$. Finally, the last one is $u = \sqrt{x^3} + 1$ and $du = \frac32 \sqrt{x}$</div></details></div></div>
 
-<blockquote>[!example] Problem (<strong>Challenge</strong>)
-Suppose $f$ is a function with $\displaystyle \int_0^8 f(x)dx = 20$. What is the value of $\displaystyle \int_0^2 f(4x)dx$?</blockquote>>> [!success]- Solution
->> Using $u = 4x$, we see that:
->> $$\int_0^2 f(4x) dx = \frac14 \int_0^8 f(u) du = \frac14 \cdot 20 = 5$$
+<div class="callout callout-example"><div class="callout-title">Problem (<strong>Challenge</strong>)</div><div class="callout-body">Suppose $f$ is a function with $\displaystyle \int_0^8 f(x)dx = 20$. What is the value of $\displaystyle \int_0^2 f(4x)dx$?
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Using $u = 4x$, we see that:
+$$\int_0^2 f(4x) dx = \frac14 \int_0^8 f(u) du = \frac14 \cdot 20 = 5$$</div></details></div></div>
     </article>
   </main>
 

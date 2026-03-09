@@ -23,6 +23,95 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
   </style>
 </head>
 <body id="top">
@@ -53,51 +142,43 @@
   <main>
     <article>
 <p>This section is just the "opposite" of the product rule. <br>
-<blockquote>[!theorem] Proposition<br>
-[Integration by Parts]<br>
+<div class="callout callout-theorem"><div class="callout-title">Proposition</div><div class="callout-body">[Integration by Parts]<br>
 We have the following integration identity:<br>
 $$
 > \int u dv = uv - \int v du
-> $$</blockquote><br>
-Here’s a cool rule of thumb that I found to always select the correct $u$ and $v$: <strong>Choose $u$ in this order:</strong><br>
+> $$</div></div></p>
+
+<p>Here’s a cool rule of thumb that I found to always select the correct $u$ and $v$: <strong>Choose $u$ in this order:</strong><br>
 <ul><li>L: logarithms</li><li>I: inverse functions</li><li>A: algebraic (polynomials, etc.)</li><li>T: trigonometric functions</li><li>E: exponentials</li></ul>I found out later that if we add a $d$ at the end, this spells DETAIL backwards... so another way to remember this trick is:<br>
 <ul><li>D: $dv$</li><li>E: exponentials</li><li>T: trigonometric functions</li><li>A: algebraic (polynomials, etc.)</li><li>I: inverse functions</li><li>L: logarithms</li></ul></p>
 
-<blockquote>[!example] Problem
-Compute the antiderivative:
-<ul><li>$\displaystyle \int (x^2 + 2x)\cos(x) dx$</li><li>$\displaystyle \int 4x \cos (2-3x) dx$</blockquote>></li></ul>>> [!success]- Solution
->> - We show the following steps:
->> $$\begin{alignat*}{2}\int (x^2 + 2x)\cos(x) dx &= \int (x^2 + 2x) d \sin(x) \\&= \left ( x^2 + 2x \right ) \sin(x) - \int \sin(x) d x^2 + 2x\\&= \left ( x^2 + 2x \right ) \sin(x) - 2 \int \sin(x) (x+1) dx\\&= \left ( x^2 + 2x \right ) \sin(x) - 2 \int (x+1) d \left ( -\cos(x) \right )\\&= \left ( x^2 + 2x \right ) \sin(x) + 2 \left ( (x+1) \cos(x) - \int \cos(x)dx \right )\\&= \left ( x^2 + 2x \right ) \sin(x) + 2 \left ( (x+1) \cos(x) \right ) -\sin(x) + C\end{alignat*}$$
->> - Start with a change of coordinates:
->> $$u = 2-3x \quad \text{ , } \quad du = -3dx \quad \text{ and } \quad x = \frac{u - 2}{-3}$$From here, we can rewrite:$$\int 4x \cos(2-3x) dx = \frac{-4}{3} \int \underbrace{x}_{= \frac{u - 2}{-3}} \cos (\underbrace{2 - 3x}_{u}) \underbrace{-3x dx}_{du} = \frac{-4}{3} \cdot \frac{1}{-3} \int (u-2) \cos (u) du$$which can be solved the same way as the preceding problem.
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the antiderivative:
+<ul><li>$\displaystyle \int (x^2 + 2x)\cos(x) dx$</li><li>$\displaystyle \int 4x \cos (2-3x) dx$</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">- We show the following steps:
+$$\begin{alignat*}{2}\int (x^2 + 2x)\cos(x) dx &= \int (x^2 + 2x) d \sin(x) \\&= \left ( x^2 + 2x \right ) \sin(x) - \int \sin(x) d x^2 + 2x\\&= \left ( x^2 + 2x \right ) \sin(x) - 2 \int \sin(x) (x+1) dx\\&= \left ( x^2 + 2x \right ) \sin(x) - 2 \int (x+1) d \left ( -\cos(x) \right )\\&= \left ( x^2 + 2x \right ) \sin(x) + 2 \left ( (x+1) \cos(x) - \int \cos(x)dx \right )\\&= \left ( x^2 + 2x \right ) \sin(x) + 2 \left ( (x+1) \cos(x) \right ) -\sin(x) + C\end{alignat*}$$
+<ul><li>Start with a change of coordinates:</li></ul>$$u = 2-3x \quad \text{ , } \quad du = -3dx \quad \text{ and } \quad x = \frac{u - 2}{-3}$$From here, we can rewrite:$$\int 4x \cos(2-3x) dx = \frac{-4}{3} \int \underbrace{x}_{= \frac{u - 2}{-3}} \cos (\underbrace{2 - 3x}_{u}) \underbrace{-3x dx}_{du} = \frac{-4}{3} \cdot \frac{1}{-3} \int (u-2) \cos (u) du$$which can be solved the same way as the preceding problem.</div></details></div></div>
 
-<blockquote>[!example] Problem
-Compute the antiderivative:
-<ul><li>$\displaystyle \int e^x \sin (x) dx$</li><li>$\displaystyle\int \ln\sqrt{x} dx$</li><li>$\displaystyle \int e^{\sqrt{x}} dx$</li><li>$\displaystyle \int \cos(\ln(x))dx$</li><li>$\displaystyle \int (\arcsin(x))^2 dx$</blockquote>></li></ul>>> [!success]- Solution
->> We can use tabular integration to speed these up.
->> - Consider the following table:
->> $$\begin{array}{|c|c|}\hline \frac{d}{dx} & \int dx \\ \hline\sin(x) & e^x \\ \cos(x) & e^x\\ \sin(x) & e^x\\\cos (x) & e^x \\ \hline\end{array}$$
->> This gives us: $$ \begin{alignat*}{2}\int e^x \sin(x)dx &= e^x \sin(x) - \int e^x d(\sin (x)) \\ &= e^x \sin(x) - \int e^x \cos(x)dx\\ &= e^x \sin(x) - \left [ e^x \cos(x) - \int e^x d(\cos(x)) \right ]\\ \underbrace{\int e^x \sin(x)dx } &= e^x \sin(x) - e^x \cos(x) - \underbrace{\int e^x \sin(x) dx}\end{alignat*}$$
->>Looking at the last line, we see that:
->> $$\int e^x \sin(x) dx = \frac12 e^x (\sin(x) - \cos (x))$$
->> - Using $u$-substitution, we see that:
->> $$u = \sqrt{x} \quad \text{ and } \quad du = \frac{1}{2 \sqrt{x}} dx \quad \text{ give us } \quad dx = 2 u du$$
->> This converts our integral to
->> $$\int \ln(\sqrt{x}) = 2 \int u \ln (u) du$$
->> which we can compute using the dETAIL technique.
->> - Same technique as above gives us:
->> $$ \int e^{\sqrt{x}} dx = 2 \int ue^u du$$
->> - Making a $u$-substitution for $\ln(x)$ gives you:
->> $$\underbrace{u = \ln(x)}_{e^u = x} \quad \text{ and } \quad du = \frac1x dx \quad \text{ implying } \quad dx = e^u du$$
->> This turns the integral into:
->> $$\int\cos (\ln(x))dx = \int e^u \cos(u) du$$
->> which we computed in the example above. 
->> - This is another $u$-<a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">substitution</a>, this time: $$\underbrace{u = \arcsin (x)}_{x = \sin(u)} \quad \text{ and } \quad du = \frac{1}{\sqrt{1-x^2}} dx$$
->> Solving for $u$ in the second equation, we see:
->> $$ dx = \sqrt{1 - (\sin(u)^2)} du = \cos(u) du$$
->> by the trigonometric identity $\sin^2(x) + \cos^2(x) = 1$. This gives us the integral:
->> $$\int \arcsin^2 (x) dx = \int u^2 \cos(u) du$$
-<blockquote>for which a similar integral was computed earlier.</blockquote>
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the antiderivative:
+<ul><li>$\displaystyle \int e^x \sin (x) dx$</li><li>$\displaystyle\int \ln\sqrt{x} dx$</li><li>$\displaystyle \int e^{\sqrt{x}} dx$</li><li>$\displaystyle \int \cos(\ln(x))dx$</li><li>$\displaystyle \int (\arcsin(x))^2 dx$</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We can use tabular integration to speed these up.
+<ul><li>Consider the following table:</li></ul>$$\begin{array}{|c|c|}\hline \frac{d}{dx} & \int dx \\ \hline\sin(x) & e^x \\ \cos(x) & e^x\\ \sin(x) & e^x\\\cos (x) & e^x \\ \hline\end{array}$$
+This gives us: $$ \begin{alignat*}{2}\int e^x \sin(x)dx &= e^x \sin(x) - \int e^x d(\sin (x)) \\ &= e^x \sin(x) - \int e^x \cos(x)dx\\ &= e^x \sin(x) - \left [ e^x \cos(x) - \int e^x d(\cos(x)) \right ]\\ \underbrace{\int e^x \sin(x)dx } &= e^x \sin(x) - e^x \cos(x) - \underbrace{\int e^x \sin(x) dx}\end{alignat*}$$
+Looking at the last line, we see that:
+$$\int e^x \sin(x) dx = \frac12 e^x (\sin(x) - \cos (x))$$
+<ul><li>Using $u$-substitution, we see that:</li></ul>$$u = \sqrt{x} \quad \text{ and } \quad du = \frac{1}{2 \sqrt{x}} dx \quad \text{ give us } \quad dx = 2 u du$$
+This converts our integral to
+$$\int \ln(\sqrt{x}) = 2 \int u \ln (u) du$$
+which we can compute using the dETAIL technique.
+<ul><li>Same technique as above gives us:</li></ul>$$ \int e^{\sqrt{x}} dx = 2 \int ue^u du$$
+<ul><li>Making a $u$-substitution for $\ln(x)$ gives you:</li></ul>$$\underbrace{u = \ln(x)}_{e^u = x} \quad \text{ and } \quad du = \frac1x dx \quad \text{ implying } \quad dx = e^u du$$
+This turns the integral into:
+$$\int\cos (\ln(x))dx = \int e^u \cos(u) du$$
+which we computed in the example above. 
+<ul><li>This is another $u$-<a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">substitution</a>, this time: $$\underbrace{u = \arcsin (x)}_{x = \sin(u)} \quad \text{ and } \quad du = \frac{1}{\sqrt{1-x^2}} dx$$</li></ul>Solving for $u$ in the second equation, we see:
+$$ dx = \sqrt{1 - (\sin(u)^2)} du = \cos(u) du$$
+by the trigonometric identity $\sin^2(x) + \cos^2(x) = 1$. This gives us the integral:
+$$\int \arcsin^2 (x) dx = \int u^2 \cos(u) du$$</div></details>
+for which a similar integral was computed earlier. </div></div>
     </article>
   </main>
 

@@ -23,6 +23,95 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
   </style>
 </head>
 <body id="top">
@@ -54,37 +143,34 @@
     <article>
 <p>Taylor's theorem (below) completes the picture on the goal of representing functions as series, as mentioned in <a href="calcII/119-representing-functions-as-power-series.html" class="wiki-link" data-note="119-representing-functions-as-power-series">§11.9 Representing Functions as Power Series</a>.</p>
 
-<blockquote>[!theorem] Theorem
-If $f$ has a power series representation at $a$, that is, there is an $R$ such that$$f(x) = \sum_{n = 0}^\infty c_n (x - a)^n \quad \text{ for } \quad \left | x - a \right | < R$$
+<div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">If $f$ has a power series representation at $a$, that is, there is an $R$ such that$$f(x) = \sum_{n = 0}^\infty c_n (x - a)^n \quad \text{ for } \quad \left | x - a \right | < R$$
 then the coefficients are given by:
 $$c_n := \frac{f^{(n)}(a)}{n!}$$
 The series representation:
 $$f(x) = \sum_{n = 0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n$$
-is called the <em>Taylor series of the function $f$ at $a$</em>. When $a=0$, we call this the Maclaurin series.</blockquote>
+is called the <em>Taylor series of the function $f$ at $a$</em>. When $a=0$, we call this the Maclaurin series.</div></div>
 
-<blockquote>[!theorem] Theorem
-If $f(x)=T_n(x)+R_n(x)$, where $T_n$ is the $n$ th-degree Taylor polynomial of $f$ at $a$ and
-$$ \lim _{n \rightarrow \infty} R_n(x)=0 $$ for $|x-a|<R$, then $f$ is equal to the sum of its Taylor series on the interval $|x-a|<R$</blockquote>
-<blockquote>[!theorem] Theorem
-If $\left | f^{n+1}(x) \right | \leq M$ for $\left | x-a \right | \leq d$, then the remainder $R_n(x)$ of the Taylor series satisfies the inequality:
-$$ \left | R_n(x) \right | \leq \frac{M}{(n+1)!} \left | x-a \right |^{n+1}$$ for $\left | x-a \right | \leq d$</blockquote>
-<blockquote>[!theorem] Theorem
-The Taylor expansions important functions are below:
-$$ \begin{array}{|c|c|c|} \hline \text{Function} & \text{Taylor Series} & \hline{Expansion} \\ \hline \frac{1}{1-x} & \displaystyle \sum_{n=0}^{\infty} x^n & 1+x+x^2+x^3+\cdots \\ e^x & \displaystyle \sum_{n = 0}^\infty \frac{x^n}{n!} & 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} + \cdots \\  \sin (x) & \displaystyle \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n+1}}{(2 n+1) !} & x-\frac{x^3}{3 !}+\frac{x^5}{5 !}-\frac{x^7}{7 !}+\cdots \\ \cos(x) & \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n}}{(2 n) !} & 1-\frac{x^2}{2 !}+\frac{x^4}{4 !}-\frac{x^6}{6 !}+\cdots \\  \tan { }^{-1} x & \displaystyle \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n+1}}{2 n+1} & x-\frac{x^3}{3}+\frac{x^5}{5}-\frac{x^7}{7}+\cdots \\ \ln (1+x) & \displaystyle \sum_{n=1}^{\infty}(-1)^{n-1} \frac{x^n}{n} & x-\frac{x^2}{2}+\frac{x^3}{3}-\frac{x^4}{4}+\cdots \\ \hline \end{array} $$</blockquote>
-<blockquote>[!example] Example
-Provide a Taylor series for the function $f(x) = xe^x$ centered at $a = 0$</blockquote>>> [!success]- Solution
->> Take the series from the table above and multiply by $x$: $$\sum_{n = 0}^\infty \frac{x^{n+1}}{n!} $$
+<div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">If $f(x)=T_n(x)+R_n(x)$, where $T_n$ is the $n$ th-degree Taylor polynomial of $f$ at $a$ and
+$$ \lim _{n \rightarrow \infty} R_n(x)=0 $$ for $|x-a|<R$, then $f$ is equal to the sum of its Taylor series on the interval $|x-a|<R$</div></div>
 
-<blockquote>[!example] Problem
-Find the first four terms of the Taylor series centered at $a = 2$ of the function:
+<div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">If $\left | f^{n+1}(x) \right | \leq M$ for $\left | x-a \right | \leq d$, then the remainder $R_n(x)$ of the Taylor series satisfies the inequality:
+$$ \left | R_n(x) \right | \leq \frac{M}{(n+1)!} \left | x-a \right |^{n+1}$$ for $\left | x-a \right | \leq d$</div></div>
+
+<div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">The Taylor expansions important functions are below:
+$$ \begin{array}{|c|c|c|} \hline \text{Function} & \text{Taylor Series} & \hline{Expansion} \\ \hline \frac{1}{1-x} & \displaystyle \sum_{n=0}^{\infty} x^n & 1+x+x^2+x^3+\cdots \\ e^x & \displaystyle \sum_{n = 0}^\infty \frac{x^n}{n!} & 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} + \cdots \\  \sin (x) & \displaystyle \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n+1}}{(2 n+1) !} & x-\frac{x^3}{3 !}+\frac{x^5}{5 !}-\frac{x^7}{7 !}+\cdots \\ \cos(x) & \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n}}{(2 n) !} & 1-\frac{x^2}{2 !}+\frac{x^4}{4 !}-\frac{x^6}{6 !}+\cdots \\  \tan { }^{-1} x & \displaystyle \sum_{n=0}^{\infty}(-1)^n \frac{x^{2 n+1}}{2 n+1} & x-\frac{x^3}{3}+\frac{x^5}{5}-\frac{x^7}{7}+\cdots \\ \ln (1+x) & \displaystyle \sum_{n=1}^{\infty}(-1)^{n-1} \frac{x^n}{n} & x-\frac{x^2}{2}+\frac{x^3}{3}-\frac{x^4}{4}+\cdots \\ \hline \end{array} $$</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Provide a Taylor series for the function $f(x) = xe^x$ centered at $a = 0$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Take the series from the table above and multiply by $x$: $$\sum_{n = 0}^\infty \frac{x^{n+1}}{n!} $$</div></details></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Find the first four terms of the Taylor series centered at $a = 2$ of the function:
 $$
 > f(x) = \frac{1}{1 + x}
-> $$</blockquote>>> [!success]- Solution
->> This is just computing a lot of derivatives.
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">This is just computing a lot of derivatives.</div></details></div></div>
 
-<blockquote>[!example] Problem
-Find the Taylor Series for $f(x)=\ln (3+4 x)$ about $x=0$.</blockquote>>> [!success]- Solution
->[Link](https://tutorial.math.lamar.edu/Solutions/CalcII/TaylorSeries/Prob4.aspx)
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Find the Taylor Series for $f(x)=\ln (3+4 x)$ about $x=0$.
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body"></div></details>
+[Link](https://tutorial.math.lamar.edu/Solutions/CalcII/TaylorSeries/Prob4.aspx)</div></div>
 
 <p>Here’s another [helpful link](https://math.libretexts.org/Courses/Monroe<em>Community</em>College/MTH<em>211</em>Calculus<em>II/Chapter</em>Ch10%3A<em>Power</em>Series/10.3%3A<em>Taylor</em>and<em>Maclaurin</em>Series/10.3E%3A<em>Exercises</em>for<em>Taylor</em>Polynomials<em>and</em>Taylor_Series)</p>
     </article>

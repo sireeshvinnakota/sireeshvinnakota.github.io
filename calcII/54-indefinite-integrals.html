@@ -23,6 +23,95 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
   </style>
 </head>
 <body id="top">
@@ -54,32 +143,16 @@
     <article>
 <p>The big idea in this section is just to remember why we have to use $+C$ when we are taking antiderivatives: both $x^2 + 3$ and $x^2 + 5$ have the same derivative, even though they’re different functions. In general, derivatives tend to lose some information, and the $C$ accommodates for all possibilities of that lost constant. These functions with general constants</p>
 
-<p>>[!fact] Theorem (eluR rewoP)<br>
->$\int x^n dx = \frac{1}{n+1}x^{n+1}$</p>
+<div class="callout callout-note"><div class="callout-title">Theorem (eluR rewoP)</div><div class="callout-body">$\int x^n dx = \frac{1}{n+1}x^{n+1}$</div></div>
 
 <p>^5fcf9e</p>
 
 <p>Consult the table below for the antiderivatives associated to the trigonometric functions and their inverses:</p>
 
-<p>| Integrand                   | Antiderivative          |<br>
-| --------------------------- | ----------------------- |<br>
-| $\sin x$                    | $-\cos x + C$           |<br>
-| $\cos x$                    | $\sin x + C$            |<br>
-| $\sec^2 x$                  | $\tan x + C$            |<br>
-| $-\csc^2 x$                 | $\cot x + C$            |<br>
-| $\sec x \tan x$             | $\sec x + C$            |<br>
-| $-\csc x \cot x$            | $\csc x + C$            |<br>
-| $\dfrac{1}{\sqrt{1-x^2}}$   | $\arcsin x + C$         |<br>
-| $\dfrac{-1}{\sqrt{1-x^2}}$  | $\arccos x + C$         |<br>
-| $\dfrac{1}{1+x^2}$          | $\arctan x + C$         |<br>
-| $\dfrac{-1}{1+x^2}$         | $\text{arccot}\, x + C$ |<br>
-| $\dfrac{1}{x\sqrt{x^2-1}}$  | $\text{arcsec}\, x + C$ |<br>
-| $\dfrac{-1}{x\sqrt{x^2-1}}$ | $\text{arccsc}\, x + C$ |</p>
+<table><thead><tr><th>Integrand</th><th>Antiderivative</th></tr></thead><tbody><tr><td>$\sin x$</td><td>$-\cos x + C$</td></tr><tr><td>$\cos x$</td><td>$\sin x + C$</td></tr><tr><td>$\sec^2 x$</td><td>$\tan x + C$</td></tr><tr><td>$-\csc^2 x$</td><td>$\cot x + C$</td></tr><tr><td>$\sec x \tan x$</td><td>$\sec x + C$</td></tr><tr><td>$-\csc x \cot x$</td><td>$\csc x + C$</td></tr><tr><td>$\dfrac{1}{\sqrt{1-x^2}}$</td><td>$\arcsin x + C$</td></tr><tr><td>$\dfrac{-1}{\sqrt{1-x^2}}$</td><td>$\arccos x + C$</td></tr><tr><td>$\dfrac{1}{1+x^2}$</td><td>$\arctan x + C$</td></tr><tr><td>$\dfrac{-1}{1+x^2}$</td><td>$\text{arccot}\, x + C$</td></tr><tr><td>$\dfrac{1}{x\sqrt{x^2-1}}$</td><td>$\text{arcsec}\, x + C$</td></tr><tr><td>$\dfrac{-1}{x\sqrt{x^2-1}}$</td><td>$\text{arccsc}\, x + C$</td></tr></tbody></table>
+^adaaae
 
-<p>^adaaae</p>
-
-<blockquote>[!example] Example
-Complete the following table of antiderivatives
+<div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Complete the following table of antiderivatives
 $$
 > \begin{array}{|c|c|c|c|}
 > \hline
@@ -90,44 +163,41 @@ $$
 > \csc(x)\cot(x) & & \frac{1}{\sqrt{1-x^2}} & \\ 
 > \frac{1}{x\sqrt{x^2 - 1}} & & \frac{-1}{\sqrt{1-x^2}} & \\ \hline
 > \end{array}
-> $$</blockquote>>> [!success]- Solution
->> $$\begin{array}{|c|c|c|c|}\hline\text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline x^n & \frac{x^{n+1}}{n+1} +C & \frac{1}{x} & \ln|x| + C \\ C & Cx + D & e^x & e^x + C\\ \cos(x) & \sin(x) + C& \sec^2(x) & \tan(x) + C \\ \csc(x)\cot(x) & -\csc(x) + C & \frac{1}{\sqrt{1-x^2}} & \arcsin(x) + C \\ \frac{1}{x\sqrt{x^2-1}} & \sec^{-1}(x) + C & \frac{-1}{\sqrt{1-x^2}} & \arccos (x) + C \\ \hline\end{array}$$
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$\begin{array}{|c|c|c|c|}\hline\text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline x^n & \frac{x^{n+1}}{n+1} +C & \frac{1}{x} & \ln|x| + C \\ C & Cx + D & e^x & e^x + C\\ \cos(x) & \sin(x) + C& \sec^2(x) & \tan(x) + C \\ \csc(x)\cot(x) & -\csc(x) + C & \frac{1}{\sqrt{1-x^2}} & \arcsin(x) + C \\ \frac{1}{x\sqrt{x^2-1}} & \sec^{-1}(x) + C & \frac{-1}{\sqrt{1-x^2}} & \arccos (x) + C \\ \hline\end{array}$$</div></details></div></div>
 
-<blockquote>[!example] Problem
-Compute $f(x)$ when:
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $f(x)$ when:
 $$
 > f''(x) = e^x -2\sin (x), \quad f(0)=3 \quad \text{ and} \quad f(\pi/2) = 0
-> $$</blockquote>>> [!success]- Solution
->> We integrate:
->> $$\int e^x -2 \sin(x) dx = e^x + 2\cos(x) + C = f’(x)$$
->> ...and once more
->> $$\int e^x + 2\cos(x) + C dx = e^x + 2\sin(x) + Cx + D = f(x)$$
->> Now, using the $f(0)= 3$, we test:
->> $$f(0) = e^0 + 2\sin(0) + C\cdot 0 + D = 1 + D = 3$$
->> implying $D = 2$. Similarly, we use $f(\pi/2) = 0$ to find:
->> $$f(\pi/2) = e^{\pi/2} + 2\sin(\pi/2) + C \cdot \pi/2 + 2 = 0$$
->> implying that 
->> $$C = -\frac{2}{\pi} \left ( e^{\pi/2} +4 \right )$$
->> This gives us the final answer:
->> $$\boxed{f(x) = e^x + 2\sin(x) + -\left ( \frac{2}{\pi} (e^{\pi/2} +4) \right )x + 2}$$
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We integrate:
+$$\int e^x -2 \sin(x) dx = e^x + 2\cos(x) + C = f’(x)$$
+...and once more
+$$\int e^x + 2\cos(x) + C dx = e^x + 2\sin(x) + Cx + D = f(x)$$
+Now, using the $f(0)= 3$, we test:
+$$f(0) = e^0 + 2\sin(0) + C\cdot 0 + D = 1 + D = 3$$
+implying $D = 2$. Similarly, we use $f(\pi/2) = 0$ to find:
+$$f(\pi/2) = e^{\pi/2} + 2\sin(\pi/2) + C \cdot \pi/2 + 2 = 0$$
+implying that 
+$$C = -\frac{2}{\pi} \left ( e^{\pi/2} +4 \right )$$
+This gives us the final answer:
+$$\boxed{f(x) = e^x + 2\sin(x) + -\left ( \frac{2}{\pi} (e^{\pi/2} +4) \right )x + 2}$$</div></details></div></div>
 
-<blockquote>[!example] Problem
-Compute the indefinite integral:
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the indefinite integral:
 $$
 > \int \frac{\cos x}{\sin^2 x} dx
-> $$</blockquote>>> [!success]- Solution
->> We know that $\frac{\cos}{\sin} = \cot$, and what is left is a factor of $\frac1\sin = \csc$:
->> $$\int \csc x \cot x dx = -\csc x + C$$
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We know that $\frac{\cos}{\sin} = \cot$, and what is left is a factor of $\frac1\sin = \csc$:
+$$\int \csc x \cot x dx = -\csc x + C$$</div></details></div></div>
 
-<blockquote>[!example] Problem
-Evaluate the following definite integral:
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the following definite integral:
 $$
 > \int_0^2 x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx
-> $$</blockquote>>> [!success]- Solution
->> We compute the general antiderivative:$$\int x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx = \int x^{4/3} + x^{5/4}dx$$
->> When we take the “reverse power rule” we have:
->> $$\frac37 x^{7/3} + \frac49 x^{9/4} + C$$ and plug in:$$[\frac37 x^{7/3} + \frac49 x^{9/4} + C]_0^2 = 2^{7/3} + 2^{9/4}$$
->
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We compute the general antiderivative:$$\int x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx = \int x^{4/3} + x^{5/4}dx$$
+When we take the “reverse power rule” we have:
+$$\frac37 x^{7/3} + \frac49 x^{9/4} + C$$ and plug in:$$[\frac37 x^{7/3} + \frac49 x^{9/4} + C]_0^2 = 2^{7/3} + 2^{9/4}$$</div></details>
+</div></div>
     </article>
   </main>
 

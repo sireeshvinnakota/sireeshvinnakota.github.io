@@ -23,6 +23,95 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
   </style>
 </head>
 <body id="top">
@@ -54,14 +143,13 @@
     <article>
 <p>A series is understood as a special kind of <a href="calcII/111-sequences.html" class="wiki-link" data-note="111-sequences">sequence</a>. The remainder of the course will be spent proving properties of series, and then studying a special class of them that help us describe functions: there’s a really cool [use of series]({https://www.desmos.com/calculator/dzp8ygiudo):</p>
 
-<blockquote>[!definition] Definition (Series)
-Given a sequence $\left ( a_n \right )_{n\in \mathbb{N}}$, we can define the $n$th <strong>partial sum</strong>:
+<div class="callout callout-definition"><div class="callout-title">Definition (Series)</div><div class="callout-body">Given a sequence $\left ( a_n \right )_{n\in \mathbb{N}}$, we can define the $n$th <strong>partial sum</strong>:
 $$
 > s_n := \sum_{i = 1}^n a_i \quad \text{ with } \quad  \lim_{n \to \infty} s_n = \sum_{i = 1}^\infty a_i
 > $$
-If this sum converges, we say that the series converges, otherwise, we say it diverges.</blockquote>
-<blockquote>[!definition] Definition (Geometric Series)
-Consider a geometric sequence of the form:
+If this sum converges, we say that the series converges, otherwise, we say it diverges.</div></div>
+
+<div class="callout callout-definition"><div class="callout-title">Definition (Geometric Series)</div><div class="callout-body">Consider a geometric sequence of the form:
 $$
 > a, ar, ar^2, ar^3, \cdots
 > $$
@@ -69,45 +157,42 @@ If $-1 < r < 1$, the partial sums have:
 $$
 > s_n = \sum_{i = 0}^n ar^i = \frac{a (1-r^n)}{1-r} \quad \text{ and } \quad s = \lim_{n \to \infty} s_n = \sum_{i = 0}^n ar^i = \frac{a}{1-r}
 > $$
-If $\left | r \right | \geq 1$, the series diverges.</blockquote>
-^df9d00
+If $\left | r \right | \geq 1$, the series diverges.</div></div>
 
-<blockquote>[!theorem] Theorem (Test for Divergence)
-If a series $\displaystyle \sum_{i = 1}^\infty a_n$ is convergent, then $\displaystyle \lim_{n \to \infty} a_n = 0$. Conversely, if $\displaystyle \lim_{n \to \infty} a_n \neq 0$, or if it diverges, then the series $\displaystyle \sum_{i = 1}^\infty a_n$ diverges as well.</blockquote>
->[!warning] WARNING
->The converse is false. Just because a sequence tends to zero, does not mean that the corresponding series of partial sums converges as well. As an example, the harmonic series, defined by:
-<blockquote>$$\sum_{i = 1}^\infty \frac1n = \infty,$$
-that is, the series diverges.</blockquote>
+<p>^df9d00</p>
 
-<blockquote>[!theorem] Theorem
-We have the following properties:
-<ul><li>$\displaystyle \sum_{n=1}^{\infty} c a_n=c \sum_{n=1}^{\infty} a_n$</li><li>$\displaystyle \sum_{n=1}^{\infty}\left(a_n+b_n\right)=\sum_{n=1}^{\infty} a_n+\sum_{n=1}^{\infty} b_n$</li><li>$\displaystyle \sum_{n=1}^{\infty}\left(a_n-b_n\right)=\sum_{n=1}^{\infty} a_n-\sum_{n=1}^{\infty} b_n$</blockquote>></li></ul>
-<blockquote>[!example] Problem
-Provide an example of a convergent series and a divergent series. Why do these sequences converge/diverge? Draw a picture. ([Link](https://www.desmos.com/calculator/avy0qe8bm3?lang=fr))</blockquote>
-<blockquote>[!example] Problem
-Determine whether the following sequences converge, and compute their sum if they do:
+<div class="callout callout-theorem"><div class="callout-title">Theorem (Test for Divergence)</div><div class="callout-body">If a series $\displaystyle \sum_{i = 1}^\infty a_n$ is convergent, then $\displaystyle \lim_{n \to \infty} a_n = 0$. Conversely, if $\displaystyle \lim_{n \to \infty} a_n \neq 0$, or if it diverges, then the series $\displaystyle \sum_{i = 1}^\infty a_n$ diverges as well.</div></div>
+
+<div class="callout callout-warning"><div class="callout-title">WARNING</div><div class="callout-body">The converse is false. Just because a sequence tends to zero, does not mean that the corresponding series of partial sums converges as well. As an example, the harmonic series, defined by:
+$$\sum_{i = 1}^\infty \frac1n = \infty,$$
+that is, the series diverges.</div></div>
+
+<div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">We have the following properties:
+<ul><li>$\displaystyle \sum_{n=1}^{\infty} c a_n=c \sum_{n=1}^{\infty} a_n$</li><li>$\displaystyle \sum_{n=1}^{\infty}\left(a_n+b_n\right)=\sum_{n=1}^{\infty} a_n+\sum_{n=1}^{\infty} b_n$</li><li>$\displaystyle \sum_{n=1}^{\infty}\left(a_n-b_n\right)=\sum_{n=1}^{\infty} a_n-\sum_{n=1}^{\infty} b_n$</li></ul></div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Provide an example of a convergent series and a divergent series. Why do these sequences converge/diverge? Draw a picture. ([Link](https://www.desmos.com/calculator/avy0qe8bm3?lang=fr))</div></div>
+
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Determine whether the following sequences converge, and compute their sum if they do:
 $$
 > \sum_{n=1}^{\infty} \frac{(-3)^{n-1}}{4^n} \quad \text{ and } \quad \sum_{n = 1}^\infty \frac{1}{n (n+1)}
-> $$</blockquote>>> [!success]- Solution
->> First one is a convergent geometric series, with $a = \frac14$ and $r = \frac{-3}{4}$. This gives:
->> $$ S = \frac{\frac14}{1 + \frac34} = \frac17 $$
->> For the second, we apply <a href="calcII/74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a> first, to gain  $$\sum_{n = 1}^\infty \frac{1}{n (n+1)} = \sum_{n = 1}^\infty \left ( \frac{1}{n} - \frac{1}{n + 1} \right )$$If we expand, we get a telescoping sum!
->> $$ S_n = \left ( \frac11 - \frac12 \right ) + \left ( \frac12 - \frac13 \right ) + \cdots  = 1 - \frac{1}{n+1}$$
->> which approaches $1$ as $n \to \infty$.
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">First one is a convergent geometric series, with $a = \frac14$ and $r = \frac{-3}{4}$. This gives:
+$$ S = \frac{\frac14}{1 + \frac34} = \frac17 $$
+For the second, we apply <a href="calcII/74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a> first, to gain  $$\sum_{n = 1}^\infty \frac{1}{n (n+1)} = \sum_{n = 1}^\infty \left ( \frac{1}{n} - \frac{1}{n + 1} \right )$$If we expand, we get a telescoping sum!
+$$ S_n = \left ( \frac11 - \frac12 \right ) + \left ( \frac12 - \frac13 \right ) + \cdots  = 1 - \frac{1}{n+1}$$
+which approaches $1$ as $n \to \infty$.</div></details></div></div>
 
-<blockquote>[!example] Problem
-Determine the convergence of the following series. If it converges, what does it converge to?
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Determine the convergence of the following series. If it converges, what does it converge to?
 $$
 > \sum_{n = 1}^ \infty \frac{3}{n (n + 3)}
-> $$</blockquote>>> [!success]- Solution
->> Converges to $\frac{11}{6}$ by the same steps as the previous problem.
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Converges to $\frac{11}{6}$ by the same steps as the previous problem.</div></details></div></div>
 
-<blockquote>[!example] Problem
-Determine the convergence of the following series. If it converges, what does it converge to?
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Determine the convergence of the following series. If it converges, what does it converge to?
 $$
 > \frac{1}{3}+\frac{2}{9}+\frac{1}{27}+\frac{2}{81}+\frac{1}{243}+\frac{2}{729}+\cdots
-> $$</blockquote>>> [!success]- Solution
->> This is a sum of geometric series, separate terms that have numerator 1 and numerator 2, both have $r = \frac19$.
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">This is a sum of geometric series, separate terms that have numerator 1 and numerator 2, both have $r = \frac19$.</div></details></div></div>
     </article>
   </main>
 

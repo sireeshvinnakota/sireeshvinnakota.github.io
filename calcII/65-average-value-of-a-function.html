@@ -23,6 +23,95 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
   </style>
 </head>
 <body id="top">
@@ -54,44 +143,41 @@
     <article>
 <p>This is a source of <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a></p>
 
-<blockquote>[!theorem] Proposition
-Let $f$ be an integrable function defined on the interval $[a,b]$. Then the average value of $f$, $f_{avg}$ on the defined interval is:
+<div class="callout callout-theorem"><div class="callout-title">Proposition</div><div class="callout-body">Let $f$ be an integrable function defined on the interval $[a,b]$. Then the average value of $f$, $f_{avg}$ on the defined interval is:
 $$
 > f_{avg} := \frac1{b-a} \int_a^b f(x) dx
-> $$</blockquote>
-<blockquote>[!theorem] Theorem (Mean Value Theorem for Integrals)
-If $f$ is a continuous function on the interval $[a,b]$, then there exists $c \in [a,b]$ for which 
+> $$</div></div>
+
+<div class="callout callout-theorem"><div class="callout-title">Theorem (Mean Value Theorem for Integrals)</div><div class="callout-body">If $f$ is a continuous function on the interval $[a,b]$, then there exists $c \in [a,b]$ for which 
 $$
 > f(c) = f_{avg} \quad \text{ that is } \quad f(c) (b-a) = \int_a^b f(x)dx
-> $$</blockquote>
-The geometric interpretation of this equation is finding the real number $c$ such that the area cut out by the function is split directly in half by $f(c)$, slicing horizontally.
+> $$</div></div>
 
-<blockquote>[!example] Example
-Find the average value of the following function on the given interval:
+<p>The geometric interpretation of this equation is finding the real number $c$ such that the area cut out by the function is split directly in half by $f(c)$, slicing horizontally.</p>
+
+<div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Find the average value of the following function on the given interval:
 $$
 > f(x) = \cos^4(x) \sin (x)  \quad \text{ defined on } \quad [0,\pi]
-> $$</blockquote>>> [!success]- Solution
->> Using the theorem above, we can compute:
->> $$f_{avg} = \frac{1}{\pi - 0} \int_0^\pi \cos^4 x \sin(x) dx$$
->> We may proceed by $u$-<a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">substitution</a>, on $u = \cos (x)$ to find the answer.
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Using the theorem above, we can compute:
+$$f_{avg} = \frac{1}{\pi - 0} \int_0^\pi \cos^4 x \sin(x) dx$$
+We may proceed by $u$-<a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">substitution</a>, on $u = \cos (x)$ to find the answer.</div></details></div></div>
 
-<blockquote>[!example] Problem
-Compute the average value of the function:
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the average value of the function:
 $$
 > f(x) = 8x - 3 + 4e^{2-x} dx \quad \text{ on the interval } \quad [0,2]
-> $$</blockquote>>> [!success]- Solution
->> We set up the same integral as before:
->> $$ f_{avg} = \frac12\int_{0}^2 8x - 3 + 4e^{2-x}dx$$
->> The only twist in the remainder of the problem is the antiderivative of $e^{2-x}$, which is just $-e^{2-x}$. Use [[§5.4 Indefinite Integrals#^5fcf9e|power rule]]
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We set up the same integral as before:
+$$ f_{avg} = \frac12\int_{0}^2 8x - 3 + 4e^{2-x}dx$$
+The only twist in the remainder of the problem is the antiderivative of $e^{2-x}$, which is just $-e^{2-x}$. Use [[§5.4 Indefinite Integrals#^5fcf9e|power rule]]</div></details></div></div>
 
-<blockquote>[!example] Problem
-The temperature (in $F$) $t$ hours after 9 a.m. is given by the function:
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">The temperature (in $F$) $t$ hours after 9 a.m. is given by the function:
 $$
 > T(t) := 50 + 14 \sin \left ( \frac{\pi t}{12} \right )
 > $$
-Compute the average temperature between 9 a.m. and 9 p.m. using the function above.</blockquote>>> [!success]- Solution
->> The integral to set up is:
->> $$T_{avg} = \frac{1}{12} \int_0^{12} T(t) dt$$
+Compute the average temperature between 9 a.m. and 9 p.m. using the function above.
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">The integral to set up is:
+$$T_{avg} = \frac{1}{12} \int_0^{12} T(t) dt$$</div></details></div></div>
     </article>
   </main>
 

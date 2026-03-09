@@ -23,6 +23,95 @@
       color: var(--link-visited);
       text-decoration: underline dotted;
     }
+
+    /* ── Callouts ─────────────────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    /* collapsible callouts via <details> */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before {
+      content: "▶ ";
+      font-size: 0.75em;
+      opacity: 0.7;
+    }
+    details.callout[open] > summary::before { content: "▼ "; }
+
+    /* colour themes */
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title, details.callout-note > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+    .callout-info       { border-color: hsl(195,70%,50%); background: hsl(195,60%,96%); }
+    .callout-info       .callout-title, details.callout-info > summary { background: hsl(195,55%,88%); color: hsl(195,60%,28%); }
+    .callout-tip        { border-color: hsl(160,55%,45%); background: hsl(160,50%,96%); }
+    .callout-tip        .callout-title, details.callout-tip > summary { background: hsl(160,45%,88%); color: hsl(160,55%,25%); }
+    .callout-important  { border-color: hsl(265,60%,58%); background: hsl(265,50%,97%); }
+    .callout-important  .callout-title, details.callout-important > summary { background: hsl(265,45%,90%); color: hsl(265,55%,32%); }
+    .callout-warning    { border-color: hsl(38,90%,50%); background: hsl(45,90%,97%); }
+    .callout-warning    .callout-title, details.callout-warning > summary { background: hsl(45,85%,88%); color: hsl(38,70%,28%); }
+    .callout-danger     { border-color: hsl(0,70%,55%);  background: hsl(0,60%,97%); }
+    .callout-danger     .callout-title, details.callout-danger > summary { background: hsl(0,55%,90%);  color: hsl(0,65%,32%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title, details.callout-example > summary { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title, details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    .callout-success    { border-color: hsl(145,55%,42%); background: hsl(145,50%,96%); }
+    .callout-success    .callout-title, details.callout-success > summary { background: hsl(145,45%,87%); color: hsl(145,55%,24%); }
+    .callout-quote      { border-color: hsl(0,0%,55%);    background: hsl(0,0%,97%); }
+    .callout-quote      .callout-title, details.callout-quote > summary { background: hsl(0,0%,90%);    color: hsl(0,0%,30%); }
+    .callout-abstract   { border-color: hsl(185,60%,48%); background: hsl(185,50%,96%); }
+    .callout-abstract   .callout-title, details.callout-abstract > summary { background: hsl(185,50%,88%); color: hsl(185,55%,26%); }
+    /* Math-specific callouts */
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title, details.callout-theorem > summary { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title, details.callout-definition > summary { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); font-style: italic; }
+    .callout-proof      .callout-title, details.callout-proof > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); font-style: normal; }
+    .callout-remark     { border-color: hsl(50,70%,48%);  background: hsl(50,65%,97%); }
+    .callout-remark     .callout-title, details.callout-remark > summary { background: hsl(50,60%,88%);  color: hsl(50,60%,26%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title, details.callout-exercise > summary { background: hsl(15,55%,89%);  color: hsl(15,60%,28%); }
+
+    /* dark mode overrides */
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title, .latex-dark details.callout-note > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title, .latex-dark details.callout-theorem > summary { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title, .latex-dark details.callout-definition > summary { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title, .latex-dark details.callout-example > summary { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-success    { border-color: hsl(145,45%,48%); }
+    .latex-dark .callout-success    .callout-title, .latex-dark details.callout-success > summary { background: hsl(145,28%,20%); color: hsl(145,50%,72%); }
+    .latex-dark .callout-warning    { border-color: hsl(38,80%,52%); }
+    .latex-dark .callout-warning    .callout-title, .latex-dark details.callout-warning > summary { background: hsl(40,40%,20%); color: hsl(40,70%,72%); }
+    .latex-dark .callout-proof      { background: hsl(0,0%,14%); }
+    .latex-dark .callout-proof      .callout-title, .latex-dark details.callout-proof > summary { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
   </style>
 </head>
 <body id="top">
@@ -54,13 +143,11 @@
     <article>
 <p>The main idea of this section is that we can try to approximate areas of non-standard regions of the plane using rectangles, and then adding more rectangles to decrease error. First, we’ll review sigma notation:</p>
 
-<p>>[!note] Note (Sigma Notation)<br>
->Sums can be concisely expressed using notation in which one utilizes an <em>index</em>, or variable that takes on consecutive number values. For example: $$\sum_{i = 4}^7 2i = 2(4) + 2(5) + 2(6) + 2(7) = 8 + 10 + 12 + 14 = 44$$ Recall that distributivity (pulling out constants) and associativity (splitting sums into two sums) both work. Also: $$\sum_{j= 1}^n j = \frac{n (n+1)}{2} \quad \text{,} \quad \sum_{j = 1} ^ {n} j^2 = \frac{n (n+1)(2n+1)}{6} \quad \text{ and } \quad \sum_{j= 1}^n j^3 = \left ( \frac{n (n+1)}{2} \right )^2$$</p>
+<div class="callout callout-note"><div class="callout-title">Note (Sigma Notation)</div><div class="callout-body">Sums can be concisely expressed using notation in which one utilizes an <em>index</em>, or variable that takes on consecutive number values. For example: $$\sum_{i = 4}^7 2i = 2(4) + 2(5) + 2(6) + 2(7) = 8 + 10 + 12 + 14 = 44$$ Recall that distributivity (pulling out constants) and associativity (splitting sums into two sums) both work. Also: $$\sum_{j= 1}^n j = \frac{n (n+1)}{2} \quad \text{,} \quad \sum_{j = 1} ^ {n} j^2 = \frac{n (n+1)(2n+1)}{6} \quad \text{ and } \quad \sum_{j= 1}^n j^3 = \left ( \frac{n (n+1)}{2} \right )^2$$</div></div>
 
 <p>^fe3bb0</p>
 
-<blockquote>[!definition] Definition (Riemann Sum)
-Let $f(x)$ be a continuous function. we <em>approximate</em> the area between $f(x)$ and the $x$-axis on the interval $[a,b]$ using $n$ rectangles via:
+<div class="callout callout-definition"><div class="callout-title">Definition (Riemann Sum)</div><div class="callout-body">Let $f(x)$ be a continuous function. we <em>approximate</em> the area between $f(x)$ and the $x$-axis on the interval $[a,b]$ using $n$ rectangles via:
 $$
 > \sum_{i = 1}^n f(x_i^*) \Delta x
 > $$
@@ -72,38 +159,38 @@ $$
 > a + \frac{i}{2} \Delta x & \text{ for Midpoint Sum, written } M_n\\
 > \end{cases}
 > \quad \text{ and } \quad \Delta x = \frac{b - a}{n}
-> $$</blockquote>
-^3aff78
+> $$</div></div>
 
-<blockquote>[!definition] Definition
-To compute the <em>exact area</em> of this region between $f(x)$ and the $x$-axis on the interval $[a,b]$, we use:
+<p>^3aff78</p>
+
+<div class="callout callout-definition"><div class="callout-title">Definition</div><div class="callout-body">To compute the <em>exact area</em> of this region between $f(x)$ and the $x$-axis on the interval $[a,b]$, we use:
 $$
 > A = \lim_{n \to \infty} L_n =  \lim_{n \to \infty} R_n
-> $$</blockquote>
-^f7f784
+> $$</div></div>
 
-<blockquote>[!example] Example
-Expand the following sums:
+<p>^f7f784</p>
+
+<div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Expand the following sums:
 $$
 > \sum_{i=1}^7 i  \quad \text{ and } \quad \sum_{j=4}^7 (j^2 +k)
-> $$</blockquote>>>[!success]- Solution
-<blockquote>$$\sum_{i=1}^7 i = 1 + 2 + \cdots + 7 = 28$$and$$\sum_{j=4}^7 (j^2 +k) = 16 + \cdots + 49 + 4k$$</blockquote>
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body"></div></details>
+$$\sum_{i=1}^7 i = 1 + 2 + \cdots + 7 = 28$$and$$\sum_{j=4}^7 (j^2 +k) = 16 + \cdots + 49 + 4k$$</div></div>
 
-<blockquote>[!example] Problem
-Complete the following parts of the problem with a friend:
-<ul><li>Sketch the graph of $f(x) = \frac{1}{x}$ from $a = 1$ to $b = 2$ </li><li>Compute the integral $\int \frac{1}{x}dx$ with four approximating rectangles using right end points.  (HINT: Use the picture from above!)</li><li>State whether your answer is an underestimation or an overestimation.</blockquote>> </li></ul>>> [!success]- Solution
->> [Graph](https://www.desmos.com/calculator/ynmwlxf1cv)
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Complete the following parts of the problem with a friend:
+<ul><li>Sketch the graph of $f(x) = \frac{1}{x}$ from $a = 1$ to $b = 2$ </li><li>Compute the integral $\int \frac{1}{x}dx$ with four approximating rectangles using right end points.  (HINT: Use the picture from above!)</li><li>State whether your answer is an underestimation or an overestimation.</li></ul>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">[Graph](https://www.desmos.com/calculator/ynmwlxf1cv)</div></details></div></div>
 
-<blockquote>[!example] Problem
-Set up but <strong>do not evaluate</strong> a limit to approximate the area of the region between the function and the $x$-axis of:
+<div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Set up but <strong>do not evaluate</strong> a limit to approximate the area of the region between the function and the $x$-axis of:
 $$
 > f(x) := \frac{2x}{x^2+1} \quad \text{ on the interval } \quad [1,3]
-> $$</blockquote>>> [!success]- Solution
->> We can take a right hand limit, so let’s set up $R_n$ first:$$\Delta x = \frac{3-1}{n} = \frac2n \quad \text{ and } \quad x_i^* = 1 + \frac{2i}{n}$$
->> and just plug in:$$R_n = \sum_{i = 1}^n f\left ( 1 + \frac{2i}{n} \right )\cdot \frac{2}{n} = \sum_{i = 1}^n \frac{2 \left ( \frac{2i}{n} \right )}{\left ( \frac{2i}{n} \right )^2 + 1} \cdot \frac{2}{n}$$
->> To complete our answer, just add a limit in:
-<blockquote>$$A = \lim_{n \to \infty} R_n =  \lim_{n \to \infty} \sum_{i = 1}^n \frac{2 \left ( 1 + \frac{2i}{n} \right )}{\left ( 1 + \frac{2i}{n} \right )^2 + 1} \cdot \frac{2}{n}$$</blockquote>>> Phew.
->
+> $$
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We can take a right hand limit, so let’s set up $R_n$ first:$$\Delta x = \frac{3-1}{n} = \frac2n \quad \text{ and } \quad x_i^* = 1 + \frac{2i}{n}$$
+and just plug in:$$R_n = \sum_{i = 1}^n f\left ( 1 + \frac{2i}{n} \right )\cdot \frac{2}{n} = \sum_{i = 1}^n \frac{2 \left ( \frac{2i}{n} \right )}{\left ( \frac{2i}{n} \right )^2 + 1} \cdot \frac{2}{n}$$
+To complete our answer, just add a limit in:</div></details>
+$$A = \lim_{n \to \infty} R_n =  \lim_{n \to \infty} \sum_{i = 1}^n \frac{2 \left ( 1 + \frac{2i}{n} \right )}{\left ( 1 + \frac{2i}{n} \right )^2 + 1} \cdot \frac{2}{n}$$
+<blockquote>Phew.</blockquote>
+</div></div>
     </article>
   </main>
 
