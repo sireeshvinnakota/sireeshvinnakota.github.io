@@ -380,12 +380,9 @@
 
   <script>
   // ── Graph ──────────────────────────────────────────────────────────────────
-
-  // Fetch graph data immediately, but defer D3 rendering until the container
-  // has real pixel dimensions. clientWidth/clientHeight return 0 when read
-  // before layout completes, which stacks all nodes invisibly at (0,0).
   (async function buildGraph() {
 
+    // 1. Fetch graph data
     let graphData;
     try {
       const resp = await fetch('graph-data.json');
@@ -402,9 +399,7 @@
       return;
     }
 
-    // Filter out any links whose source or target doesn't exist in the node list.
-    // D3 forceLink crashes with "node not found" if a link references a missing node
-    // (e.g. wikilinks to PDFs or notes that haven't been written yet).
+    // Filter links whose source or target node doesn't exist (e.g. PDF wikilinks)
     const nodeIds = new Set(nodes.map(n => n.id));
     const links = rawLinks.filter(l => {
       const s = typeof l.source === 'object' ? l.source.id : l.source;
@@ -415,9 +410,8 @@
     document.getElementById('graph-info').textContent =
       `${nodes.length} notes · ${links.length} links`;
 
+    // 2. Wait until the container has real painted dimensions
     const wrap = document.getElementById('graph-canvas-wrap');
-
-    // Block until the container has a painted, non-zero size.
     await new Promise(resolve => {
       if (wrap.clientWidth > 0 && wrap.clientHeight > 0) { resolve(); return; }
       const ro = new ResizeObserver((entries, observer) => {
@@ -427,6 +421,12 @@
       ro.observe(wrap);
     });
 
+    // 3. Read dimensions AFTER the promise resolves
+    const W = wrap.clientWidth;
+    const H = wrap.clientHeight;
+
+    // 4. Set SVG size explicitly — CSS % sizing alone doesn't set the
+    //    SVG coordinate space, so nodes would render outside the visible area
     const svg = d3.select('#graph-svg')
       .attr('width', W)
       .attr('height', H)
