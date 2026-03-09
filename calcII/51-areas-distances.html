@@ -168,28 +168,17 @@ $$
 > \sum_{i = 1}^n f(x_i^*) \Delta x
 > $$
 where:
-$$
-> x_i^* = \begin{cases}
-> a + (i-1) \Delta x & \text{ for Left-hand Sum, written } L_n\\
-> a + i \Delta x & \text{ for Right-hand Sum, written } R_n\\
-> a + \frac{i}{2} \Delta x & \text{ for Midpoint Sum, written } M_n\\
-> \end{cases}
-> \quad \text{ and } \quad \Delta x = \frac{b - a}{n}
-> $$</div></div>
+$$ x_i^* = \begin{cases} a + (i-1) \Delta x & \text{ for Left-hand Sum, written } L_n\\ a + i \Delta x & \text{ for Right-hand Sum, written } R_n\\ a + \frac{i}{2} \Delta x & \text{ for Midpoint Sum, written } M_n\\ \end{cases} \quad \text{ and } \quad \Delta x = \frac{b - a}{n} $$</div></div>
 
 <p>^3aff78</p>
 
 <div class="callout callout-definition"><div class="callout-title">Definition</div><div class="callout-body">To compute the <em>exact area</em> of this region between $f(x)$ and the $x$-axis on the interval $[a,b]$, we use:
-$$
-> A = \lim_{n \to \infty} L_n =  \lim_{n \to \infty} R_n
-> $$</div></div>
+$$ A = \lim_{n \to \infty} L_n =  \lim_{n \to \infty} R_n $$</div></div>
 
 <p>^f7f784</p>
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Expand the following sums:
-$$
-> \sum_{i=1}^7 i  \quad \text{ and } \quad \sum_{j=4}^7 (j^2 +k)
-> $$
+$$ \sum_{i=1}^7 i  \quad \text{ and } \quad \sum_{j=4}^7 (j^2 +k) $$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body"></div></details>
 $$\sum_{i=1}^7 i = 1 + 2 + \cdots + 7 = 28$$and$$\sum_{j=4}^7 (j^2 +k) = 16 + \cdots + 49 + 4k$$</div></div>
 
@@ -198,9 +187,7 @@ $$\sum_{i=1}^7 i = 1 + 2 + \cdots + 7 = 28$$and$$\sum_{j=4}^7 (j^2 +k) = 16 + \c
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">[Graph](https://www.desmos.com/calculator/ynmwlxf1cv)</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Set up but <strong>do not evaluate</strong> a limit to approximate the area of the region between the function and the $x$-axis of:
-$$
-> f(x) := \frac{2x}{x^2+1} \quad \text{ on the interval } \quad [1,3]
-> $$
+$$ f(x) := \frac{2x}{x^2+1} \quad \text{ on the interval } \quad [1,3] $$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We can take a right hand limit, so let’s set up $R_n$ first:$$\Delta x = \frac{3-1}{n} = \frac2n \quad \text{ and } \quad x_i^* = 1 + \frac{2i}{n}$$
 and just plug in:$$R_n = \sum_{i = 1}^n f\left ( 1 + \frac{2i}{n} \right )\cdot \frac{2}{n} = \sum_{i = 1}^n \frac{2 \left ( \frac{2i}{n} \right )}{\left ( \frac{2i}{n} \right )^2 + 1} \cdot \frac{2}{n}$$
 To complete our answer, just add a limit in:</div></details>
