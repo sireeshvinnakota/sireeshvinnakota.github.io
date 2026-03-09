@@ -158,12 +158,12 @@
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Determine the radius of convergence of the following power series centered at $a = 0$:
 $$ \sum_{n = 0}^\infty n! x^n $$
-<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Whenever we see a factorial, our heads should immediately think: <a href="calcII/116-ratio-and-root-tests.html#ab1e80" class="wiki-link" data-note="116-ratio-and-root-tests">ratio test:</a> 
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Whenever we see a factorial, our heads should immediately think: <a href="calcII/116-ratio-and-root-tests.html" class="wiki-link" data-note="116-ratio-and-root-tests">ratio test:</a> 
 $$ \lim_{n \to \infty} \left | \frac{a_{n+1}}{a_n} \right | = \lim_{n \to \infty} \left | \frac{(n+1)!x^n}{n! x^n} \right | = \lim_{n \to \infty} \left | (n + 1)x \right | < \infty $$
 where the last inequality holds if and only if $x = 0$. </div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Determine the radius of convergence and interval of convergence of the following power series.  $$ \sum_{n = 0}^\infty \frac{n(x+2)^n}{3^{n+1}} $$
-<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Note first that this series is centered at $a = -2$, so our interval of convergence will require an additional step. We’ll use the <a href="calcII/116-ratio-and-root-tests.html#ab1e80" class="wiki-link" data-note="116-ratio-and-root-tests">ratio test</a>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Note first that this series is centered at $a = -2$, so our interval of convergence will require an additional step. We’ll use the <a href="calcII/116-ratio-and-root-tests.html" class="wiki-link" data-note="116-ratio-and-root-tests">ratio test</a>
 $$ \lim_{n \to \infty} \left | \frac{a_{n +1}}{a_n} \right | = \lim_{n \to \infty} \left | \frac{n+1 (x + 2)^{n+1}}{3^{n+2}} \cdot \frac{3^{n+1}}{n(x+2)^n} \right | = \lim_{n \to \infty} \left | \frac{n+1}{3n}(x+2) \right | = \frac{\left | x+2 \right |}{3} $$
 Using the conclusion of the Ratio test, we see that:
 $$ \sum_{n = 0}^\infty \frac{n(x+2)^n}{3^{n+1}} \begin{cases} \text{converges}, &\text{ if } \frac{\left | x+2 \right |}{3} < 1\\ \text{diverges}, &\text{ if } \frac{\left | x+2 \right |}{3} > 1\\ \end{cases} $$
