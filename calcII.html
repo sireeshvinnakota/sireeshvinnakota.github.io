@@ -417,11 +417,12 @@
       ro.observe(wrap);
     });
 
-    const svg = d3.select('#graph-svg');
-    const W   = wrap.clientWidth;
-    const H   = wrap.clientHeight;
+    const svg = d3.select('#graph-svg')
+      .attr('width', W)
+      .attr('height', H)
+      .attr('viewBox', `0 0 ${W} ${H}`);
 
-    // Zoom layer
+    try {
     const g = svg.append('g');
     svg.call(d3.zoom()
       .scaleExtent([0.25, 4])
@@ -570,6 +571,11 @@
         );
       }
     });
+
+    } catch (err) {
+      console.error('[calcII graph] D3 setup error:', err);
+      document.getElementById('graph-info').textContent = 'Graph error — check console.';
+    }
 
   })();
   </script>
