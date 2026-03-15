@@ -54,3 +54,207 @@ figure.centered figcaption {
 .latex-dark .no-style-link:visited { 
     color: white !important;  /* Force white in dark mode */
 }
+
+
+/* ============================================================
+   ACADEMIC TIMELINE STYLES
+   ============================================================
+   Dark mode is automatic — all colors reference --body-color
+   and --link-visited which are already flipped by .latex-dark
+   in style.css. No extra dark-mode rules needed here.
+
+   COLOR GUIDE for dot inline styles in aboutme.html:
+     Current institution  → background:#bfdbfe; border-color:#60a5fa  (blue)
+     Completed degree     → background:#ddd6fe; border-color:#a78bfa  (purple)
+     Semester abroad      → background:#a7f3d0; border-color:#34d399  (green)
+     Earlier/transferred  → background:#e5e7eb; border-color:#9ca3af  (gray)
+   ============================================================ */
+
+/* Outer wrapper — position:relative so the ::before spine is placed
+   relative to this container */
+.tl-wrap {
+  font-family: inherit;
+  position: relative;
+  margin: 1.5rem 0;
+}
+
+/* Solid vertical spine drawn as a pseudo-element behind all dots.
+   left = 36px (year col) + 4px (gap) + 24px (half of 48px dot col) = 64px */
+.tl-wrap::before {
+  content: '';
+  position: absolute;
+  left: 64px;
+  top: 12px;
+  bottom: 20px;
+  width: 1.5px;
+  background-color: var(--body-color);
+  opacity: 0.15;
+}
+
+/* Each institution row: [year] [dot] [content] */
+.tl-row {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  position: relative;
+}
+
+/* Year label */
+.tl-year {
+  width: 36px;
+  font-size: 11px;
+  color: var(--body-color);
+  opacity: 0.5;
+  text-align: right;
+  padding-top: 10px;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+/* Dot column — centers the circle over the spine, z-index keeps it
+   in front of the ::before spine line */
+.tl-dot-wrap {
+  width: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* The colored circle — fully opaque, no opacity property here.
+   Colors are set via inline styles in aboutme.html (see color guide above). */
+.tl-dot {
+  border-radius: 50%;
+  border: 1.5px solid;
+  flex-shrink: 0;
+}
+
+/* Vertical breathing room between rows (spine line spans through this) */
+.tl-spacer {
+  height: 14px;
+}
+
+/* Content area to the right of the dot */
+.tl-content {
+  flex: 1;
+  padding: 4px 0 4px 10px;
+  min-width: 0;
+}
+
+/* Awards row — indented to align with content, sits below the tl-row.
+   Separate from the row so it can contain <a> tags without being nested
+   inside the <button> chip (browsers don't allow interactive elements
+   inside buttons). */
+.tl-awards-row {
+  display: flex;
+  padding-left: 88px; /* 36px year + 4px gap + 48px dot col */
+}
+
+/* ── Chip (institutions WITH awards) ──────────────────────────
+   Wraps ONLY the caret + institution name — not the whole row.
+   Clicking expands the awards list below. */
+.tl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 1px 4px 1px 0;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 4px;
+}
+.tl-chip:hover .tl-name {
+  opacity: 0.65;
+}
+
+/* ── Caret ▶ / ▼ ───────────────────────────────────────────────
+   Rotates 90° when the awards panel is open */
+.tl-caret {
+  font-size: 9px;
+  color: var(--body-color);
+  opacity: 0.45;
+  transition: transform 0.2s;
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.tl-caret.open {
+  transform: rotate(90deg);
+  opacity: 0.7;
+}
+
+/* Institution name — collapsed state (plain text, not a link yet).
+   Uses --body-color so it flips automatically in dark mode. */
+.tl-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--body-color);
+  transition: opacity 0.15s;
+  vertical-align: middle;
+}
+
+/* Institution name — expanded state (becomes a real link).
+   JS swaps the <span> for this <a> when the awards open.
+   Uses --link-visited from style.css which is already dark-mode aware. */
+a.tl-name-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--link-visited);
+  text-decoration: none;
+  vertical-align: middle;
+}
+a.tl-name-link:hover {
+  text-decoration: underline;
+}
+
+/* Degree subtitle */
+.tl-degree {
+  font-size: 12px;
+  color: var(--body-color);
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+/* ── Collapsible awards panel ─────────────────────────────────
+   Hidden by default. JS adds class="open" to animate open.
+   Increase max-height here if you add many awards. */
+.tl-awards {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+  opacity: 0;
+}
+.tl-awards.open {
+  max-height: 300px;
+  opacity: 1;
+}
+.tl-awards ul {
+  margin: 4px 0 4px 0;
+  padding-left: 16px;
+  list-style: disc;
+}
+.tl-awards li {
+  font-size: 12px;
+  margin: 3px 0;
+}
+/* Award links use the page link color automatically */
+.tl-awards a {
+  color: var(--link-visited);
+}
+
+/* "Present" open circle at the top of the timeline */
+.tl-present-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--body-color);
+  opacity: 0.35;
+  background: transparent;
+  flex-shrink: 0;
+}
