@@ -129,12 +129,14 @@
         background:#bfdbfe; border-color:#60a5fa;"></div>
     </div>
     <div class="tl-content">
-      <button class="tl-chip" onclick="toggleAwards('uci')">
+      <span class="tl-chip" role="button" tabindex="0"
+            onclick="toggleAwards('uci')"
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleAwards('uci')">
         <span class="tl-caret" id="caret-uci">▶</span>
         <!-- Collapsed: plain text. JS swaps this to <a> when expanded. -->
         <span class="tl-name" id="name-uci"
           data-url="https://uci.edu">University of California, Irvine</span>
-      </button>
+      </span>
       <div class="tl-degree">Ph.D. in Mathematics &middot; 2022&ndash;Present</div>
     </div>
   </div>
@@ -142,10 +144,9 @@
   <div class="tl-awards-row">
     <div class="tl-awards" id="awards-uci">
       <ul>
-        <li>Partially supported by an NSF RTG through the <a href="https://sites.google.com/uci.edu/scgtc/home" target="_blank">
-          Southern California Geometry and Topology Center
+        <li><a href="https://sites.google.com/uci.edu/scgtc/home" target="_blank">
+          Southern California Geometry and Topology Center Fellowship
         </a></li>
-        <li>Howard Tucker Fellowship</li>
         <!-- Add more UCI awards here -->
       </ul>
     </div>
@@ -163,11 +164,13 @@
         background:#ddd6fe; border-color:#a78bfa;"></div>
     </div>
     <div class="tl-content">
-      <button class="tl-chip" onclick="toggleAwards('cgu')">
+      <span class="tl-chip" role="button" tabindex="0"
+            onclick="toggleAwards('cgu')"
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleAwards('cgu')">
         <span class="tl-caret" id="caret-cgu">▶</span>
         <span class="tl-name" id="name-cgu"
           data-url="https://www.cgu.edu">Claremont Graduate University</span>
-      </button>
+      </span>
       <div class="tl-degree">M.S. in Mathematics &middot; 2021&ndash;2022</div>
     </div>
   </div>
@@ -194,11 +197,13 @@
         background:#ddd6fe; border-color:#a78bfa;"></div>
     </div>
     <div class="tl-content">
-      <button class="tl-chip" onclick="toggleAwards('pomona')">
+      <span class="tl-chip" role="button" tabindex="0"
+            onclick="toggleAwards('pomona')"
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleAwards('pomona')">
         <span class="tl-caret" id="caret-pomona">▶</span>
         <span class="tl-name" id="name-pomona"
           data-url="https://www.pomona.edu">Pomona College</span>
-      </button>
+      </span>
       <div class="tl-degree">B.A. in Mathematics (Pure) &middot; 2018&ndash;2021</div>
     </div>
   </div>
@@ -212,7 +217,7 @@
           Phi Beta Kappa Award
         </a></li>
         <li><a href="https://www.pomona.edu/students/academic-awards-and-distinctions" target="_blank">
-          Bruce Jay Levy &amp; Llewellyn Bixby Mathematics Prizes
+          Bruce Jay Levy &amp; Llewellyn Bixby Mathematics Prize
         </a></li>
         <!-- Add more Pomona awards here -->
       </ul>
@@ -366,6 +371,16 @@
 
 
       <p>
+        In completing my doctorate, I have been extremely fortunate to have received support from the
+        <a href="https://sites.google.com/uci.edu/scgtc/home">Southern California Geometry and Topology Center</a>.
+        In the past, I have received the
+        <a href="https://www.cgu.edu/fellowships/endowed-fellowships/">John M. Krenkel Fellowship</a>, the
+        <a href="https://www.pomona.edu/sites/default/files/AwardsProgram-2021.pdf">Rena Gurley Archibald High Scholarship Prize</a>
+        (awarded to the valedictorians of Pomona College), the
+        <a href="https://www.pomona.edu/sites/default/files/AwardsProgram-2021.pdf">Phi Beta Kappa Award</a>, and the
+        <a href="https://www.pomona.edu/students/academic-awards-and-distinctions">Bruce Jay Levy &amp; Llewellyn Bixby</a>
+        Mathematics Prizes.<br /><br />
+
         Outside of mathematics, I love playing <a href="https://online-go.com/player/804703/">Go</a>,
         dancing (breakin', bhangra, bollywood, and hip-hop),
         <a href="https://www.last.fm/user/sireeshv">listening to music</a>,

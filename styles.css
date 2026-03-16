@@ -125,8 +125,10 @@ figure.centered figcaption {
 }
 
 /* The colored circle — fully opaque, no opacity property here.
-   Colors are set via inline styles in aboutme.html (see color guide above). */
+   display:inline-block is required for Firefox to apply border-radius
+   reliably on elements with an explicit width/height. */
 .tl-dot {
+  display: inline-block;
   border-radius: 50%;
   border: 1.5px solid;
   flex-shrink: 0;
@@ -154,20 +156,26 @@ figure.centered figcaption {
 }
 
 /* ── Chip (institutions WITH awards) ──────────────────────────
-   Wraps ONLY the caret + institution name — not the whole row.
-   Clicking expands the awards list below. */
+   Uses <span role="button"> instead of <button> for consistent
+   cross-browser flex behaviour — Firefox has longstanding quirks
+   with <button> inside flex containers that break the layout. */
 .tl-chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: none;
-  border: none;
   padding: 1px 4px 1px 0;
   margin: 0;
   font-family: inherit;
+  font-size: inherit;
   cursor: pointer;
   text-align: left;
   border-radius: 4px;
+  /* No background or border by default — keeps it visually clean */
+  background: none;
+  border: none;
+  outline: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .tl-chip:hover .tl-name {
   opacity: 0.65;
