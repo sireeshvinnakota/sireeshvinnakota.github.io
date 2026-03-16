@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Sireesh | Mathematical Writing</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../prism/prism.css" />
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Mathematical Writing is an upper-divison course offered to third and fourth years at UCI focused on improving their scientific communication. Based mainly off of community-sourced feedback and groupwork, students develop an expository article and formal presentation on a topic of their choosing. 
+      <br /><br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#aboutthecourse">About the Course</a>
+        <ol>
+          <li><a href="#evals">Selected Evaluations</a> </li>
+        </ol>
+        </li>
+      <li><a href="#syllabus">Syllabus and Timeline</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+        <h2 id="aboutthecourse">About the Course</h2>
+        <p>I helped restructure the <a href="https://catalogue.uci.edu/allcourses/math/">MATH195W: Mathematical Writing</a> course at UC Irvine, with the guidance of <a href="https://www.math.uci.edu/node/36410">Professor Roberto Pelayo</a>. During this process, I centered the course around collaboration and wrote the introductory resources for a 5-week crash course on $\LaTeX$ and Beamer.<label for="sn-1" class="sidenote-toggle sidenote-number"></label><input
+          type="checkbox" id="sn-1" class="sidenote-toggle" /><span class="sidenote">A version of these resources is available under <a href="#template">$\LaTeX$ Resources</a></span></p>
+      <p>
+        <h3 id="evals">Selected Evaluations</h3>
+
+        These changes were largely successful, as is recounted by anonymous students in department-conducted final course evaluations:
+
+        <blockquote>
+        This class was the best one I have taken at UCI and Sireesh was a huge part of that! He was super accessible to talk to and very encouraging. The lessons were engaging and his group work projects really got the students involved and working together.
+        <cite>— Fall 2024, Mathematical Writing </cite>
+      </blockquote>
+
+      <blockquote>
+        Sireesh was able to keep what could have been a dry and tedious topic both fun and interesting. His energy and enthusiasm for both the subject and our individual successes kept me excited to return to class.
+        <cite>— Fall 2024, Mathematical Writing </cite>
+      </blockquote>
+
+      <blockquote>
+        Sireesh led a huge number of small group discussions in groups divided by our research topics, and discussing our projects with like-minded peers really helped our papers and our growth as writers. [...]  <mark>One little suggestion is maybe [he should] walk around the classroom less frequently, [as] it makes me feel a little dizzy...</mark> <label for="sn-1" class="sidenote-toggle sidenote-number"></label><input
+          type="checkbox" id="sn-1" class="sidenote-toggle" /><span class="sidenote">I'm working on it!</span>
+        <cite>— Fall 2023, Mathematical Writing </cite>
+      </blockquote>
+      </p>
+
+      
+
+      <hr style="border:none; border-top:1px solid var(--footnotes-border-color); margin:2rem 0; opacity:0.4;" />
+
+      <section id="section-two">
+        <h2 id="syllabus">Syllabus and Timeline</h2>
+        <p>Coming soon :)</p>
+      </section>
+
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true')
+      document.body.classList.add('latex-dark');
+    if (localStorage.getItem('typeface') === 'libertinus') {
+      document.body.classList.add('libertinus');
+      document.getElementById('typeface').textContent = 'Libertinus';
+    }
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+  });
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+  });
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../prism/prism.js"></script>
+
+</body>
+</html>
