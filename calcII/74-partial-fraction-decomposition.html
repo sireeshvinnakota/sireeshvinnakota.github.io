@@ -174,8 +174,8 @@ $$<br>
 <ul><li><strong>$Q(x)$ has repeated quadratic factors:</strong> In this case, we just combine the techniques from the preceding two cases, where we have repeated linear terms for each time the quadratic is repeated:$$ Q(x) = \underbrace{(ax^2 + bx + c)^r}_{b^2 - 4ac < 0} \cdots (\text{other factors}) $$and   $$\frac{R(x)}{Q(x)} = \frac{A_1x + B_1}{ax^2 + bx + c}+\frac{A_2x + B_2}{\left(ax^2 + bx + c\right)^2}+\cdots+\frac{A_rx + B_r}{\left(ax^2 + bx + c\right)^r} + \cdots $$</li></ul><br>
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Compute the following integral:<br>
 $$
-> \int \frac{4+x}{(1+2 x)(3-x)} dx
-> $$<br>
+\int \frac{4+x}{(1+2 x)(3-x)} dx
+$$<br>
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Since we’re in the case of distinct linear factors, we’ll set up:<br>
 $$\frac{4+x}{(1+2 x)(3-x)} = \frac{A}{2x + 1} + \frac{B}{3 - x}$$ Clearing denominators gives us:$$4 + x = A (3 - x) + B(2x + 1)$$<br>
 Plugging in $x = 3$, we see:<br>
@@ -186,8 +186,8 @@ $$\int \frac{4+x}{(1+2 x)(3-x)} dx = \int \frac{dx}{2x + 1} + \int \frac{dx}{3 -
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following:
 $$
-> \int \frac{x^3+4 x+3}{x^4+5 x^2+4} d x
-> $$
+\int \frac{x^3+4 x+3}{x^4+5 x^2+4} d x
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Denominator factors into:
 $$\frac{x^3 + 4x + 3}{(x^2 + 4)(x^2 + 1)} = \frac{Ax + B}{x^2 + 4} + \frac{Cx + D}{x^2 + 1}$$ We can solve for $A,B,C, D$ algebraically:
 $$(Ax+ B)(x^2 + 1) + (Cx + D)(x^2 + 4) = Ax^3 + Ax + Bx^2 + B + Cx^3 + 4 Cx + Dx^2 + 4D = x^3 + 0x^2 + 4x + 3$$
@@ -198,7 +198,7 @@ This is a system of equations in 4 variables, with the solution $A = 0$, $B = -1
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Consider the following integrals:
 <ul><li>$\displaystyle \int \frac{x^2-3 x+7}{\left(x^2-4 x+6\right)^2} d x$</li><li>$\displaystyle \int \frac{\sec ^2 t}{\tan ^2 t+3 \tan t+2} d t$</li></ul>
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">- A denominator like this is going to have repeated factors, so we need to remember to address this in our solution. 
-<ul><li>Use a $u$ <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a> for $u = \tan t$ and then this condenses into a computation very similar to the first example. </li></ul></div></details></div></div>
+<ul><li>Use a $u$ <a href="55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a> for $u = \tan t$ and then this condenses into a computation very similar to the first example. </li></ul></div></details></div></div>
     </article>
   </main>
 

@@ -161,8 +161,8 @@
 <div class="callout callout-theorem"><div class="callout-title">Proposition</div><div class="callout-body">[Integration by Parts]<br>
 We have the following integration identity:<br>
 $$
-> \int u dv = uv - \int v du
-> $$</div></div></p>
+\int u dv = uv - \int v du
+$$</div></div></p>
 
 <p>Here’s a cool rule of thumb that I found to always select the correct $u$ and $v$: <strong>Choose $u$ in this order:</strong><br>
 <ul><li>L: logarithms</li><li>I: inverse functions</li><li>A: algebraic (polynomials, etc.)</li><li>T: trigonometric functions</li><li>E: exponentials</li></ul>I found out later that if we add a $d$ at the end, this spells DETAIL backwards... so another way to remember this trick is:<br>
@@ -190,7 +190,7 @@ which we can compute using the dETAIL technique.
 This turns the integral into:
 $$\int\cos (\ln(x))dx = \int e^u \cos(u) du$$
 which we computed in the example above. 
-<ul><li>This is another $u$-<a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">substitution</a>, this time: $$\underbrace{u = \arcsin (x)}_{x = \sin(u)} \quad \text{ and } \quad du = \frac{1}{\sqrt{1-x^2}} dx$$</li></ul>Solving for $u$ in the second equation, we see:
+<ul><li>This is another $u$-<a href="55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">substitution</a>, this time: $$\underbrace{u = \arcsin (x)}_{x = \sin(u)} \quad \text{ and } \quad du = \frac{1}{\sqrt{1-x^2}} dx$$</li></ul>Solving for $u$ in the second equation, we see:
 $$ dx = \sqrt{1 - (\sin(u)^2)} du = \cos(u) du$$
 by the trigonometric identity $\sin^2(x) + \cos^2(x) = 1$. This gives us the integral:
 $$\int \arcsin^2 (x) dx = \int u^2 \cos(u) du$$</div></details>

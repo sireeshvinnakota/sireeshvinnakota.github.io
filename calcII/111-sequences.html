@@ -166,24 +166,24 @@
 
 <div class="callout callout-theorem"><div class="callout-title">Theorem (Squeeze Theorem)</div><div class="callout-body">If $a_n \leq b_n \leq c_n$ and we have
 $$
-> L = \lim_{n \to \infty} a_n = \lim_{n \to \infty} c_n \quad \text{ then } \quad \lim_{n \to \infty} b_n  = L
-> $$</div></div>
+L = \lim_{n \to \infty} a_n = \lim_{n \to \infty} c_n \quad \text{ then } \quad \lim_{n \to \infty} b_n  = L
+$$</div></div>
 
 <div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">If $\lim \left | a_n \right | = 0$ then $\lim a_n  = 0$.</div></div>
 
 <div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">If $\lim_{n \to \infty} a_n = L$ and the function $f$ is continuous at $L$, we then:
 $$
-> \lim_{n \to \infty} f(a_n) = f(L)
-> $$</div></div>
+\lim_{n \to \infty} f(a_n) = f(L)
+$$</div></div>
 
 <div class="callout callout-theorem"><div class="callout-title">Theorem</div><div class="callout-body">[Geometric Sequences]
 The sequence $(r^n)_{n \in \mathbb{N}}$ is convergent if $-1 < r \leq 1$ and diverges for all other values:
 $$
-> \lim _{n \to \infty} r^n = \begin{cases}
-> 0 & \left | r \right | < 1\\
-> 1 & r = 1
-> \end{cases}
-> $$</div></div>
+\lim _{n \to \infty} r^n = \begin{cases}
+0 & \left | r \right | < 1\\
+1 & r = 1
+\end{cases}
+$$</div></div>
 
 <p>I won’t define bounded or monotonic really precisely here, but think “bounded below” as just a number that’s lower than every point of the sequence, “bounded above” is a number above every point of the sequence, and monotonic just means the sequence is always increasing or always decreasing.</p>
 
@@ -201,8 +201,8 @@ $$ a_1 = 2, \quad \text{ and } \quad a_{n+1} = \frac{a_n}{1+ a_n} $$
 <ul><li>$a_{n} = a_{n - 1} + a_{n-2}$</li><li>$\displaystyle \frac{(-1)^{n+1} n^2}{n+1}$</div></details></div></div></li></ul>
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Determine whether the following sequences converge:
 $$
-> \left \{ \sin(n) \right \} \quad \text{ and } \quad a_n = \frac{(-1)^n}{2 \sqrt{n}}
-> $$
+\left \{ \sin(n) \right \} \quad \text{ and } \quad a_n = \frac{(-1)^n}{2 \sqrt{n}}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">First doesn’t, it doesn’t get “close” to anything.
 Second will converge. Using Theorem , we see that we can evaluate the limit of the absolute value first, which is:
 $$ \left | a_n \right | = \frac{1}{2 \sqrt{n}} $$
@@ -212,8 +212,8 @@ meaning that the sequence $(a_n)$ converges as well.</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Consider the sequence:
 $$
-> a_n = \arctan \left (  \ln (n) \right )
-> $$
+a_n = \arctan \left (  \ln (n) \right )
+$$
 Does it converge? If so, what to?
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Yes, to $\frac{\pi}{2}$; use Theorem</div></details></div></div>
     </article>

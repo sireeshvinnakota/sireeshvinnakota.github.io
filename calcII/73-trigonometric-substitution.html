@@ -157,14 +157,14 @@
 
   <main>
     <article>
-<p>This section is also just really <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a><br>
+<p>This section is also just really <a href="55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a><br>
 For additional help, practice problems, and intuition, consider watching <a href="https://www.youtube.com/watch?v=KGrMpamuVbw" target="_blank" rel="noopener noreferrer">this video</a>.For integrals of this form, we have a few steps:<br>
 <ul><li><strong>Identify:</strong> To recognize an integral that trigonometric substitution can work for, consider the following table:$$\begin{array}{|c|c|c|}\hline \text{Expression} & \text{Substitution} & \text{Identity} \\ \hline \sqrt{a^2 - x^2} & \displaystyle x = a \sin \theta, \theta \in \left [ \frac{-\pi}{2}, \frac\pi2 \right ] & 1 - \sin^2 \theta = \cos^2 \theta\\ \hline \sqrt{a^2 + x^2} & \displaystyle x = a \tan \theta, \theta \in \left ( \frac{-\pi}{2}, \frac\pi2 \right ) & 1 + \tan^2 \theta = \sec^2 \theta \\ \hline \sqrt{x^2 - a^2} & \displaystyle x = a \sec\theta,  \theta \in \left [ 0, \frac\pi2 \right ) \text{ or } \in \left [ \pi, \frac{3\pi}{2} \right ) & \sec^2\theta - 1 = \tan^2 \theta \\  \hline \end{array} $$Make the correct choice based on the integral, and complete the substitution.</li><li><strong>Integration:</strong> Compute the integral. </li><li><strong>Resubstitute:</strong> Using the triangle below and the substitution made above, express the antiderivative in terms of $x$. </li></ul><figure class="centered"><img src="../images/triangle.png" alt="triangle" loading="lazy" /><figcaption>triangle</figcaption></figure></p>
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Find the antiderivative of:
 $$
-> \int \frac{1}{x^2 \sqrt{x^2 + 4}} dx
-> $$
+\int \frac{1}{x^2 \sqrt{x^2 + 4}} dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Following the second column of the table above gives us the substitution $x = 2 \tan \theta$, $dx = 2 \sec^2 \theta d \theta$:</div></details>
 We see that:
 <blockquote>$$\sqrt{x^2 + 4} = \left [ 4 (\underbrace{\tan^2 \theta + 1}_{\sec^2(\theta)}) \right ]^\frac12 = 2 \sec \theta$$
@@ -181,12 +181,12 @@ Reversing our substitution, we solve:
 $$\int \frac{x}{\sqrt{1+x^2}}dx = \sqrt{x^2 + 1} + C$$
 The second integral can be rewritten using the third column:
 $$\int \frac{\sqrt{x^2 - 1}}{x^4} = \int \frac{\tan \theta}{\sec^4 \theta} \sec \theta \tan \theta d \theta = \int \tan^2 \theta \cos^3 \theta d \theta = \int \sin^2 \theta \cos \theta d \theta  = \frac{u^3}{3} + C$$
-for the $u$-substitution (<a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a>) $u = \sin \theta$. Going back through and reversing our substitutions, we have:$$\frac{\sin^3 \theta}{3} = \frac{\left ( x^2 - 1 \right )^{3/2}}{3 x^3} + C$$</div></details></div></div>
+for the $u$-substitution (<a href="55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a>) $u = \sin \theta$. Going back through and reversing our substitutions, we have:$$\frac{\sin^3 \theta}{3} = \frac{\left ( x^2 - 1 \right )^{3/2}}{3 x^3} + C$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following integral
 $$
-> \int \frac{dx}{\sqrt{9x^2 - 36x + 37}}
-> $$
+\int \frac{dx}{\sqrt{9x^2 - 36x + 37}}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">To begin, let’s study the polynomial inside the radical:
 $$9x^2 - 36x + 37 = 9 \left ( x^2 - 4x + \frac{37}{9} \right )$$
 Completing the square of what’s in the parenthesis, we see:

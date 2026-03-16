@@ -194,13 +194,16 @@ def convert_wikilinks(text: str, all_note_slugs: set, assets: dict, notes_dir: P
         slug = note_name_to_slug(page)
         linked.append(slug)
 
+        # Use relative hrefs (no calcII/ prefix) — these pages live in calcII/
+        # so a plain slug.html link works for standalone viewing.
+        # The note pane JS uses data-note, not href, to load notes.
         if block:
-            href = f"calcII/{slug}.html#{block}"
+            href = f"{slug}.html#{block}"
         elif heading:
             anchor = slugify(heading)
-            href = f"calcII/{slug}.html#{anchor}"
+            href = f"{slug}.html#{anchor}"
         else:
-            href = f"calcII/{slug}.html"
+            href = f"{slug}.html"
 
         display = alias or heading or block or page
         return f'<a href="{href}" class="wiki-link" data-note="{slug}">{display}</a>'
@@ -334,10 +337,13 @@ def convert_callouts_and_blockquotes(text: str) -> str:
                 f'</div>'
             )
 
+    MD_LINK_RE = re.compile(r"\[([^\]]+)\]\((https?://[^\)]+)\)")
+
     def process_lines(lines: list) -> str:
         """
         Walk a list of lines, pulling out quote blocks and rendering them,
         leaving everything else as plain text to be joined.
+        Also converts standard Markdown [text](url) links within callout bodies.
         """
         out = []
         i = 0
@@ -347,6 +353,11 @@ def convert_callouts_and_blockquotes(text: str) -> str:
                 block, i = extract_quote_block(lines, i)
                 out.append(render_block(block))
             else:
+                # Convert standard Markdown links inside callout bodies
+                line = MD_LINK_RE.sub(
+                    r'<a href="\2" target="_blank" rel="noopener noreferrer">\1</a>',
+                    line
+                )
                 out.append(line)
                 i += 1
         return "\n".join(out)
@@ -540,6 +551,18 @@ def md_to_html(text: str) -> str:
     # ── 12. Restore LaTeX ─────────────────────────────────────────────────────
     for i, latex in enumerate(latex_stash):
         text = text.replace(f"\x00LATEX{i}\x00", latex)
+
+    # ── 13. Strip stray '> ' prefixes inside display math ($$...$$) ──────────
+    # In Obsidian, math blocks inside callouts have '>' continuation markers
+    # on each line. These get through because LaTeX was stashed before the
+    # callout stripper removed them. Clean them up now.
+    def strip_gt_in_display_math(m):
+        inner = m.group(0)
+        # Remove '> ' or '>' at the start of lines inside the $$ block
+        inner = re.sub(r"(?m)^> ?", "", inner)
+        return inner
+
+    text = re.sub(r"\$\$[\s\S]*?\$\$", strip_gt_in_display_math, text)
 
     return text
 

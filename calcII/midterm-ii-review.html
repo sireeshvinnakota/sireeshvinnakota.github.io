@@ -159,7 +159,7 @@
     <article>
 <p>The key to this part of the course is mastering a few procedures dealing with integrals, and recognizing when to use them. Below is an itemized list of the sections covered since the last exam, each with a collection of associated problems. This table of contents should also serve as a guide to thought process: when faced with a new integral, use this as a hierarchy of methods to try:</p>
 
-<ul><li>First, try it directly using <a href="calcII/54-indefinite-integrals.html#5fcf9e" class="wiki-link" data-note="54-indefinite-integrals">Power Rule</a> and <a href="calcII/54-indefinite-integrals.html#adaaae" class="wiki-link" data-note="54-indefinite-integrals">trigonometric substitutions</a> </li><li>Then look for a composition of functions to use <a href="calcII/55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a> on</li><li>If there's a product of functions, use <a href="calcII/71-integration-by-parts.html" class="wiki-link" data-note="71-integration-by-parts">§7.1 Integration by Parts</a> </li><li>If the integrand is solely trigonometric functions, <a href="calcII/72-trigonometric-integration.html" class="wiki-link" data-note="72-trigonometric-integration">§7.2 Trigonometric Integration</a></li><li>If there's a quadratic under a radical, <a href="calcII/73-trigonometric-substitution.html" class="wiki-link" data-note="73-trigonometric-substitution">§7.3 Trigonometric Substitution</a></li><li>Finally, for ratios of polynomials, <a href="calcII/74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a> </li></ul>The other section to review are on <a href="calcII/78-improper-integrals.html" class="wiki-link" data-note="78-improper-integrals">§7.8 Improper Integrals</a> 
+<ul><li>First, try it directly using <a href="54-indefinite-integrals.html#5fcf9e" class="wiki-link" data-note="54-indefinite-integrals">Power Rule</a> and <a href="54-indefinite-integrals.html#adaaae" class="wiki-link" data-note="54-indefinite-integrals">trigonometric substitutions</a> </li><li>Then look for a composition of functions to use <a href="55-the-substitution-rule.html" class="wiki-link" data-note="55-the-substitution-rule">§5.5 The Substitution Rule</a> on</li><li>If there's a product of functions, use <a href="71-integration-by-parts.html" class="wiki-link" data-note="71-integration-by-parts">§7.1 Integration by Parts</a> </li><li>If the integrand is solely trigonometric functions, <a href="72-trigonometric-integration.html" class="wiki-link" data-note="72-trigonometric-integration">§7.2 Trigonometric Integration</a></li><li>If there's a quadratic under a radical, <a href="73-trigonometric-substitution.html" class="wiki-link" data-note="73-trigonometric-substitution">§7.3 Trigonometric Substitution</a></li><li>Finally, for ratios of polynomials, <a href="74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a> </li></ul>The other section to review are on <a href="78-improper-integrals.html" class="wiki-link" data-note="78-improper-integrals">§7.8 Improper Integrals</a> 
 <h2 id="latex62-substitution">$u$-Substitution</h2>
 Thing to remember: Look for a composition of functions, and differentiate the inner function.
 
@@ -169,8 +169,8 @@ Thing to remember: Look for a composition of functions, and differentiate the in
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the integral:
 $$
-> \int \frac{\left ( \ln(x) \right )^6}{x}dx
-> $$
+\int \frac{\left ( \ln(x) \right )^6}{x}dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$\displaystyle \frac17 \ln(x)^7 + C$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Using the substitution $u=x^2-3$, what is $\int_{-1}^4 x\left(x^2-3\right)^5 d x$,  equal to?
@@ -184,14 +184,14 @@ $$
 Here's some <a href="https://www.math.ucdavis.edu/ kouba/CalcTwoDIRECTORY/intbypartsdirectory/IntByParts.html" target="_blank" rel="noopener noreferrer">review</a>
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int x \cos(x) dx
-> $$
+\int x \cos(x) dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$x \sin (x) + \cos (x) + C$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int (\ln(x))^2 dx
-> $$
+\int (\ln(x))^2 dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Do this by $u$-substitution first: let $u = \ln(x)$ and $du = 1/x dx$
 $$\int u^2 (e^u du)$$
 Do integration by parts twice to get:
@@ -199,8 +199,8 @@ $$x ((\ln(x))^2-2 \ln(x)+2) + C$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the definite integral:
 $$
-> \int_0^1 x^2 e^x dx
-> $$
+\int_0^1 x^2 e^x dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$e-2$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Let $f$ be a differentiable function such that $$\int f(x) \sin x d x=-f(x) \cos x+\int 4 x^3 \cos x d x$$. What is a possibility for $f(x)$?
@@ -215,8 +215,8 @@ Look for <em>odd</em> powers on $\sin, \cos$ or factors of $\sec^2$ and $\sec \t
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate:
 $$
-> \int (\sin(x) + \cos(x))^2 dx
-> $$
+\int (\sin(x) + \cos(x))^2 dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Expand out the polynomial to get:
 $$\underbrace{\sin^2(x) + \cos^2(x)}_{=1} + 2 \sin(x) \cos(x)$$
 The rest should be just $u$-substitution:
@@ -224,8 +224,8 @@ $$x - 2\sin^2(x) + C$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute:
 $$
-> \int\left(\sec ^2 x\right) \sqrt{5+\tan x} d x
-> $$
+\int\left(\sec ^2 x\right) \sqrt{5+\tan x} d x
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Eyes should light up at the $\sec^2(x)$ term hanging out there, this is just a $u$-sub on $u = \tan(x)$. </div></details>
 $$= \frac23 (5 + \tan(x))^{3/2} + C$$</div></div>
 
@@ -245,8 +245,8 @@ To complete problems, use a triangle. Here's some <a href="https://tutorial.math
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int \sqrt{1 - x^2} dx
-> $$
+\int \sqrt{1 - x^2} dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Deceptively tricky! Make the substitution $x = \sin(\theta)$ to get the integrand:
 $$\int \cos^2(\theta) = \frac12 \int 1 + \cos(2\theta) d \theta$$
 with the latter equality from the <em>power reduction</em> formula. Integrating gives:
@@ -256,14 +256,14 @@ $$\boxed{\frac12 \arcsin(x) + \frac12 x \sqrt{1-x^2} + C}$$</div></details></div
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int_0^1 \sqrt{x^2-2 x+1} d x
-> $$
+\int_0^1 \sqrt{x^2-2 x+1} d x
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$\frac12$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int_0^1\left(4-x^2\right)^{-\frac{3}{2}} d x=
-> $$
+\int_0^1\left(4-x^2\right)^{-\frac{3}{2}} d x=
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Make the subsitution $x=2 \sin \theta \Rightarrow d x=2 \cos \theta d \theta$.
 $$\int_0^1\left(4-x^2\right)^{-3 / 2} d x=\int_0^{\pi / 6} \frac{2 \cos \theta}{8 \cos ^3 \theta} d \theta=\frac{1}{4} \int_0^{\pi / 6} \sec ^2 \theta d \theta=\left.\frac{1}{4} \tan \theta\right|_0 ^{\pi / 6}=\frac{1}{4} \cdot \frac{\sqrt{3}}{3}=\frac{\sqrt{3}}{12}$$</div></details></div></div>
 
@@ -276,22 +276,22 @@ using polynomial long division. Then remember: “constants for distinct linear 
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate:
 $$
-> \int \frac{2x + 3}{x^2 - 9}
-> $$
+\int \frac{2x + 3}{x^2 - 9}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$ \frac12 \left (  3\ln (3-x) + \ln (x+3) \right )$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute:
 $$
-> \int \frac{1}{x^2 - 6x + 8} dx
-> $$
+\int \frac{1}{x^2 - 6x + 8} dx
+$$
 [!success]- Solution
 $$
-> \frac12 \left ( \ln \left | x - 4 \right | - \ln \left | x - 2 \right | \right )
-> $$</div></div>
+\frac12 \left ( \ln \left | x - 4 \right | - \ln \left | x - 2 \right | \right )
+$$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the following: $$
-> \int_0^1 \frac{5 x+8}{x^2+3 x+2} d x
-> $$
+\int_0^1 \frac{5 x+8}{x^2+3 x+2} d x
+$$
 [!success]- Solution
 $\ln(18)$</div></div>
 
@@ -302,19 +302,19 @@ Thing to remember: does the integral have an infinite bound? if so, replace with
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the integral:
 $$
-> \int_1^\infty e^{-3x}dx
-> $$
+\int_1^\infty e^{-3x}dx
+$$
 [!success]- Solution
 $\displaystyle \frac{1}{3e^3}$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the integral
 $$
-> \int_0^\infty x^2 e^{-x^3} dx
-> $$</div></div>
+\int_0^\infty x^2 e^{-x^3} dx
+$$</div></div>
 
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$
-> \lim_{b \to \infty} \left [ -\frac13 e^{-x^3}  \right ]^b_0 = \frac13
-> $$</div></details>
+\lim_{b \to \infty} \left [ -\frac13 e^{-x^3}  \right ]^b_0 = \frac13
+$$</div></details>
 
 <h2 id="the-grab-bag">The Grab Bag</h2>
 \begin{aun}
@@ -323,30 +323,30 @@ If I sort these into a category, it’ll give away the answer
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">[True or False] Integrals of the form:
 $$
-> \int_0^\infty f(x)dx
-> $$
+\int_0^\infty f(x)dx
+$$
 have a finite numerical value.
 [!success]- Solution
 False</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the integral:
 $$
-> \int\left(4 x^2-1\right) \cos \left(4 x^3-3 x\right) d x
-> $$
+\int\left(4 x^2-1\right) \cos \left(4 x^3-3 x\right) d x
+$$
 [!success]- Solution
 $=-\frac{1}{3} \sin \left(3 x-4 x^3\right)+\text { constant }$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the integral:
 $$
-> \int_0^1 \frac{x^2}{x^2 + 1}
-> $$
+\int_0^1 \frac{x^2}{x^2 + 1}
+$$
 <strong>HINT:</strong> what’s the derivative of $\arctan$?
 [!success]- Solution
 $1 - \pi/4$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $$
-> \int_1^e\left(\frac{x^2-1}{x}\right) d x=
-> $$
+\int_1^e\left(\frac{x^2-1}{x}\right) d x=
+$$
 [!success]- Solution
 $\frac12 (e^2 - 3)$; split this one into two integrals</div></div>
 
@@ -354,132 +354,132 @@ $\frac12 (e^2 - 3)$; split this one into two integrals</div></div>
 
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Using the antiderivative 
 $$
-> y(x) = -\frac13 \cos^3 (x) + 0 \quad \text{ we have } \quad-\frac13
-> $$</div></details>
+y(x) = -\frac13 \cos^3 (x) + 0 \quad \text{ we have } \quad-\frac13
+$$</div></details>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int_0^1 \sqrt{x} (x+1) dx
-> $$
+\int_0^1 \sqrt{x} (x+1) dx
+$$
 [!success]- Solution
 $\frac{16}{15}$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int_1^{\infty} \frac{x}{\left(1+x^2\right)^2} d x
-> $$
+\int_1^{\infty} \frac{x}{\left(1+x^2\right)^2} d x
+$$
 [!success]- Solution
 $$
-> \lim_{b \to \infty} \left [ \frac14 - \frac{1}{2(1-b^2)}  \right ] = \frac14
-> $$</div></div>
+\lim_{b \to \infty} \left [ \frac14 - \frac{1}{2(1-b^2)}  \right ] = \frac14
+$$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
 $$
-> \int \sin^3 (x)dx
-> $$
+\int \sin^3 (x)dx
+$$
 [!success]- Solution
 Odd power of $\sin$ is good news, at least!
 $$
-> \int( 1-\cos^2 (x)) \sin(x)dx = \int u^2 - 1 du ...
-> $$
+\int( 1-\cos^2 (x)) \sin(x)dx = \int u^2 - 1 du ...
+$$
 Follow out the algebra to get 
 $$
-> -\cos(x) + \frac13 \cos^3(x) + C
-> $$</div></div>
+-\cos(x) + \frac13 \cos^3(x) + C
+$$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute
 $$
-> \int \frac{\cos^2(x)}{1 + \sin(x)}
-> $$
+\int \frac{\cos^2(x)}{1 + \sin(x)}
+$$
 [!success]- Solution
 Conjugate the denominator:
 $$
-> \int \frac{\cos^2(x) (1-\sin(x))}{1- \sin^2(x)} = \int \frac{\cos^2(x) (1-\sin(x))}{\cos^2(x)} = \int 1- \sin(x) dx
-> $$
+\int \frac{\cos^2(x) (1-\sin(x))}{1- \sin^2(x)} = \int \frac{\cos^2(x) (1-\sin(x))}{\cos^2(x)} = \int 1- \sin(x) dx
+$$
 Finish it out from here to get:
 $$
-> x + \cos(x) + C
-> $$</div></div>
+x + \cos(x) + C
+$$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
 $$
-> \int \frac{d x}{(x-1)(x+3)}
-> $$</div></div>
+\int \frac{d x}{(x-1)(x+3)}
+$$</div></div>
 
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Use partial fractions
 $$
-> \frac14 \ln \left | \frac{x-1}{x+3} \right | + C
-> $$</div></details>
+\frac14 \ln \left | \frac{x-1}{x+3} \right | + C
+$$</div></details>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $$
-> \int_4^{\infty} \frac{-2 x}{\sqrt[3]{9-x^2}} d x
-> $$
+\int_4^{\infty} \frac{-2 x}{\sqrt[3]{9-x^2}} d x
+$$
 [!success]- Solution
 DNE by comparison to $x^{2/3}$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $$
-> \int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x
-> $$
+\int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x
+$$
 [!success]- Solution
 The radical should suggest a trig substitution:
 $$
-> \int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x = \int \frac{(\sqrt{x^2 - 1})^3}{x} dx = \int \frac{\tan^3 \theta}{\sec \theta}
-> $$
+\int \frac{\left(x^2-1\right)^{3 / 2}}{x} d x = \int \frac{(\sqrt{x^2 - 1})^3}{x} dx = \int \frac{\tan^3 \theta}{\sec \theta}
+$$
 over the substitution $x = \sec(\theta)$. 
 $$
-> \cdots = \frac13 \sqrt{x^2 - 1} (x^2 -4 ) + \arctan \left ( \sqrt{x^2 - 1} \right ) + C
-> $$</div></div>
+\cdots = \frac13 \sqrt{x^2 - 1} (x^2 -4 ) + \arctan \left ( \sqrt{x^2 - 1} \right ) + C
+$$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate $$
-> \int \frac{x}{\sqrt{x^2+4 x+5}} d x
-> $$
+\int \frac{x}{\sqrt{x^2+4 x+5}} d x
+$$
 [!success]- Solution
 Do a substitution after completing the square:
 $$
-> x^2 + 4x + 5 = (x+2)^2 + 1
-> $$
+x^2 + 4x + 5 = (x+2)^2 + 1
+$$
 Get:
 $$
-> \sqrt{x^2+4 x+5} - 2\ln \left | \sqrt{x^2+4 x+5} + x + 2 \right | + C
-> $$</div></div>
+\sqrt{x^2+4 x+5} - 2\ln \left | \sqrt{x^2+4 x+5} + x + 2 \right | + C
+$$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
 $$
-> \int x^3 \ln (5x) dx
-> $$</div></div>
+\int x^3 \ln (5x) dx
+$$</div></div>
 
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">This is parts- get:
 $$
-> \frac14 x^4 \ln \left ( 5x \right ) - \frac{x^4}{16} + C
-> $$</div></details>
+\frac14 x^4 \ln \left ( 5x \right ) - \frac{x^4}{16} + C
+$$</div></details>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute 
 $$
-> \int x \sin (x) \cos (x)dx
-> $$
+\int x \sin (x) \cos (x)dx
+$$
 [!success]- Solution
 Tricky tricky- see that:
 $$
-> \int x \sin(x) \cos(x) dx = \frac12 \int x \sin(2x)dx
-> $$
+\int x \sin(x) \cos(x) dx = \frac12 \int x \sin(2x)dx
+$$
 Apply parts from here to get:
 $$
-> \frac12 \left ( - \frac12 x \cos(2x) + \frac14 \sin(2x) \right ) + C
-> $$</div></div>
+\frac12 \left ( - \frac12 x \cos(2x) + \frac14 \sin(2x) \right ) + C
+$$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Integrate
 $$
-> \int \frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2}
-> $$
+\int \frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2}
+$$
 [!success]- Solution
 Start with polynomial long division:
 $$
-> \frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2} = x^2 + 3 + \frac{-3x+7}{x^2 + x -2}
-> $$
+\frac{x^4 + x^3 + x^2 + 1}{x^2 + x -2} = x^2 + 3 + \frac{-3x+7}{x^2 + x -2}
+$$
 Continue by partial fractions:
 $$
-> = \frac13 x^3 + 3x + \frac43 \ln \left | x-1 \right | - \frac{13}{3} \ln \lrabs {x+2} + C
-> $$</div></div>
+= \frac13 x^3 + 3x + \frac43 \ln \left | x-1 \right | - \frac{13}{3} \ln \lrabs {x+2} + C
+$$</div></div>
     </article>
   </main>
 

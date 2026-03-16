@@ -171,23 +171,23 @@ The goal of the second half of the course is to find these functions $F$ as in t
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Define the function:
 $$
-> h(x) = \int_1^{e^x} \ln(t) dt,
-> $$
+h(x) = \int_1^{e^x} \ln(t) dt,
+$$
 compute $h’(x)$.
-<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Following <a href="calcII/53-the-fundamental-theorem-of-calculus.html#024a00" class="wiki-link" data-note="53-the-fundamental-theorem-of-calculus">this equation</a>
+<details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Following <a href="53-the-fundamental-theorem-of-calculus.html#024a00" class="wiki-link" data-note="53-the-fundamental-theorem-of-calculus">this equation</a>
 $$\frac{d}{dx} h(x) = \ln(e^x) \cdot e^x + 0 = xe^x $$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Given the function:
 $$
-> g(x) := \int_0^x \sqrt{t + t^3} dt,
-> $$
+g(x) := \int_0^x \sqrt{t + t^3} dt,
+$$
 compute the derivative $g’(x)$ and the slope of the line tangent to $g(x)$ at $x = 5$.
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$\displaystyle g’(x) = \sqrt{x+x^3}$. Plug in to compute slope of the tangent line.</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the derivative of the function:
 $$
-> y (x) := \int_{\sqrt{x}}^{\pi/4}  \theta \tan \theta d\theta
-> $$
+y (x) := \int_{\sqrt{x}}^{\pi/4}  \theta \tan \theta d\theta
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$y’(x) = - \sqrt{x} \tan\sqrt{x} \cdot \frac{1}{2 \sqrt{x}} = \frac{-1}{2} \tan\sqrt{x}$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the following integrals using the Fundamental Theorem of Calculus:
@@ -196,8 +196,8 @@ $$
 
 <div class="callout callout-example"><div class="callout-title">Problem (<strong>Challenge</strong>)</div><div class="callout-body">Evaluate the limit:
 $$
-> \lim_{n \to \infty} \sum_{i = 1}^n \left ( \frac{i^4}{n^5} + \frac{i}{n^2} \right )
-> $$
+\lim_{n \to \infty} \sum_{i = 1}^n \left ( \frac{i^4}{n^5} + \frac{i}{n^2} \right )
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">The trick here is to evaluate this as an integral. First, factor out $1/n$ from the summand:$$\frac{i^4}{n^5} + \frac{i}{n^2} = \frac1n \left (  \left (i/n \right )^4 + (i/n) \right )$$from here, we see that $a = 0$, $\Delta x = 1/n$ so $b = 1$. We’re home free when we write down:$$\int_0^1 x^4 + x dx = \left [ \frac{x^5}{5} + \frac{x^2}{2} \right ]_0^1 = \frac{1}{5} + \frac12 = \frac{7}{10}$$</div></details></div></div>
     </article>
   </main>

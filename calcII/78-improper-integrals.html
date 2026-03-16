@@ -157,16 +157,16 @@
 
   <main>
     <article>
-<p>When we have to compute integrals over an infinite domain, like  $(a, \infty)$, our technology from <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a>. The big idea is that one can approximate infinite-area integrals with limits of finite ones. We’ll summarize these into three types:</p>
+<p>When we have to compute integrals over an infinite domain, like  $(a, \infty)$, our technology from <a href="52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a>. The big idea is that one can approximate infinite-area integrals with limits of finite ones. We’ll summarize these into three types:</p>
 
 <ul><li><strong>Case 1: Infinite Bounds</strong> $$\int_a^\infty f(x) dx = \lim_{b \to \infty} \int_a^b f(x)dx$$where the integral converges if the corresponding limit does, and diverges if the corresponding limit diverges. We can do this with one sided limits for discontinuities also. </li><li><strong>Case 2: Discontinuous Integrands</strong> When $f(x)$ is discontinuous at some $c$ with $a < c < b$, we write:$$\int_a^b f(x)dx = \lim_{e \to c^-} \int_a^e f(x) dx + \lim_{g \to c^+} \int_g^b f(x) dx$$and say that the integral <em>converges</em> if each of these limits converges when studied individually.</li></ul>
 <div class="callout callout-theorem"><div class="callout-title">Proposition ($p$-Test)</div><div class="callout-body">We have that:
 $$
-> \int_{1}^\infty \frac{1}{x^p} dx \begin{cases}
-> \text{ converges if } & p > 1\\
-> \text{ diverges if } & p \leq 1
-> \end{cases}
-> $$</div></div>
+\int_{1}^\infty \frac{1}{x^p} dx \begin{cases}
+\text{ converges if } & p > 1\\
+\text{ diverges if } & p \leq 1
+\end{cases}
+$$</div></div>
 
 <p>^5e5594</p>
 
@@ -175,8 +175,8 @@ $$
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Determine whether the following integrals are convergent or divergent:
 $$
-> \int_{3}^\infty \frac{1}{(x-2)^{3/2}} dx \quad \text{ and } \quad \int_{2}^\infty e^{-5p} dp
-> $$
+\int_{3}^\infty \frac{1}{(x-2)^{3/2}} dx \quad \text{ and } \quad \int_{2}^\infty e^{-5p} dp
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">For the first integral, we can make the substitution $u = x - 2$ and notice $du = dx$; further, $$\int_3^\infty \frac{1}{(x-2)^{3/2}} = \int_1^\infty \frac{1}{u^{3/2}} du$$
 which converges by the $p$ test. For the second integral, we first have to take an antiderivative of the integrand:$$\int_{2}^\infty e^{-5p} dp = \lim_{b \to \infty}  \left. \frac{e^{-5p}}{-5} \vphantom{\big|} \right|_{{2}}^b = \lim_{b \to \infty} \frac{-1}{5} \left [ \frac{1}{e^{5b}} - \frac{1}{e^{10}} \right ]$$
 which surely converges:$$\int_{2}^\infty e^{-5p} dp = \frac{1}{5e^{10}}$$</div></details></div></div>
@@ -188,7 +188,7 @@ which surely converges:$$\int_{2}^\infty e^{-5p} dp = \frac{1}{5e^{10}}$$</div><
 $$\int_0^\infty \frac{x^2}{\sqrt{1+x^3}}dx = \lim_{b \to \infty} \frac13 \int_1^\infty \frac{du}{\sqrt{u}}$$
 Without computation, this diverges by the $p$-test. 
 The second integral should suggest comparison; since we know that increasing the denominator decreases the function, we can bound $\frac{1}{x^2 + x} \leq \frac{1}{x^2}$ which we know converges by the $p$-test. Determining the actual value of this integral is quite challenging, but classifying whether or not it does is important. \\
-We show $(c)$. We have a polynomial in the denominator, so we factor and use <a href="calcII/74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a>. 
+We show $(c)$. We have a polynomial in the denominator, so we factor and use <a href="74-partial-fraction-decomposition.html" class="wiki-link" data-note="74-partial-fraction-decomposition">§7.4 Partial Fraction Decomposition</a>. 
 $$\frac{1}{x^2 - x - 2} = \frac{1}{3(x-2)} - \frac{1}{3(x+1)}$$
 This means that our function has discontinuities at $x=-1$ and $x= 2$. Because only $x =2$ is in the range of our integral, this is a case 2 integral:
 $$\lim_{b \to 2^-} \int_0^b \frac{1}{x^2 - x + 2} dx + \lim_{b \to 2^+} \int_b ^4 \frac{1}{x^2 - x + 2} dx$$
@@ -196,8 +196,8 @@ The remainder of the problem uses the partial fraction decomposition to compute 
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">[Some More Twists] Consider these slightly more challenging problems as well!
 <ul><li>Determine the values of $p$ for which the integral converges in:</li></ul>$$
-> \int_0^1 \frac{1}{x^p} dx
-> $$
+\int_0^1 \frac{1}{x^p} dx
+$$
 <ul><li>$\displaystyle \int_e^\infty \frac{1}{x (\ln (x))^2} dx$</li><li>$\displaystyle \int_0^1 \frac{dx}{\sqrt{1-x^2}}$</li></ul>
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">(a) can be solved by just following the exact steps that we have been doing before- this function has a discontinuity at $0$, so we evaluate:
 $$\lim_{b \to 0^+} \int _0^1 x^{-p} = \lim_{b \to 0^+} \left. \frac{x^{1-p}}{1-p} \vphantom{\big|} \right|_{{b}}^1 = \left [ \frac{1}{1-p} - \lim_{b \to 0^+} \frac{b^{1-p}}{1-p} \right ]$$

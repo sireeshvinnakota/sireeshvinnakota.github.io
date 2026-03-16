@@ -163,36 +163,36 @@ As you can see, the above statement has some specific conditions. If, suppose, w
 
 <div class="callout callout-theorem"><div class="callout-title">Theorem (Limit Comparison Test)</div><div class="callout-body">Suppose that $\sum a_n$ and $\sum b_n$ are series with positive terms. If
 $$
-> \lim_{n \to \infty} \frac{a_n}{b_n} = c
-> $$
+\lim_{n \to \infty} \frac{a_n}{b_n} = c
+$$
 for some constant finite number $c > 0$, then either both series converge or both diverge.</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Determine whether the following series converge or diverge:
 $$
-> \sum_{k = 1}^\infty \frac{\ln(k)}{k} \quad \text{ and } \quad \sum_{n = 2}^\infty \frac{n - 1}{\sqrt{n^6 + 1}}
-> $$
+\sum_{k = 1}^\infty \frac{\ln(k)}{k} \quad \text{ and } \quad \sum_{n = 2}^\infty \frac{n - 1}{\sqrt{n^6 + 1}}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Diverges, compare with $\sum \frac1k$. The second converges with comparison to $1/n^2$.</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Determine whether the following series converge or diverge:
 $$
-> \sum_{n = 1}^\infty \frac{4n^2 - n}{n^3 + 9}
-> $$
+\sum_{n = 1}^\infty \frac{4n^2 - n}{n^3 + 9}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Removing the “filler” terms, we have the string of inequalities, we see that:
 $$ \frac{4n^2 - n}{n^3 + 9} \leq \frac{4n^2}{n^3 + 9} \leq \frac{4n^2 - n}{n^3} = \frac4n$$
 From here, we see that $\sum \frac4n$ diverges, but since it’s a <em>bigger</em> sequence that diverges, we cannot use the comparison test. So, defining: $$a_n = \frac{4n^2 - n}{n^3 + 9} \quad \text{ and } \quad b_n = \frac4n$$ let’s complete a <em>limit</em> comparison: $$\lim_{n \to \infty} \left | \frac{a_n}{b_n} \right | = \lim_{n \to \infty} \left | \frac{4n^2 - n}{n^3 + 9} \cdot \frac n4 \right | = \lim_{n \to \infty} \left | \frac{n^3 \left ( 4 - \frac{1}{n} \right )}{n^3 \left ( 4 + \frac{36}{n^3} \right )} \right | = 1 $$ Now, by limit comparison, and the fact that: $$4\sum_{n = 1}^\infty \frac1n $$ diverges by $p$-series, we know that the original series diverges as well.</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Determine whether the following series converges or diverges:
 $$
-> \sum_{n = 1}^\infty \frac{2n^3 + 7}{n^4 \sin^2 (n)}
-> $$
+\sum_{n = 1}^\infty \frac{2n^3 + 7}{n^4 \sin^2 (n)}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Notice that $0 \leq \sin^2(n) \leq 1$, so we can write:
 $$ \frac{2n^3 + 7}{n^4 \sin^2(n)} \geq \frac{2n^3}{n^4 \sin^2(n)} \geq \frac{2n^3}{n^4} = \frac{2}{n} $$
 and get divergence by comparison.</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Determine whether the following series converges or diverges:
 $$
-> \sum_{n=1}^{\infty} \frac{\sqrt{2 n^2+4 n+1}}{n^3+9}
-> $$
+\sum_{n=1}^{\infty} \frac{\sqrt{2 n^2+4 n+1}}{n^3+9}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body"><strong>HINT:</strong> Use limit comparison with the series:
 $$\sum_{n = 0}^ \infty \frac{\sqrt{2}}{n^2}$$
 (Similar steps to above show where this comes from.)</div></details></div></div>

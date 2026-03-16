@@ -161,13 +161,13 @@
 <ul><li>If $\int_1^{\infty} f(x) d x$ is convergent, then $\sum_{n=1}^{\infty} a_n$ is convergent.</li><li>If $\int_1^{\infty} f(x) d x$ is divergent, then $\sum_{n=1}^{\infty} a_n$ is divergent. </div></div></li></ul>
 For some intuition on the previous statement, consider drawing a Riemann sum of the integral with $\Delta x = 1$ and start computing the area beneath the curve that way.
 
-<div class="callout callout-theorem"><div class="callout-title">Theorem ($p$-Series, compare with <a href="calcII/78-improper-integrals.html#5e5594" class="wiki-link" data-note="78-improper-integrals">the integral version</a>)</div><div class="callout-body">The $p$-series 
+<div class="callout callout-theorem"><div class="callout-title">Theorem ($p$-Series, compare with <a href="78-improper-integrals.html#5e5594" class="wiki-link" data-note="78-improper-integrals">the integral version</a>)</div><div class="callout-body">The $p$-series 
 $$ \sum_{n = 1}^\infty \frac{1}{n^p} \quad \text{ is } \quad \begin{cases}\text{convergent } & p > 1\\ \text{divergent } & p \leq 1 \end{cases} $$</div></div>
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Determine the convergence of the series:
 $$
-> \sum_{n = 1}^\infty \frac{\ln(n)}{n}
-> $$
+\sum_{n = 1}^\infty \frac{\ln(n)}{n}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">In order to pair this up with the corresponding function: $f(x) = \frac{\ln(x)}{x}$, we have to establish all of the prerequisite conditions:
 <ul><li><strong>$f$ is Continuous:</strong> $\ln(x), \frac1x$ are continuous on $(0,\infty)$, so their ratio is well defined and continuous. </li><li><strong>$f$ is Positive:</strong> Ratio of two positive functions on the domain $(0,\infty)$, so positive.</li><li><strong>$f$ is Decreasing:</strong> Recall that it suffices to show that the derivative is negative. We see: $$ f’(x) = \frac{\frac1x (x) - \ln(x) \cdot 1}{x^2} = \frac{1 - \ln(x)}{x^2} < 0 $$ </li></ul>for all $x \in (0, \infty)$. 
 These complete the conditions necessary for the Integral Test, so we can compute:
@@ -175,20 +175,20 @@ $$ \int_{1}^\infty \frac{\ln(x)}{x} dx $$Since this integral diverges, the serie
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the convergence of the following series:
 $$
-> \sum_{n = 1}^\infty \frac{n}{n^2 + 1}
-> $$
+\sum_{n = 1}^\infty \frac{n}{n^2 + 1}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Corresponding integral diverges.</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the convergence of the following series:
 $$
-> \sum_{n = 1}^\infty \frac{1}{n^2 + 2n + 2}
-> $$
+\sum_{n = 1}^\infty \frac{1}{n^2 + 2n + 2}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">Converges, use the corresponding function, and then partial fractions to compute the integral.</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Can we use the integral test on the following function?
 $$
-> \sum_{n=1}^{\infty} \frac{\cos \pi n}{\sqrt{n}}
-> $$
+\sum_{n=1}^{\infty} \frac{\cos \pi n}{\sqrt{n}}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">No, positivity fails.</div></details></div></div>
     </article>
   </main>

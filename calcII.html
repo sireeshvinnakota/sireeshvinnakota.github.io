@@ -99,34 +99,11 @@
       opacity: 0.3;
     }
 
-    /* search box on graph */
-    #graph-search-wrap {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 10;
-    }
-    #graph-search {
-      background: hsl(220, 12%, 18%);
-      border: 1px solid hsl(220, 10%, 30%);
-      border-radius: 4px;
-      color: hsl(220, 5%, 85%);
-      font-family: 'Latin Modern', Georgia, serif;
-      font-size: 0.8rem;
-      padding: 4px 8px;
-      width: 160px;
-      outline: none;
-    }
-    #graph-search::placeholder { color: hsl(220, 5%, 50%); }
-    #graph-search:focus { border-color: hsl(48, 80%, 55%); }
-
     /* graph controls */
     #graph-controls {
       position: absolute;
       bottom: 10px;
       right: 10px;
-      display: flex;
-      gap: 5px;
       z-index: 10;
     }
     .graph-btn {
@@ -143,6 +120,16 @@
 
     /* node count badge */
     #graph-info {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      font-family: 'Latin Modern', Georgia, serif;
+      font-size: 0.75rem;
+      color: hsl(220, 5%, 50%);
+    }
+
+    /* graph: no-data message */
+    #graph-no-data {
       position: absolute;
       bottom: 10px;
       left: 10px;
@@ -403,12 +390,8 @@
 
         <div id="graph-canvas-wrap">
           <svg id="graph-svg"></svg>
-          <div id="graph-search-wrap">
-            <input id="graph-search" type="text" placeholder="Search topics…" autocomplete="off" />
-          </div>
           <div id="graph-controls">
-            <button class="graph-btn" id="btn-reset">Reset view</button>
-            <button class="graph-btn" id="btn-reheat">Reheat</button>
+            <button class="graph-btn" id="btn-recenter">Recenter</button>
           </div>
           <div id="graph-info"></div>
           <div id="graph-no-data">
@@ -416,6 +399,26 @@
             Run <code>python build_calcII.py</code> to generate <code>graph-data.json</code>.
           </div>
         </div>
+      </section>
+
+      <!-- Toggle between graph and note list -->
+      <div id="view-toggle-wrap" style="margin: 1rem 0 0; text-align: center;">
+        <button id="btn-toggle-view" style="
+          background: none;
+          border: 1px solid var(--footnotes-border-color);
+          color: var(--body-color);
+          font-family: 'Latin Modern', Georgia, serif;
+          font-size: 0.85rem;
+          padding: 4px 14px;
+          border-radius: 4px;
+          cursor: pointer;
+          opacity: 0.75;
+        ">Show note list</button>
+      </div>
+
+      <!-- Ordered note list (hidden by default) -->
+      <section id="note-list-section" style="display:none; margin-top: 1rem;">
+        <ol id="note-list"></ol>
       </section>
 
       <hr id="content-divider" />
@@ -467,6 +470,18 @@
   document.getElementById('home-button').addEventListener('click', () => {
     window.location.href = 'index.html';
   });
+
+  // ── Graph / list toggle ───────────────────────────────────────────────────
+  const toggleBtn = document.getElementById('btn-toggle-view');
+  const graphSection = document.getElementById('graph-section');
+  const noteListSection = document.getElementById('note-list-section');
+  let showingList = false;
+  toggleBtn.addEventListener('click', () => {
+    showingList = !showingList;
+    graphSection.style.display    = showingList ? 'none' : '';
+    noteListSection.style.display = showingList ? ''     : 'none';
+    toggleBtn.textContent = showingList ? 'Show graph' : 'Show note list';
+  });
   </script>
 
   <script>
@@ -506,6 +521,23 @@
     document.getElementById('graph-info').textContent =
       `${nodes.length} notes · ${links.length} links`;
 
+    // Populate the ordered note list (sorted by id = slug, which is alphabetical/numerical)
+    const noteList = document.getElementById('note-list');
+    [...nodes].sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }))
+      .forEach(n => {
+        const li = document.createElement('li');
+        const a  = document.createElement('a');
+        a.href = '#';
+        a.textContent = n.label;
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          if (typeof setActive === 'function') setActive(n.id);
+          loadNote(n.id, n.label);
+        });
+        li.appendChild(a);
+        noteList.appendChild(li);
+      });
+
     const wrap = document.getElementById('graph-canvas-wrap');
 
     // Block until the container has a painted, non-zero size.
@@ -529,9 +561,10 @@
 
     try {
     const g = svg.append('g');
-    svg.call(d3.zoom()
+    const zoomBehavior = d3.zoom()
       .scaleExtent([0.25, 4])
-      .on('zoom', e => g.attr('transform', e.transform)));
+      .on('zoom', e => g.attr('transform', e.transform));
+    svg.call(zoomBehavior);
 
     // Build adjacency for neighbour highlighting
     const adj = new Map(nodes.map(n => [n.id, new Set()]));
@@ -650,31 +683,12 @@
     svg.on('click', () => clearActive());
 
     // ── Controls ─────────────────────────────────────────────────────────────
-    document.getElementById('btn-reset').addEventListener('click', () => {
+    document.getElementById('btn-recenter').addEventListener('click', () => {
       svg.transition().duration(500).call(
-        d3.zoom().transform, d3.zoomIdentity
+        zoomBehavior.transform, d3.zoomIdentity.translate(W / 2, H / 2).scale(1)
       );
-    });
-    document.getElementById('btn-reheat').addEventListener('click', () => {
-      simulation.alpha(0.5).restart();
-    });
-
-    // ── Search ────────────────────────────────────────────────────────────────
-    document.getElementById('graph-search').addEventListener('input', function() {
-      const q = this.value.toLowerCase().trim();
-      if (!q) { clearActive(); return; }
-      const match = nodes.find(n =>
-        n.label.toLowerCase().includes(q) || n.id.includes(q)
-      );
-      if (match) {
-        setActive(match.id);
-        // pan to that node
-        const t = d3.zoomTransform(svg.node());
-        svg.transition().duration(400).call(
-          d3.zoom().transform,
-          d3.zoomIdentity.translate(W/2 - match.x, H/2 - match.y)
-        );
-      }
+      // Also nudge the simulation briefly to pull wandered nodes back
+      simulation.alpha(0.15).restart();
     });
 
     } catch (err) {

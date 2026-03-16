@@ -170,22 +170,22 @@
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Complete the following table of antiderivatives
 $$
-> \begin{array}{|c|c|c|c|}
-> \hline
-> \text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline
-> x^n & & \frac{1}{x} &  \\
-> C & & e^x & \\
-> \cos(x) & & \sec^2(x) & \\
-> \csc(x)\cot(x) & & \frac{1}{\sqrt{1-x^2}} & \\ 
-> \frac{1}{x\sqrt{x^2 - 1}} & & \frac{-1}{\sqrt{1-x^2}} & \\ \hline
-> \end{array}
-> $$
+\begin{array}{|c|c|c|c|}
+\hline
+\text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline
+x^n & & \frac{1}{x} &  \\
+C & & e^x & \\
+\cos(x) & & \sec^2(x) & \\
+\csc(x)\cot(x) & & \frac{1}{\sqrt{1-x^2}} & \\ 
+\frac{1}{x\sqrt{x^2 - 1}} & & \frac{-1}{\sqrt{1-x^2}} & \\ \hline
+\end{array}
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">$$\begin{array}{|c|c|c|c|}\hline\text{Function} & \text{Antiderivative} & \text{Function} & \text{Antiderivative}\\ \hline x^n & \frac{x^{n+1}}{n+1} +C & \frac{1}{x} & \ln|x| + C \\ C & Cx + D & e^x & e^x + C\\ \cos(x) & \sin(x) + C& \sec^2(x) & \tan(x) + C \\ \csc(x)\cot(x) & -\csc(x) + C & \frac{1}{\sqrt{1-x^2}} & \arcsin(x) + C \\ \frac{1}{x\sqrt{x^2-1}} & \sec^{-1}(x) + C & \frac{-1}{\sqrt{1-x^2}} & \arccos (x) + C \\ \hline\end{array}$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute $f(x)$ when:
 $$
-> f''(x) = e^x -2\sin (x), \quad f(0)=3 \quad \text{ and} \quad f(\pi/2) = 0
-> $$
+f''(x) = e^x -2\sin (x), \quad f(0)=3 \quad \text{ and} \quad f(\pi/2) = 0
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We integrate:
 $$\int e^x -2 \sin(x) dx = e^x + 2\cos(x) + C = f’(x)$$
 ...and once more
@@ -201,15 +201,15 @@ $$\boxed{f(x) = e^x + 2\sin(x) + -\left ( \frac{2}{\pi} (e^{\pi/2} +4) \right )x
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the indefinite integral:
 $$
-> \int \frac{\cos x}{\sin^2 x} dx
-> $$
+\int \frac{\cos x}{\sin^2 x} dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We know that $\frac{\cos}{\sin} = \cot$, and what is left is a factor of $\frac1\sin = \csc$:
 $$\int \csc x \cot x dx = -\csc x + C$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Evaluate the following definite integral:
 $$
-> \int_0^2 x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx
-> $$
+\int_0^2 x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">We compute the general antiderivative:$$\int x \left ( \sqrt[3]{x} + \sqrt[4]{x} \right ) dx = \int x^{4/3} + x^{5/4}dx$$
 When we take the “reverse power rule” we have:
 $$\frac37 x^{7/3} + \frac49 x^{9/4} + C$$ and plug in:$$[\frac37 x^{7/3} + \frac49 x^{9/4} + C]_0^2 = 2^{7/3} + 2^{9/4}$$</div></details>

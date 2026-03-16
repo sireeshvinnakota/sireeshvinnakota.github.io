@@ -158,27 +158,27 @@
   <main>
     <article>
 <span id="0bf336" class="block-anchor"></span>
-<p>This is a source of <a href="calcII/52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a>. Recall that or original understanding, in <a href="calcII/51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">§5.1 Areas & Distances</a>, of an integral was the area underneath a curve. These can be treated like shapes, allowing us to "add" and "subtract" them from one another. This motivates the following:</p>
+<p>This is a source of <a href="52--definite-integrals.html" class="wiki-link" data-note="52--definite-integrals">§5.2- Definite Integrals</a>. Recall that or original understanding, in <a href="51-areas-distances.html" class="wiki-link" data-note="51-areas-distances">§5.1 Areas & Distances</a>, of an integral was the area underneath a curve. These can be treated like shapes, allowing us to "add" and "subtract" them from one another. This motivates the following:</p>
 
 <div class="callout callout-theorem"><div class="callout-title">Proposition</div><div class="callout-body">The area between the curves $y = f(x)$ and $y =g(x)$ between $x = a$ and $x = b$ is given by:
 $$
-> \int_a^b \left | f(x) - g(x) \right |dx
-> $$</div></div>
+\int_a^b \left | f(x) - g(x) \right |dx
+$$</div></div>
 
 <p>Problems like these often involve integrating an absolute value symbol, which can be tricky! Remember to sort the interval $[a,b]$ into the regions where $f(x) \geq g(x)$ and $f(x) \leq g(x)$.</p>
 
 <div class="callout callout-example"><div class="callout-title">Example</div><div class="callout-body">Compute the area between the curves:
 $$
-> f(x) = 4x - x^2 \quad \text{and} \quad g(x) = x^2
-> $$
+f(x) = 4x - x^2 \quad \text{and} \quad g(x) = x^2
+$$
 <figure class="centered"><img src="../images/graph1.png" alt="graph1" width="250" loading="lazy" /><figcaption>graph1</figcaption></figure> 
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">From the image, we know that the correct integral to set up is:
 $$\int_0^2 f(x) - g(x) dx = 2 \int_0^2 2x - x^2 dx = 2 \left [ x^2 - \frac{x^3}{3} \right ]_0^2 = 2 \left ( 4 - \frac83 \right ) = \frac83$$</div></details></div></div>
 
 <div class="callout callout-example"><div class="callout-title">Problem</div><div class="callout-body">Compute the area between the curves:
 $$
-> f(x) = \frac{8}{x}, \quad \text{  } \quad g(x) = 2x, \quad \text{ and } \quad x = 4.
-> $$
+f(x) = \frac{8}{x}, \quad \text{  } \quad g(x) = 2x, \quad \text{ and } \quad x = 4.
+$$
 <details class="callout callout-success"><summary class="callout-title">Solution</summary><div class="callout-body">First we graph
 <figure class="centered"><img src="../images/graph2.png" alt="graph2" width="250" loading="lazy" /><figcaption>graph2</figcaption></figure>
 and integrate:
