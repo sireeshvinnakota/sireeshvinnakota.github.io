@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — Enter Your Predictions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pitch:    #0D3D2B;
+    --pitch-mid:#112E1F;
+    --pitch-lt: #1A4A35;
+    --gold:     #E8C84A;
+    --gold-dim: #C4A830;
+    --white:    #F5F5F0;
+    --muted:    #A8B8A8;
+    --text:     #E8E4DC;
+    --stripe:   rgba(255,255,255,0.03);
+    --border:   rgba(255,255,255,0.1);
+    --error:    #E05555;
+    --success:  #4CAF70;
+    --radius:   6px;
+  }
+
+  body {
+    background: var(--pitch);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── Pitch lines background ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        var(--stripe) 0px,
+        var(--stripe) 1px,
+        transparent 1px,
+        transparent 80px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ── Header ── */
+  header {
+    text-align: center;
+    padding: 52px 0 36px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 88px);
+    line-height: 0.9;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+  }
+  h1 span { color: var(--gold); }
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* ── Section cards ── */
+  .card {
+    background: var(--pitch-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: var(--pitch-lt);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-header:hover { background: #1f5a40; }
+  .group-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--gold);
+    width: 32px;
+    flex-shrink: 0;
+  }
+  .card-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    flex: 1;
+  }
+  .team-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .team-pill {
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 7px;
+    color: var(--muted);
+  }
+  .chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 0;
+  }
+  .card.open .card-body { display: block; }
+
+  /* ── Match rows ── */
+  .match-row {
+    display: grid;
+    grid-template-columns: 1fr 36px 1fr 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .match-row:last-child { border-bottom: none; }
+  .match-row:nth-child(even) { background: var(--stripe); }
+  .team-name { font-size: 13px; font-weight: 500; }
+  .team-name.away { text-align: left; color: var(--muted); }
+  .vs-label { text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.1em; }
+
+  select {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    padding: 6px 10px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23A8B8A8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    transition: border-color 0.15s;
+  }
+  select:focus { outline: none; border-color: var(--gold); }
+  select option { background: #1A3A2A; color: var(--text); }
+  select.picked { border-color: var(--gold-dim); color: var(--gold); }
+
+  /* ── Info form ── */
+  .info-card { padding: 24px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    transition: border-color 0.15s;
+  }
+  input:focus { outline: none; border-color: var(--gold); }
+  input::placeholder { color: rgba(168,184,168,0.4); }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--pitch-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .progress-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* ── Submit ── */
+  .submit-wrap { margin-top: 28px; text-align: center; }
+  .btn-submit {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    background: var(--gold);
+    color: var(--pitch);
+    border: none;
+    border-radius: var(--radius);
+    padding: 16px 56px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-submit:hover { background: #f0d255; transform: translateY(-1px); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ── Status messages ── */
+  .status {
+    margin-top: 16px;
+    padding: 12px 18px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+  }
+  .status.error { background: rgba(224,85,85,0.15); border: 1px solid var(--error); color: #ff8a8a; display: block; }
+  .status.success { background: rgba(76,175,112,0.15); border: 1px solid var(--success); color: #7ee8a2; display: block; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .view-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--gold);
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232,200,74,0.3);
+  }
+  .view-link:hover { border-bottom-color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA · Canada · Mexico</p>
+    <h1>WORLD CUP<br><span>2026</span></h1>
+    <p class="subtitle">Group Stage Prediction Form &nbsp;·&nbsp; June 11 – 27</p>
+  </header>
+
+  <!-- Info section -->
+  <div class="card open" id="card-info">
+    <div class="card-header" onclick="toggleCard('card-info')">
+      <span class="group-badge">✦</span>
+      <h2>Your Details</h2>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="info-card">
+        <div class="form-grid">
+          <div>
+            <label for="f-name">Name</label>
+            <input type="text" id="f-name" placeholder="e.g. Sireesh" required>
+          </div>
+          <div>
+            <label for="f-email">Email</label>
+            <input type="email" id="f-email" placeholder="you@example.com" required>
+          </div>
+          <div>
+            <label for="f-phone">Phone (optional)</label>
+            <input type="tel" id="f-phone" placeholder="+1 (555) 000-0000">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress bar (sticky) -->
+  <div class="progress-wrap">
+    <span style="font-size:12px;color:var(--muted);white-space:nowrap">Group picks</span>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <span class="progress-label" id="progress-label">0 / 72</span>
+  </div>
+
+  <!-- Group cards injected by JS -->
+  <div id="groups-container"></div>
+
+  <div class="submit-wrap">
+    <div id="status-msg" class="status"></div>
+    <button class="btn-submit" id="btn-submit" onclick="submitForm()">LOCK IN MY PICKS</button>
+    <br>
+    <a href="standings.html" class="view-link">→ View everyone's predictions</a>
+  </div>
+</div>
+
+<script>
+const GROUPS = {
+  A: ["Mexico","South Africa","South Korea","Czechia"],
+  B: ["Canada","Bosnia-Herzegovina","Qatar","Switzerland"],
+  C: ["Brazil","Haiti","Morocco","Scotland"],
+  D: ["United States","Paraguay","Australia","Türkiye"],
+  E: ["Germany","Curaçao","Ivory Coast","Ecuador"],
+  F: ["Netherlands","Japan","Sweden","Tunisia"],
+  G: ["Belgium","Egypt","Iran","New Zealand"],
+  H: ["Spain","Cape Verde","Saudi Arabia","Uruguay"],
+  I: ["France","Iraq","Norway","Senegal"],
+  J: ["Algeria","Argentina","Austria","Jordan"],
+  K: ["Colombia","Congo DR","Portugal","Uzbekistan"],
+  L: ["Croatia","England","Ghana","Panama"],
+};
+
+// ── IMPORTANT: replace this URL after setting up Google Apps Script ──
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbL3pVg3gIvLbgc9jk_wqcJiqa1XTEJGVAf26qyRnGJ1jD5pSFiojA9mFOq7Gj4lso/exec";
+
+function getMatches(teams) {
+  const m = [];
+  for (let i = 0; i < teams.length; i++)
+    for (let j = i+1; j < teams.length; j++)
+      m.push([teams[i], teams[j]]);
+  return m;
+}
+
+function toggleCard(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+let totalPicks = 0;
+let filledPicks = 0;
+
+function buildGroups() {
+  const container = document.getElementById('groups-container');
+  Object.entries(GROUPS).forEach(([letter, teams], gi) => {
+    const matches = getMatches(teams);
+    totalPicks += matches.length;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = `card-${letter}`;
+
+    const pillsHtml = teams.map(t => `<span class="team-pill">${t}</span>`).join('');
+    card.innerHTML = `
+      <div class="card-header" onclick="toggleCard('card-${letter}')">
+        <span class="group-badge">${letter}</span>
+        <h2>GROUP ${letter}</h2>
+        <div class="team-pills">${pillsHtml}</div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body" id="body-${letter}"></div>
+    `;
+
+    const body = card.querySelector('.card-body');
+    matches.forEach(([home, away], mi) => {
+      const key = `${letter}_${mi}`;
+      const row = document.createElement('div');
+      row.className = 'match-row';
+      row.innerHTML = `
+        <span class="team-name">${home}</span>
+        <span class="vs-label">VS</span>
+        <span class="team-name away">${away}</span>
+        <select id="pick-${key}" onchange="onPickChange(this, '${key}')">
+          <option value="">— pick —</option>
+          <option value="${home}">${home}</option>
+          <option value="Draw">Draw</option>
+          <option value="${away}">${away}</option>
+        </select>
+      `;
+      body.appendChild(row);
+    });
+    container.appendChild(card);
+  });
+  updateProgress();
+}
+
+function onPickChange(sel, key) {
+  if (sel.value) {
+    sel.classList.add('picked');
+    if (sel.dataset.wasFilled !== 'true') {
+      filledPicks++;
+      sel.dataset.wasFilled = 'true';
+    }
+  } else {
+    sel.classList.remove('picked');
+    if (sel.dataset.wasFilled === 'true') {
+      filledPicks--;
+      sel.dataset.wasFilled = 'false';
+    }
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = totalPicks > 0 ? (filledPicks / totalPicks) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${filledPicks} / ${totalPicks}`;
+}
+
+function collectData() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  if (!name || !email) return null;
+
+  const picks = {};
+  let allFilled = true;
+  Object.entries(GROUPS).forEach(([letter, teams]) => {
+    const matches = getMatches(teams);
+    matches.forEach(([home, away], mi) => {
+      const key = `${letter}_${mi}`;
+      const val = document.getElementById(`pick-${key}`)?.value || '';
+      picks[key] = val;
+      if (!val) allFilled = false;
+    });
+  });
+  return { name, email, phone, picks, allFilled };
+}
+
+async function submitForm() {
+  const data = collectData();
+  const statusEl = document.getElementById('status-msg');
+  const btnEl = document.getElementById('btn-submit');
+
+  statusEl.className = 'status';
+  statusEl.textContent = '';
+
+  if (!data) {
+    statusEl.className = 'status error';
+    statusEl.textContent = 'Please fill in your name and email before submitting.';
+    return;
+  }
+  if (!data.allFilled) {
+    const ok = confirm(`You have ${72 - filledPicks} unpicked matches. Submit anyway?`);
+    if (!ok) return;
+  }
+
+  btnEl.disabled = true;
+  btnEl.textContent = 'SUBMITTING…';
+
+  const payload = {
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    timestamp: new Date().toISOString(),
+    picks: data.picks,
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    statusEl.className = 'status success';
+    statusEl.innerHTML = `✓ Predictions locked in for <strong>${data.name}</strong>! <br><a href="standings.html" class="view-link">See everyone's picks →</a>`;
+    btnEl.textContent = 'SUBMITTED ✓';
+  } catch (err) {
+    statusEl.className = 'status error';
+    statusEl.textContent = 'Submission failed. Please try again or contact Sireesh.';
+    btnEl.disabled = false;
+    btnEl.textContent = 'LOCK IN MY PICKS';
+  }
+}
+
+buildGroups();
+</script>
+</body>
+</html>

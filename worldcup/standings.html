@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — Group Stage Predictions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pitch:    #0D3D2B;
+    --pitch-mid:#112E1F;
+    --pitch-lt: #1A4A35;
+    --gold:     #E8C84A;
+    --gold-dim: rgba(232,200,74,0.25);
+    --white:    #F5F5F0;
+    --muted:    #A8B8A8;
+    --text:     #E8E4DC;
+    --stripe:   rgba(255,255,255,0.03);
+    --border:   rgba(255,255,255,0.1);
+    --agree:    rgba(76,175,112,0.2);
+    --disagree: rgba(224,130,85,0.22);
+    --radius:   6px;
+  }
+
+  body {
+    background: var(--pitch);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(90deg, var(--stripe) 0,var(--stripe) 1px, transparent 1px, transparent 80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 20px 80px; }
+
+  header {
+    text-align: center;
+    padding: 52px 0 36px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px,8vw,72px);
+    line-height: 0.9; color: var(--white); letter-spacing: 0.02em; margin-bottom: 14px;
+  }
+  h1 span { color: var(--gold); }
+  .subtitle { font-size: 14px; color: var(--muted); }
+
+  /* ── Controls ── */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .filter-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 600;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 4px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-btn.active { background: var(--gold); color: var(--pitch); border-color: var(--gold); }
+
+  .legend {
+    margin-left: auto;
+    display: flex;
+    gap: 14px;
+    font-size: 11px;
+    color: var(--muted);
+    align-items: center;
+  }
+  .legend-dot {
+    display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px;
+  }
+  .dot-agree { background: rgba(76,175,112,0.5); }
+  .dot-disagree { background: rgba(224,130,85,0.5); }
+
+  /* ── Group section ── */
+  .group-section { margin-bottom: 32px; }
+  .group-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    padding: 10px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .group-teams-list {
+    font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0;
+  }
+
+  /* ── Table ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr:first-child th { height: 4px; padding: 0; }
+
+  th, td {
+    padding: 9px 14px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  th { font-weight: 600; color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+
+  .th-match {
+    text-align: left;
+    min-width: 220px;
+    position: sticky;
+    left: 0;
+    background: var(--pitch-mid);
+    z-index: 2;
+  }
+  .td-match {
+    text-align: left;
+    position: sticky;
+    left: 0;
+    background: var(--pitch-mid);
+    z-index: 1;
+  }
+  tr:hover .td-match,
+  tr:hover td { background: rgba(255,255,255,0.03); }
+
+  .match-teams { font-weight: 500; font-size: 12px; }
+  .match-teams em { color: var(--muted); font-style: normal; font-size: 10px; margin: 0 4px; }
+
+  .pick-cell { border-radius: 3px; font-size: 12px; font-weight: 500; transition: background 0.1s; }
+  .pick-empty { color: rgba(168,184,168,0.3); font-size: 10px; }
+
+  /* Agreement coloring applied by JS */
+  tr.all-agree td.pick-cell { background: var(--agree); color: #9fe8b5; }
+  tr.has-disagree td.pick-cell { background: var(--disagree); color: #f4b08a; }
+
+  /* Person header */
+  .th-person { min-width: 110px; }
+  .person-name { display: block; font-size: 13px; font-weight: 700; color: var(--white); }
+  .person-pct { display: block; font-size: 10px; color: var(--muted); }
+
+  /* ── Loading / empty states ── */
+  .loading-wrap {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+  }
+  .spinner {
+    display: inline-block;
+    width: 24px; height: 24px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 14px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-state a { color: var(--gold); }
+
+  /* ── Refresh ── */
+  .refresh-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 12px; color: var(--muted);
+  }
+  .btn-refresh {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 600;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); border-radius: 4px;
+    padding: 5px 14px; cursor: pointer; transition: all 0.15s;
+  }
+  .btn-refresh:hover { border-color: var(--gold); color: var(--gold); }
+
+  .back-link {
+    display: inline-block; margin-bottom: 24px;
+    color: var(--muted); font-size: 13px; text-decoration: none;
+    border-bottom: 1px solid transparent; transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  .stats-bar {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    background: var(--pitch-mid); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px;
+    margin-bottom: 28px;
+  }
+  .stat { font-size: 12px; color: var(--muted); }
+  .stat strong { display: block; font-family: 'Bebas Neue'; font-size: 24px; color: var(--white); line-height: 1; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA · Canada · Mexico</p>
+    <h1>WORLD CUP <span>2026</span><br>PREDICTIONS</h1>
+    <p class="subtitle">Group Stage Picks — All Participants</p>
+  </header>
+
+  <a href="predict.html" class="back-link">← Submit your predictions</a>
+
+  <div class="refresh-bar">
+    <span id="last-updated">Loading…</span>
+    <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
+  </div>
+
+  <div id="stats-bar" class="stats-bar" style="display:none"></div>
+
+  <div class="controls" id="controls" style="display:none">
+    <div class="filter-btns" id="filter-btns">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All Groups</button>
+    </div>
+    <div class="legend">
+      <span><span class="legend-dot dot-agree"></span>Everyone agrees</span>
+      <span><span class="legend-dot dot-disagree"></span>Split picks</span>
+    </div>
+  </div>
+
+  <div id="main-content">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <p>Loading predictions…</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const GROUPS = {
+  A: ["Mexico","South Africa","South Korea","Czechia"],
+  B: ["Canada","Bosnia-Herzegovina","Qatar","Switzerland"],
+  C: ["Brazil","Haiti","Morocco","Scotland"],
+  D: ["United States","Paraguay","Australia","Türkiye"],
+  E: ["Germany","Curaçao","Ivory Coast","Ecuador"],
+  F: ["Netherlands","Japan","Sweden","Tunisia"],
+  G: ["Belgium","Egypt","Iran","New Zealand"],
+  H: ["Spain","Cape Verde","Saudi Arabia","Uruguay"],
+  I: ["France","Iraq","Norway","Senegal"],
+  J: ["Algeria","Argentina","Austria","Jordan"],
+  K: ["Colombia","Congo DR","Portugal","Uzbekistan"],
+  L: ["Croatia","England","Ghana","Panama"],
+};
+
+// ── IMPORTANT: Replace with your Apps Script Web App URL ──
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbL3pVg3gIvLbgc9jk_wqcJiqa1XTEJGVAf26qyRnGJ1jD5pSFiojA9mFOq7Gj4lso/exec";
+
+function getMatches(teams) {
+  const m = [];
+  for (let i = 0; i < teams.length; i++)
+    for (let j = i+1; j < teams.length; j++)
+      m.push([teams[i], teams[j]]);
+  return m;
+}
+
+let allData = [];
+let currentFilter = 'all';
+
+async function loadData() {
+  document.getElementById('last-updated').textContent = 'Refreshing…';
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' });
+    const json = await res.json();
+    allData = json.data || [];
+    render();
+    document.getElementById('last-updated').textContent =
+      `Last updated: ${new Date().toLocaleTimeString()}`;
+  } catch (e) {
+    document.getElementById('main-content').innerHTML = `
+      <div class="empty-state">
+        <p>Could not load predictions. Make sure the Apps Script URL is configured, or <a href="predict.html">submit the first prediction</a>.</p>
+      </div>`;
+    document.getElementById('last-updated').textContent = 'Error loading data';
+  }
+}
+
+function setFilter(group, btn) {
+  currentFilter = group;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function render() {
+  if (!allData.length) {
+    document.getElementById('main-content').innerHTML = `
+      <div class="empty-state">
+        <p>No predictions yet. <a href="predict.html">Be the first to submit yours!</a></p>
+      </div>`;
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('stats-bar').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('controls').style.display = 'flex';
+
+  // Build filter buttons
+  const filterWrap = document.getElementById('filter-btns');
+  if (filterWrap.children.length === 1) {
+    Object.keys(GROUPS).forEach(g => {
+      const b = document.createElement('button');
+      b.className = 'filter-btn';
+      b.textContent = `Group ${g}`;
+      b.onclick = () => setFilter(g, b);
+      filterWrap.appendChild(b);
+    });
+  }
+
+  // Stats bar
+  const totalPicks = allData.reduce((s, p) => {
+    return s + Object.values(p.picks || {}).filter(v => v).length;
+  }, 0);
+  const statsBar = document.getElementById('stats-bar');
+  statsBar.style.display = 'flex';
+  statsBar.innerHTML = `
+    <div class="stat"><strong>${allData.length}</strong>Participants</div>
+    <div class="stat"><strong>${totalPicks}</strong>Total picks made</div>
+    <div class="stat"><strong>${Math.round(totalPicks / Math.max(allData.length, 1))}</strong>Avg picks per person</div>
+  `;
+
+  const groupsToShow = currentFilter === 'all' ? Object.keys(GROUPS) : [currentFilter];
+  let html = '';
+
+  groupsToShow.forEach(letter => {
+    const teams = GROUPS[letter];
+    const matches = getMatches(teams);
+
+    // Person headers
+    const personHeaders = allData.map(p =>
+      `<th class="th-person">
+        <span class="person-name">${escHtml(p.name)}</span>
+        <span class="person-pct">${filledCount(p)} / 72</span>
+      </th>`
+    ).join('');
+
+    // Match rows
+    const matchRows = matches.map(([home, away], mi) => {
+      const key = `${letter}_${mi}`;
+      const picks = allData.map(p => (p.picks || {})[key] || '');
+      const nonEmpty = picks.filter(v => v);
+      const allSame = nonEmpty.length > 0 && nonEmpty.every(v => v === nonEmpty[0]);
+      const rowClass = nonEmpty.length === allData.length && allData.length > 1
+        ? (allSame ? 'all-agree' : 'has-disagree') : '';
+
+      const pickCells = picks.map(v =>
+        v ? `<td class="pick-cell">${escHtml(v)}</td>`
+          : `<td class="pick-cell pick-empty">—</td>`
+      ).join('');
+
+      return `<tr class="${rowClass}">
+        <td class="td-match">
+          <span class="match-teams">${escHtml(home)} <em>vs</em> ${escHtml(away)}</span>
+        </td>
+        ${pickCells}
+      </tr>`;
+    }).join('');
+
+    html += `
+      <div class="group-section" id="group-${letter}">
+        <div class="group-heading">
+          GROUP ${letter}
+          <span class="group-teams-list">${teams.join(' · ')}</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="th-match">Match</th>
+                ${personHeaders}
+              </tr>
+            </thead>
+            <tbody>${matchRows}</tbody>
+          </table>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('main-content').innerHTML = html;
+}
+
+function filledCount(person) {
+  return Object.values(person.picks || {}).filter(v => v).length;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+loadData();
+</script>
+</body>
+</html>
