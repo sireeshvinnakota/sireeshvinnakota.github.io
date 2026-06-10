@@ -37,6 +37,11 @@ h1 span{color:var(--gold)}
 .filter-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 12px;cursor:pointer;transition:all .15s}
 .filter-btn:hover{border-color:var(--gold);color:var(--gold)}
 .filter-btn.active{background:var(--gold);color:var(--pitch);border-color:var(--gold)}
+.filter-btn.today-btn{border-color:rgba(232,200,74,0.4);color:var(--gold)}
+.filter-btn.today-btn::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:6px;vertical-align:middle;animation:pulse 1.8s ease-in-out infinite}
+.filter-btn.today-btn.active{background:var(--gold);color:var(--pitch)}
+.filter-btn.today-btn.active::before{background:var(--pitch)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .legend{display:flex;gap:16px;margin-bottom:20px;align-items:center;flex-wrap:wrap}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
 .legend-dot{width:10px;height:10px;border-radius:2px}
@@ -95,6 +100,7 @@ h1 span{color:var(--gold)}
   </div>
   <div class="filter-row" id="filter-row">
     <button class="filter-btn active" onclick="setFilter('all',this)">All Groups</button>
+    <button class="filter-btn today-btn" id="btn-today" onclick="setFilter('today',this)">Today</button>
   </div>
   <div id="main-content">
     <div class="loading-wrap"><div class="spinner"></div><p>Loading predictions&hellip;</p></div>
@@ -271,9 +277,14 @@ function setFilter(g,btn){
   btn.classList.add('active');render();
 }
 
+function getTodayLabel(){
+  const d=new Date();
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); // e.g. "Jun 9"
+}
+
 function render(){
   const fr=document.getElementById('filter-row');
-  if(fr.children.length===1){
+  if(fr.children.length===2){
     Object.keys(GROUPS).forEach(g=>{
       const b=document.createElement('button');
       b.className='filter-btn';b.textContent='Group '+g;
@@ -291,55 +302,87 @@ function render(){
     document.getElementById('main-content').innerHTML='<div class="empty-state"><p>No predictions yet. <a href="predict.html">Be the first!</a></p></div>';
     return;
   }
-  const groups=currentFilter==='all'?Object.keys(GROUPS):[currentFilter];
+
+  // Build list of {letter, mi, home, away, date, time, venue} for today filter
+  const todayLabel=getTodayLabel(); // "Jun 9"
   let html='';
-  groups.forEach(letter=>{
-    const teams=GROUPS[letter],matches=getMatches(teams),sched=SCHEDULE[letter];
-    html+='<div class="group-section"><div class="group-heading">GROUP '+letter+' <span class="group-teams-list">'+teams.join(' \u00b7 ')+'</span></div>';
-    matches.forEach(([home,away],mi)=>{
-      const key=letter+'_'+mi;
-      const [,,date,time,venue]=sched[mi]||['','','','',''];
-      const hv=[],dv=[],av=[];
-      allData.forEach(p=>{
-        const pick=(p.picks||{})[key]||'';
-        if(pick===home)hv.push(p.name);
-        else if(pick==='Draw')dv.push(p.name);
-        else if(pick===away)av.push(p.name);
+
+  if(currentFilter==='today'){
+    // Collect all today's matches across all groups, preserving group context
+    let anyToday=false;
+    Object.keys(GROUPS).forEach(letter=>{
+      const teams=GROUPS[letter],matches=getMatches(teams),sched=SCHEDULE[letter];
+      const todayMatches=[];
+      matches.forEach(([home,away],mi)=>{
+        const [,,date]=sched[mi]||[];
+        if(date===todayLabel) todayMatches.push({home,away,mi});
       });
-      const tot=hv.length+dv.length+av.length;
-      const pct=v=>tot>0?Math.round(v/tot*100):0;
-      const hp=pct(hv.length),dp=pct(dv.length),ap=100-hp-dp;
-      const MIN=8;
-      let barHtml;
-      if(tot===0){
-        barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
-      } else {
-        let segs='';
-        if(hv.length>0){
-          const lbl=hp>=MIN?home.split(' ')[0]+' '+hp+'%':'';
-          segs+='<div class="bar-seg seg-home" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
-        }
-        if(dv.length>0){
-          const lbl=dp>=MIN?'Draw '+dp+'%':'';
-          segs+='<div class="bar-seg seg-draw" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
-        }
-        if(av.length>0){
-          const lbl=ap>=MIN?away.split(' ')[0]+' '+ap+'%':'';
-          segs+='<div class="bar-seg seg-away" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
-        }
-        barHtml='<div class="bar-track">'+segs+'</div>';
-      }
-      html+='<div class="match-row">'
-        +'<div class="match-info">'
-          +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)+'</div>'
-          +'<div class="match-meta"><span class="match-date">'+date+'</span>'+(time?' &middot; '+time:'')+(venue?' &middot; <span style="opacity:.6">'+esc(venue)+'</span>':'')+'</div>'
-        +'</div>'
-        +'<div class="vote-col"><div class="vote-bar-wrap">'+barHtml+'</div></div>'
-        +'</div>';
+      if(!todayMatches.length) return;
+      anyToday=true;
+      html+='<div class="group-section"><div class="group-heading">GROUP '+letter+' <span class="group-teams-list">'+teams.join(' \u00b7 ')+'</span></div>';
+      todayMatches.forEach(({home,away,mi})=>{
+        html+=buildMatchRow(letter,mi,home,away,sched[mi]);
+      });
+      html+='</div>';
     });
-    html+='</div>';
-  });
+    if(!anyToday){
+      html='<div class="empty-state"><p>No group stage matches today.<br><span style="font-size:12px;color:var(--muted)">The group stage runs June 11–27.</span></p></div>';
+    }
+  } else {
+    const groups=currentFilter==='all'?Object.keys(GROUPS):[currentFilter];
+    groups.forEach(letter=>{
+      const teams=GROUPS[letter],matches=getMatches(teams),sched=SCHEDULE[letter];
+      html+='<div class="group-section"><div class="group-heading">GROUP '+letter+' <span class="group-teams-list">'+teams.join(' \u00b7 ')+'</span></div>';
+      matches.forEach(([home,away],mi)=>{
+        html+=buildMatchRow(letter,mi,home,away,sched[mi]);
+      });
+      html+='</div>';
+    });
+  }
+
   document.getElementById('main-content').innerHTML=html;
+}
+
+function buildMatchRow(letter,mi,home,away,schedEntry){
+  const [,,date,time,venue]=schedEntry||['','','','',''];
+  const key=letter+'_'+mi;
+  const hv=[],dv=[],av=[];
+  allData.forEach(p=>{
+    const pick=(p.picks||{})[key]||'';
+    if(pick===home)hv.push(p.name);
+    else if(pick==='Draw')dv.push(p.name);
+    else if(pick===away)av.push(p.name);
+  });
+  const tot=hv.length+dv.length+av.length;
+  const pct=v=>tot>0?Math.round(v/tot*100):0;
+  const hp=pct(hv.length),dp=pct(dv.length),ap=100-hp-dp;
+  const MIN=8;
+  let barHtml;
+  if(tot===0){
+    barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
+  } else {
+    let segs='';
+    if(hv.length>0){
+      const lbl=hp>=MIN?home.split(' ')[0]+' '+hp+'%':'';
+      segs+='<div class="bar-seg seg-home" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+    }
+    if(dv.length>0){
+      const lbl=dp>=MIN?'Draw '+dp+'%':'';
+      segs+='<div class="bar-seg seg-draw" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+    }
+    if(av.length>0){
+      const lbl=ap>=MIN?away.split(' ')[0]+' '+ap+'%':'';
+      segs+='<div class="bar-seg seg-away" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+    }
+    barHtml='<div class="bar-track">'+segs+'</div>';
+  }
+  return '<div class="match-row">'
+    +'<div class="match-info">'
+      +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)+'</div>'
+      +'<div class="match-meta"><span class="match-date">'+date+'</span>'+(time?' &middot; '+time:'')+(venue?' &middot; <span style="opacity:.6">'+esc(venue)+'</span>':'')+'</div>'
+    +'</div>'
+    +'<div class="vote-col"><div class="vote-bar-wrap">'+barHtml+'</div></div>'
+    +'</div>';
 }
 
 function onSeg(e,el){
