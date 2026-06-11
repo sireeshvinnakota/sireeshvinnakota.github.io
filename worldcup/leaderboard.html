@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pitch:#0D3D2B;--pitch-mid:#112E1F;--pitch-lt:#1A4A35;
+  --gold:#E8C84A;--gold-dim:#C4A830;--white:#F5F5F0;
+  --muted:#8AA89A;--text:#E8E4DC;
+  --border:rgba(255,255,255,0.09);--stripe:rgba(255,255,255,0.025);
+  --radius:6px;
+  --silver:#C0C8D0;--bronze:#CD8B5A;
+}
+body{background:var(--pitch);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(90deg,var(--stripe) 0,var(--stripe) 1px,transparent 1px,transparent 80px);pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px 80px}
+
+header{text-align:center;padding:52px 0 36px;border-bottom:1px solid var(--border);margin-bottom:36px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,8vw,72px);line-height:.9;color:var(--white);letter-spacing:.02em;margin-bottom:14px}
+h1 span{color:var(--gold)}
+.subtitle{font-size:14px;color:var(--muted)}
+
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px}
+.back-link{color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s}
+.back-link:hover{color:var(--gold)}
+.right-controls{display:flex;align-items:center;gap:10px}
+.last-updated{font-size:11px;color:var(--muted)}
+.btn-sm{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 14px;cursor:pointer;transition:all .15s}
+.btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── Summary strip ── */
+.summary-strip{
+  display:flex;gap:0;
+  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:28px;overflow:hidden;
+}
+.summary-stat{
+  flex:1;padding:14px 18px;
+  border-right:1px solid var(--border);
+  font-size:12px;color:var(--muted);
+}
+.summary-stat:last-child{border-right:none}
+.summary-stat strong{display:block;font-family:'Bebas Neue';font-size:28px;color:var(--white);line-height:1;margin-bottom:2px}
+
+/* ── Progress indicator (games decided / total) ── */
+.progress-strip{
+  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px 18px;margin-bottom:28px;
+}
+.progress-label-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.progress-bar-bg{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s}
+
+/* ── Leaderboard table ── */
+.lb-table{width:100%;border-collapse:collapse}
+
+.lb-row{
+  display:grid;
+  grid-template-columns:44px 1fr 80px 80px;
+  align-items:center;
+  padding:0 4px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  min-height:54px;
+  transition:background .12s;
+}
+.lb-row:hover{background:rgba(255,255,255,0.03)}
+.lb-row:last-child{border-bottom:none}
+.lb-row.header-row{
+  min-height:32px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:2px;
+}
+.lb-row.header-row .col{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+/* Rank column */
+.col-rank{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;
+  color:var(--muted);
+  line-height:1;
+  padding-left:4px;
+}
+.col-rank.r1{color:var(--gold)}
+.col-rank.r2{color:var(--silver)}
+.col-rank.r3{color:var(--bronze)}
+
+/* Medal emoji for top 3 */
+.medal{font-size:16px;margin-right:2px}
+
+/* Name column */
+.col-name{padding:0 8px}
+.name-main{font-size:14px;font-weight:600;color:var(--white)}
+.name-sub{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* Correct picks */
+.col-correct{
+  text-align:center;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:26px;
+  color:var(--white);
+  line-height:1;
+}
+.col-correct.leading{color:var(--gold)}
+
+/* Score bar */
+.col-bar{padding:0 6px}
+.score-bar-bg{height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .5s}
+.score-bar-fill.r1{background:var(--gold)}
+.score-bar-fill.r2{background:var(--silver)}
+.score-bar-fill.r3{background:var(--bronze)}
+.score-bar-fill.rest{background:rgba(138,168,154,0.4)}
+
+/* Tie indicator */
+.tie-badge{
+  font-size:9px;font-weight:700;letter-spacing:.08em;
+  color:var(--muted);background:rgba(255,255,255,0.06);
+  border:1px solid var(--border);border-radius:3px;
+  padding:1px 5px;margin-left:6px;vertical-align:middle;
+}
+
+/* Empty / loading */
+.loading-wrap,.empty-state{text-align:center;padding:80px 20px;color:var(--muted)}
+.spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state a{color:var(--gold)}
+
+/* No results yet notice */
+.no-results-notice{
+  text-align:center;padding:40px 20px;
+  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--muted);font-size:13px;
+}
+.no-results-notice strong{display:block;font-family:'Bebas Neue';font-size:32px;color:var(--white);margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
+    <h1>WORLD CUP <span>2026</span><br>LEADERBOARD</h1>
+    <p class="subtitle">1 point per correct group stage prediction</p>
+  </header>
+
+  <div class="top-bar">
+    <a href="standings.html" class="back-link">&larr; Back to predictions</a>
+    <div class="right-controls">
+      <span class="last-updated" id="last-updated">Loading&hellip;</span>
+      <button class="btn-sm" onclick="loadData()">&circlearrowleft; Refresh</button>
+    </div>
+  </div>
+
+  <div id="summary-strip" class="summary-strip" style="display:none"></div>
+  <div id="progress-strip" class="progress-strip" style="display:none"></div>
+  <div id="main-content">
+    <div class="loading-wrap"><div class="spinner"></div><p>Loading leaderboard&hellip;</p></div>
+  </div>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbL3pVg3gIvLbgc9jk_wqcJiqa1XTEJGVAf26qyRnGJ1jD5pSFiojA9mFOq7Gj4lso/exec";
+const TOTAL_MATCHES = 72; // 12 groups × 6 matches each
+
+async function loadData() {
+  document.getElementById('last-updated').textContent = 'Refreshing\u2026';
+  try {
+    const r = await fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' });
+    const j = await r.json();
+    render(j.data || [], j.results || {});
+    document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+  } catch(e) {
+    document.getElementById('main-content').innerHTML =
+      '<div class="empty-state"><p>Could not load data. Check your connection and try refreshing.</p></div>';
+    document.getElementById('last-updated').textContent = 'Error';
+  }
+}
+
+function render(data, results) {
+  const decidedCount = Object.keys(results).length;
+
+  // ── Progress strip ──
+  const pStrip = document.getElementById('progress-strip');
+  pStrip.style.display = 'block';
+  const pct = Math.round(decidedCount / TOTAL_MATCHES * 100);
+  pStrip.innerHTML =
+    '<div class="progress-label-row">'
+      + '<span>Group stage progress</span>'
+      + '<span>' + decidedCount + ' / ' + TOTAL_MATCHES + ' matches decided</span>'
+    + '</div>'
+    + '<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>';
+
+  if (!data.length) {
+    document.getElementById('main-content').innerHTML =
+      '<div class="empty-state"><p>No predictions yet. <a href="predict.html">Be the first!</a></p></div>';
+    return;
+  }
+
+  if (decidedCount === 0) {
+    document.getElementById('summary-strip').style.display = 'none';
+    document.getElementById('main-content').innerHTML =
+      '<div class="no-results-notice">'
+        + '<strong>No results yet</strong>'
+        + 'The leaderboard will update as match results are entered. Check back after the first games!'
+      + '</div>';
+    return;
+  }
+
+  // ── Score each participant ──
+  const scored = data.map(p => {
+    let correct = 0;
+    const picks = p.picks || {};
+    Object.entries(results).forEach(([key, winner]) => {
+      if (picks[key] === winner) correct++;
+    });
+    // max possible = decided matches they actually picked
+    const picked = Object.entries(results).filter(([key]) => picks[key]).length;
+    return { name: p.name, correct, picked, decidedCount };
+  });
+
+  // Sort: by correct desc, then by name asc for ties
+  scored.sort((a, b) => b.correct - a.correct || a.name.localeCompare(b.name));
+
+  // Assign ranks (ties share rank)
+  let rank = 1;
+  scored.forEach((p, i) => {
+    if (i > 0 && p.correct < scored[i-1].correct) rank = i + 1;
+    p.rank = rank;
+  });
+
+  const leader = scored[0].correct;
+
+  // ── Summary strip ──
+  const sStrip = document.getElementById('summary-strip');
+  sStrip.style.display = 'flex';
+  const topTied = scored.filter(p => p.correct === leader);
+  const leadLabel = topTied.length > 1
+    ? topTied.map(p => p.name.split(' ')[0]).join(', ')
+    : scored[0].name;
+  sStrip.innerHTML =
+    '<div class="summary-stat"><strong>' + data.length + '</strong>Participants</div>'
+    + '<div class="summary-stat"><strong>' + decidedCount + '</strong>Results in</div>'
+    + '<div class="summary-stat"><strong>' + leader + '</strong>Top score</div>'
+    + '<div class="summary-stat"><strong style="font-size:18px;line-height:1.2">' + esc(leadLabel) + '</strong>Leading</div>';
+
+  // ── Build rows ──
+  const medals = ['🥇','🥈','🥉'];
+  let html = '<div class="lb-row header-row">'
+    + '<div class="col col-rank">#</div>'
+    + '<div class="col col-name">Name</div>'
+    + '<div class="col col-correct" style="text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:Inter">Correct</div>'
+    + '<div class="col col-bar"></div>'
+    + '</div>';
+
+  scored.forEach((p, i) => {
+    const rankCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
+    const medal = p.rank <= 3 ? '<span class="medal">' + medals[p.rank-1] + '</span>' : '';
+    const tieBadge = scored.filter(q => q.correct === p.correct).length > 1
+      ? '<span class="tie-badge">TIE</span>' : '';
+    const barPct = leader > 0 ? Math.round(p.correct / leader * 100) : 0;
+    const barCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
+    // accuracy among decided matches they picked
+    const accuracy = p.picked > 0 ? Math.round(p.correct / p.picked * 100) : 0;
+
+    html += '<div class="lb-row">'
+      + '<div class="col-rank' + (p.rank <= 3 ? ' r' + p.rank : '') + '">' + medal + (p.rank > 3 ? p.rank : '') + '</div>'
+      + '<div class="col-name">'
+          + '<div class="name-main">' + esc(p.name) + tieBadge + '</div>'
+          + '<div class="name-sub">' + accuracy + '% accuracy &middot; ' + p.picked + ' of ' + decidedCount + ' played</div>'
+        + '</div>'
+      + '<div class="col-correct' + (p.rank === 1 ? ' leading' : '') + '">' + p.correct + '</div>'
+      + '<div class="col-bar"><div class="score-bar-bg"><div class="score-bar-fill' + barCls + '" style="width:' + barPct + '%"></div></div></div>'
+      + '</div>';
+  });
+
+  document.getElementById('main-content').innerHTML = html;
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+loadData();
+</script>
+</body>
+</html>

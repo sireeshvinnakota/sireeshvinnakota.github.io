@@ -34,7 +34,6 @@
     min-height: 100vh;
   }
 
-  /* ── Pitch lines background ── */
   body::before {
     content: '';
     position: fixed;
@@ -53,7 +52,6 @@
 
   .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 0 20px 80px; }
 
-  /* ── Header ── */
   header {
     text-align: center;
     padding: 52px 0 36px;
@@ -78,12 +76,8 @@
     margin-bottom: 14px;
   }
   h1 span { color: var(--gold); }
-  .subtitle {
-    font-size: 14px;
-    color: var(--muted);
-  }
+  .subtitle { font-size: 14px; color: var(--muted); }
 
-  /* ── Section cards ── */
   .card {
     background: var(--pitch-mid);
     border: 1px solid var(--border);
@@ -117,11 +111,7 @@
     color: var(--white);
     flex: 1;
   }
-  .team-pills {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
+  .team-pills { display: flex; gap: 6px; flex-wrap: wrap; }
   .team-pill {
     font-size: 11px;
     font-weight: 500;
@@ -131,21 +121,11 @@
     padding: 2px 7px;
     color: var(--muted);
   }
-  .chevron {
-    color: var(--muted);
-    font-size: 12px;
-    transition: transform 0.2s;
-    flex-shrink: 0;
-  }
+  .chevron { color: var(--muted); font-size: 12px; transition: transform 0.2s; flex-shrink: 0; }
   .card.open .chevron { transform: rotate(180deg); }
-
-  .card-body {
-    display: none;
-    padding: 0;
-  }
+  .card-body { display: none; padding: 0; }
   .card.open .card-body { display: block; }
 
-  /* ── Match rows ── */
   .match-row {
     display: flex;
     align-items: center;
@@ -157,12 +137,7 @@
   .match-row:nth-child(even) { background: var(--stripe); }
 
   /* ── Pick buttons ── */
-  .pick-group {
-    display: flex;
-    width: 100%;
-    gap: 6px;
-    align-items: center;
-  }
+  .pick-group { display: flex; width: 100%; gap: 6px; align-items: center; }
   .pick-btn {
     flex: 1;
     font-family: 'Inter', sans-serif;
@@ -181,20 +156,10 @@
     text-overflow: ellipsis;
     line-height: 1.3;
   }
-  .pick-btn:hover {
-    background: rgba(255,255,255,0.1);
-    color: var(--white);
-    border-color: rgba(255,255,255,0.25);
-  }
+  .pick-btn:hover { background: rgba(255,255,255,0.1); color: var(--white); border-color: rgba(255,255,255,0.25); }
   .pick-btn:active { transform: scale(0.97); }
 
-  /* Home — blue when selected */
-  .pick-btn.home.active {
-    background: #1e4fa8;
-    border-color: #4a7fd5;
-    color: #fff;
-  }
-  /* Draw — grey when selected */
+  .pick-btn.home.active { background: #1e4fa8; border-color: #4a7fd5; color: #fff; }
   .pick-btn.draw {
     flex: 0 0 58px;
     font-size: 11px;
@@ -202,16 +167,34 @@
     color: rgba(168,184,168,0.6);
   }
   .pick-btn.draw:hover { color: var(--white); }
-  .pick-btn.draw.active {
-    background: #3d3d3d;
-    border-color: #888;
-    color: #ccc;
+  .pick-btn.draw.active { background: #3d3d3d; border-color: #888; color: #ccc; }
+  .pick-btn.away.active { background: #8a1e1e; border-color: #d05555; color: #fff; }
+
+  /* ── Locked match state ── */
+  .match-row.locked .pick-btn {
+    cursor: not-allowed;
+    opacity: 0.45;
+    pointer-events: none;
   }
-  /* Away — red when selected */
-  .pick-btn.away.active {
-    background: #8a1e1e;
-    border-color: #d05555;
-    color: #fff;
+  /* Winner button stays lit but also gets a gold ring */
+  .match-row.locked .pick-btn.winner {
+    opacity: 1;
+    pointer-events: none;
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+  .match-row.locked .pick-btn.home.winner { background: #1e4fa8; border-color: #4a7fd5; color: #fff; }
+  .match-row.locked .pick-btn.draw.winner { background: #3d3d3d; border-color: #888; color: #ccc; }
+  .match-row.locked .pick-btn.away.winner { background: #8a1e1e; border-color: #d05555; color: #fff; }
+
+  .locked-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+    padding-left: 10px;
+    flex-shrink: 0;
   }
 
   /* ── Info form ── */
@@ -255,26 +238,9 @@
     gap: 14px;
     margin-bottom: 24px;
   }
-  .progress-bar-bg {
-    flex: 1;
-    height: 4px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: width 0.3s;
-  }
-  .progress-label {
-    font-size: 12px;
-    color: var(--muted);
-    white-space: nowrap;
-    min-width: 60px;
-    text-align: right;
-  }
+  .progress-bar-bg { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.3s; }
+  .progress-label { font-size: 12px; color: var(--muted); white-space: nowrap; min-width: 60px; text-align: right; }
 
   /* ── Submit ── */
   .submit-wrap { margin-top: 28px; text-align: center; }
@@ -294,7 +260,6 @@
   .btn-submit:active { transform: translateY(0); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* ── Status messages ── */
   .status {
     margin-top: 16px;
     padding: 12px 18px;
@@ -315,9 +280,9 @@
     margin-bottom: 12px;
   }
 
+  .nav-links { display: flex; gap: 20px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
   .view-link {
     display: inline-block;
-    margin-top: 10px;
     color: var(--gold);
     font-size: 13px;
     text-decoration: none;
@@ -334,7 +299,6 @@
     <p class="subtitle">Group Stage Prediction Form &nbsp;·&nbsp; June 11 – 27</p>
   </header>
 
-  <!-- Info section -->
   <div class="card open" id="card-info">
     <div class="card-header" onclick="toggleCard('card-info')">
       <span class="group-badge">✦</span>
@@ -361,7 +325,6 @@
     </div>
   </div>
 
-  <!-- Progress bar (sticky) -->
   <div class="progress-wrap">
     <span style="font-size:12px;color:var(--muted);white-space:nowrap">Group picks</span>
     <div class="progress-bar-bg">
@@ -370,14 +333,15 @@
     <span class="progress-label" id="progress-label">0 / 72</span>
   </div>
 
-  <!-- Group cards injected by JS -->
   <div id="groups-container"></div>
 
   <div class="submit-wrap">
     <div id="status-msg" class="status"></div>
     <button class="btn-submit" id="btn-submit" onclick="submitForm()">LOCK IN MY PICKS</button>
-    <br>
-    <a href="standings.html" class="view-link">→ View everyone's predictions</a>
+    <div class="nav-links">
+      <a href="standings.html" class="view-link">→ View everyone's predictions</a>
+      <a href="leaderboard.html" class="view-link">→ Leaderboard</a>
+    </div>
   </div>
 </div>
 
@@ -397,8 +361,10 @@ const GROUPS = {
   L: ["Croatia","England","Ghana","Panama"],
 };
 
-// ── IMPORTANT: replace this URL after setting up Google Apps Script ──
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbL3pVg3gIvLbgc9jk_wqcJiqa1XTEJGVAf26qyRnGJ1jD5pSFiojA9mFOq7Gj4lso/exec";
+
+// results fetched from sheet: { "A_0": "Mexico", "B_2": "Draw", ... }
+let results = {};
 
 function getMatches(teams) {
   const m = [];
@@ -417,7 +383,7 @@ let filledPicks = 0;
 
 function buildGroups() {
   const container = document.getElementById('groups-container');
-  Object.entries(GROUPS).forEach(([letter, teams], gi) => {
+  Object.entries(GROUPS).forEach(([letter, teams]) => {
     const matches = getMatches(teams);
     totalPicks += matches.length;
 
@@ -441,6 +407,7 @@ function buildGroups() {
       const key = `${letter}_${mi}`;
       const row = document.createElement('div');
       row.className = 'match-row';
+      row.dataset.key = key;
       row.innerHTML = `
         <div class="pick-group" id="pick-group-${key}">
           <button type="button" class="pick-btn home" data-key="${key}" data-value="${home}" onclick="onPickBtn(this)">${home}</button>
@@ -455,21 +422,52 @@ function buildGroups() {
   updateProgress();
 }
 
-// picks state: key -> value
+// Apply locked state to a match row once results are loaded
+function applyLocks() {
+  Object.entries(results).forEach(([key, winner]) => {
+    const row = document.querySelector(`.match-row[data-key="${key}"]`);
+    if (!row) return;
+    row.classList.add('locked');
+    // highlight the winning button
+    row.querySelectorAll('.pick-btn').forEach(btn => {
+      if (btn.dataset.value === winner) btn.classList.add('winner');
+    });
+    // add FT badge if not already there
+    if (!row.querySelector('.locked-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'locked-badge';
+      badge.textContent = 'FT';
+      row.appendChild(badge);
+    }
+  });
+}
+
+async function loadResults() {
+  try {
+    const r = await fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' });
+    const j = await r.json();
+    results = j.results || {};
+    applyLocks();
+  } catch(e) {
+    // silently fail — predictions still work, just no locking
+  }
+}
+
 const picks = {};
 
 function onPickBtn(btn) {
   const key = btn.dataset.key;
+  // Don't allow picks on locked matches
+  if (results[key]) return;
+
   const val = btn.dataset.value;
   const prev = picks[key];
 
-  // Deselect all buttons in this group
   document.querySelectorAll(`#pick-group-${key} .pick-btn`).forEach(b => b.classList.remove('active'));
 
   if (prev === val) {
-    // clicking same button again = deselect
     delete picks[key];
-    if (prev) { filledPicks--; }
+    if (prev) filledPicks--;
   } else {
     btn.classList.add('active');
     picks[key] = val;
@@ -496,6 +494,8 @@ function collectData() {
     const matches = getMatches(teams);
     matches.forEach(([home, away], mi) => {
       const key = `${letter}_${mi}`;
+      // skip locked matches from the "all filled" check
+      if (results[key]) return;
       const val = picks[key] || '';
       allPicks[key] = val;
       if (!val) allFilled = false;
@@ -517,8 +517,9 @@ async function submitForm() {
     statusEl.textContent = 'Please fill in your name and email before submitting.';
     return;
   }
+  const openCount = Object.values(data.picks).filter(v => !v).length;
   if (!data.allFilled) {
-    const ok = confirm(`You have ${72 - filledPicks} unpicked matches. Submit anyway?`);
+    const ok = confirm(`You have ${openCount} unpicked matches. Submit anyway?`);
     if (!ok) return;
   }
 
@@ -552,6 +553,7 @@ async function submitForm() {
 }
 
 buildGroups();
+loadResults();
 </script>
 </body>
 </html>
