@@ -84,6 +84,7 @@ h1 span{color:var(--gold)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty-state a{color:var(--gold)}
 
+.result-badge-row{margin-top:6px;margin-bottom:8px}
 .result-badge{
   display:inline-block;margin-left:8px;padding:2px 6px;border-radius:3px;
   font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
@@ -426,9 +427,8 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
   }
   return '<div class="match-row">'
     +'<div class="match-info">'
-      +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)
-      +(result?' <span class="result-badge">FT – '+esc(result)+'</span>':'')
-      +'</div>'
+      +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)+'</div>'
+      +(result?'<div class="result-badge-row"><span class="result-badge">FT – '+esc(result)+'</span></div>':'')
       +'<div class="match-meta"><span class="match-date">'+date+'</span>'+(time?' &middot; '+time:'')+(venue?' &middot; <span style="opacity:.6">'+esc(venue)+'</span>':'')+'</div>'
     +'</div>'
     +'<div class="vote-col"><div class="vote-bar-wrap">'+barHtml+'</div></div>'
