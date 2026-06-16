@@ -26,16 +26,14 @@ h1 span{color:var(--gold)}
 .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
 .back-link{color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s}
 .back-link:hover{color:var(--gold)}
-.right-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.right-controls{display:flex;align-items:center;gap:10px}
 .last-updated{font-size:11px;color:var(--muted)}
-.btn-sm{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 14px;cursor:pointer;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.btn-sm{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 14px;cursor:pointer;transition:all .15s}
 .btn-sm:hover{border-color:var(--gold);color:var(--gold)}
-.btn-sm.gold{border-color:rgba(232,200,74,0.5);color:var(--gold)}
-.btn-sm.gold:hover{background:var(--gold);color:var(--pitch)}
 .stats-bar{display:flex;gap:24px;flex-wrap:wrap;background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);padding:14px 20px;margin-bottom:24px}
 .stat{font-size:12px;color:var(--muted)}
 .stat strong{display:block;font-family:'Bebas Neue';font-size:26px;color:var(--white);line-height:1}
-.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px;align-items:center}
 .filter-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 12px;cursor:pointer;transition:all .15s}
 .filter-btn:hover{border-color:var(--gold);color:var(--gold)}
 .filter-btn.active{background:var(--gold);color:var(--pitch);border-color:var(--gold)}
@@ -44,6 +42,15 @@ h1 span{color:var(--gold)}
 .filter-btn.today-btn.active{background:var(--gold);color:var(--pitch)}
 .filter-btn.today-btn.active::before{background:var(--pitch)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.filter-divider{width:1px;height:20px;background:var(--border);margin:0 4px}
+.group-select-wrap{position:relative;display:inline-flex;align-items:center}
+.group-select{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 28px 5px 12px;cursor:pointer;transition:all .15s;appearance:none;-webkit-appearance:none;outline:none}
+.group-select:hover{border-color:var(--gold);color:var(--gold)}
+.group-select.active{background:var(--gold);color:var(--pitch);border-color:var(--gold)}
+.group-select option{background:#0D3D2B;color:var(--text);font-weight:600}
+.group-select-arrow{position:absolute;right:9px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted);font-size:10px;transition:color .15s}
+.group-select-wrap:hover .group-select-arrow{color:var(--gold)}
+.group-select.active + .group-select-arrow{color:var(--pitch)}
 .legend{display:flex;gap:16px;margin-bottom:20px;align-items:center;flex-wrap:wrap}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
 .legend-dot{width:10px;height:10px;border-radius:2px}
@@ -58,24 +65,12 @@ h1 span{color:var(--gold)}
 .match-vs{font-size:10px;color:var(--muted);font-weight:400}
 .match-meta{font-size:10px;color:var(--muted);margin-top:3px}
 .match-date{font-weight:600}
-
-/* Result badge shown once game is final */
-.result-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--gold);background:rgba(232,200,74,0.12);
-  border:1px solid rgba(232,200,74,0.3);border-radius:3px;
-  padding:2px 6px;margin-top:3px;
-}
-
 .vote-col{padding:10px 4px 10px 0}
 .no-votes{height:28px;display:flex;align-items:center}
 .no-votes-text{font-size:11px;color:rgba(168,184,168,0.3);font-style:italic}
 .bar-track{display:flex;height:28px;border-radius:4px;overflow:hidden}
 .bar-seg{height:100%;display:flex;align-items:center;justify-content:center;transition:filter .15s;cursor:default;overflow:hidden;flex-shrink:0}
 .bar-seg:hover{filter:brightness(1.2);z-index:2}
-/* Winner segment gets a gold outline */
-.bar-seg.is-winner{box-shadow:inset 0 0 0 2px var(--gold)}
 .seg-home{background:var(--col-home)}
 .seg-draw{background:var(--col-draw)}
 .seg-away{background:var(--col-away)}
@@ -101,7 +96,6 @@ h1 span{color:var(--gold)}
     <a href="predict.html" class="back-link">&larr; Submit your predictions</a>
     <div class="right-controls">
       <span class="last-updated" id="last-updated">Loading&hellip;</span>
-      <a href="leaderboard.html" class="btn-sm gold">🏆 Leaderboard</a>
       <button class="btn-sm" onclick="loadData()">&circlearrowleft; Refresh</button>
     </div>
   </div>
@@ -114,8 +108,29 @@ h1 span{color:var(--gold)}
     <div class="legend-item" style="margin-left:auto;font-style:italic">Hover a segment for names</div>
   </div>
   <div class="filter-row" id="filter-row">
-    <button class="filter-btn active" onclick="setFilter('all',this)">All Groups</button>
+    <button class="filter-btn active" id="btn-all" onclick="setFilter('all',this)">All Groups</button>
+    <div class="group-select-wrap">
+      <select class="group-select" id="group-select" onchange="onGroupSelect(this)">
+        <option value="">Group ▾</option>
+        <option value="A">Group A</option>
+        <option value="B">Group B</option>
+        <option value="C">Group C</option>
+        <option value="D">Group D</option>
+        <option value="E">Group E</option>
+        <option value="F">Group F</option>
+        <option value="G">Group G</option>
+        <option value="H">Group H</option>
+        <option value="I">Group I</option>
+        <option value="J">Group J</option>
+        <option value="K">Group K</option>
+        <option value="L">Group L</option>
+      </select>
+      <span class="group-select-arrow">&#9660;</span>
+    </div>
+    <div class="filter-divider"></div>
+    <button class="filter-btn" id="btn-yesterday" onclick="setFilter('yesterday',this)">Yesterday</button>
     <button class="filter-btn today-btn" id="btn-today" onclick="setFilter('today',this)">Today</button>
+    <button class="filter-btn" id="btn-tomorrow" onclick="setFilter('tomorrow',this)">Tomorrow</button>
   </div>
   <div id="main-content">
     <div class="loading-wrap"><div class="spinner"></div><p>Loading predictions&hellip;</p></div>
@@ -144,6 +159,8 @@ const GROUPS = {
   L:["Croatia","England","Ghana","Panama"],
 };
 
+// Schedule entries aligned to getMatches() order: (0,1),(0,2),(0,3),(1,2),(1,3),(2,3)
+// Each entry: [home, away, date, timeET, venue]
 const SCHEDULE = {
   A:[
     ["Mexico","South Africa","Jun 11","3:00 PM ET","Estadio Azteca, Mexico City"],
@@ -245,7 +262,7 @@ const SCHEDULE = {
 
 function getMatches(t){const m=[];for(let i=0;i<t.length;i++)for(let j=i+1;j<t.length;j++)m.push([t[i],t[j]]);return m}
 
-let allData=[], results={}, currentFilter='all';
+let allData=[], currentFilter='all';
 
 const tooltip=document.getElementById('tooltip');
 let ttOn=false;
@@ -276,9 +293,7 @@ async function loadData(){
   try{
     const r=await fetch(APPS_SCRIPT_URL+'?action=get',{cache:'no-store'});
     const j=await r.json();
-    allData=j.data||[];
-    results=j.results||{};
-    render();
+    allData=j.data||[];render();
     document.getElementById('last-updated').textContent='Updated '+new Date().toLocaleTimeString();
   }catch{
     document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Could not load predictions. Check Apps Script URL or <a href="predict.html">submit the first prediction</a>.</p></div>';
@@ -286,62 +301,68 @@ async function loadData(){
   }
 }
 
-function setFilter(g,btn){
-  currentFilter=g;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');render();
+function getDateLabel(offsetDays){
+  const d=new Date();
+  d.setDate(d.getDate()+offsetDays);
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); // e.g. "Jun 9"
 }
 
-function getTodayLabel(){
-  const d=new Date();
-  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+function setFilter(g,btn){
+  currentFilter=g;
+  // Reset all button states
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  // Reset dropdown
+  const sel=document.getElementById('group-select');
+  sel.value='';sel.classList.remove('active');
+  if(btn) btn.classList.add('active');
+  render();
+}
+
+function onGroupSelect(sel){
+  if(!sel.value){setFilter('all',document.getElementById('btn-all'));return;}
+  currentFilter=sel.value;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  sel.classList.add('active');
+  render();
 }
 
 function render(){
-  const fr=document.getElementById('filter-row');
-  if(fr.children.length===2){
-    Object.keys(GROUPS).forEach(g=>{
-      const b=document.createElement('button');
-      b.className='filter-btn';b.textContent='Group '+g;
-      b.onclick=()=>setFilter(g,b);fr.appendChild(b);
-    });
-  }
   if(allData.length){
     const total=allData.reduce((s,p)=>s+Object.values(p.picks||{}).filter(v=>v).length,0);
-    const finalized=Object.keys(results).length;
     const sb=document.getElementById('stats-bar');sb.style.display='flex';
     sb.innerHTML='<div class="stat"><strong>'+allData.length+'</strong>Participants</div>'
       +'<div class="stat"><strong>'+total+'</strong>Total picks</div>'
-      +'<div class="stat"><strong>'+Math.round(total/Math.max(allData.length,1))+'</strong>Avg picks/person</div>'
-      +(finalized?'<div class="stat"><strong>'+finalized+'</strong>Results in</div>':'');
+      +'<div class="stat"><strong>'+Math.round(total/Math.max(allData.length,1))+'</strong>Avg picks/person</div>';
   }
   if(!allData.length){
     document.getElementById('main-content').innerHTML='<div class="empty-state"><p>No predictions yet. <a href="predict.html">Be the first!</a></p></div>';
     return;
   }
 
-  const todayLabel=getTodayLabel();
   let html='';
 
-  if(currentFilter==='today'){
-    let anyToday=false;
+  if(currentFilter==='today'||currentFilter==='yesterday'||currentFilter==='tomorrow'){
+    const offset=currentFilter==='yesterday'?-1:currentFilter==='tomorrow'?1:0;
+    const targetLabel=getDateLabel(offset);
+    const labelMap={yesterday:'Yesterday',today:'Today',tomorrow:'Tomorrow'};
+    let anyMatch=false;
     Object.keys(GROUPS).forEach(letter=>{
       const teams=GROUPS[letter],matches=getMatches(teams),sched=SCHEDULE[letter];
-      const todayMatches=[];
+      const dayMatches=[];
       matches.forEach(([home,away],mi)=>{
         const [,,date]=sched[mi]||[];
-        if(date===todayLabel) todayMatches.push({home,away,mi});
+        if(date===targetLabel) dayMatches.push({home,away,mi});
       });
-      if(!todayMatches.length) return;
-      anyToday=true;
+      if(!dayMatches.length) return;
+      anyMatch=true;
       html+='<div class="group-section"><div class="group-heading">GROUP '+letter+' <span class="group-teams-list">'+teams.join(' \u00b7 ')+'</span></div>';
-      todayMatches.forEach(({home,away,mi})=>{
+      dayMatches.forEach(({home,away,mi})=>{
         html+=buildMatchRow(letter,mi,home,away,sched[mi]);
       });
       html+='</div>';
     });
-    if(!anyToday){
-      html='<div class="empty-state"><p>No group stage matches today.<br><span style="font-size:12px;color:var(--muted)">The group stage runs June 11–27.</span></p></div>';
+    if(!anyMatch){
+      html='<div class="empty-state"><p>No group stage matches '+labelMap[currentFilter].toLowerCase()+'.<br><span style="font-size:12px;color:var(--muted)">The group stage runs June 11–27.</span></p></div>';
     }
   } else {
     const groups=currentFilter==='all'?Object.keys(GROUPS):[currentFilter];
@@ -361,7 +382,6 @@ function render(){
 function buildMatchRow(letter,mi,home,away,schedEntry){
   const [,,date,time,venue]=schedEntry||['','','','',''];
   const key=letter+'_'+mi;
-  const winner=results[key]||null;
   const hv=[],dv=[],av=[];
   allData.forEach(p=>{
     const pick=(p.picks||{})[key]||'';
@@ -373,12 +393,6 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
   const pct=v=>tot>0?Math.round(v/tot*100):0;
   const hp=pct(hv.length),dp=pct(dv.length),ap=100-hp-dp;
   const MIN=8;
-
-  // Result badge
-  const resultBadge=winner
-    ?'<div class="result-badge">FT &nbsp;'+esc(winner)+'</div>'
-    :'';
-
   let barHtml;
   if(tot===0){
     barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
@@ -386,27 +400,22 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
     let segs='';
     if(hv.length>0){
       const lbl=hp>=MIN?home.split(' ')[0]+' '+hp+'%':'';
-      const winCls=winner===home?' is-winner':'';
-      segs+='<div class="bar-seg seg-home'+winCls+'" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-home" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     if(dv.length>0){
       const lbl=dp>=MIN?'Draw '+dp+'%':'';
-      const winCls=winner==='Draw'?' is-winner':'';
-      segs+='<div class="bar-seg seg-draw'+winCls+'" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-draw" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     if(av.length>0){
       const lbl=ap>=MIN?away.split(' ')[0]+' '+ap+'%':'';
-      const winCls=winner===away?' is-winner':'';
-      segs+='<div class="bar-seg seg-away'+winCls+'" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-away" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     barHtml='<div class="bar-track">'+segs+'</div>';
   }
-
   return '<div class="match-row">'
     +'<div class="match-info">'
       +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)+'</div>'
       +'<div class="match-meta"><span class="match-date">'+date+'</span>'+(time?' &middot; '+time:'')+(venue?' &middot; <span style="opacity:.6">'+esc(venue)+'</span>':'')+'</div>'
-      +resultBadge
     +'</div>'
     +'<div class="vote-col"><div class="vote-bar-wrap">'+barHtml+'</div></div>'
     +'</div>';
