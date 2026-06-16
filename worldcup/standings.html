@@ -301,9 +301,7 @@ async function loadData(){
   try{
     const r=await fetch(APPS_SCRIPT_URL+'?action=get',{cache:'no-store'});
     const j=await r.json();
-    allData=j.data||[];
-    results=j.results||{};
-    render();
+    allData=j.data||[];results=j.results||{};render();
     document.getElementById('last-updated').textContent='Updated '+new Date().toLocaleTimeString();
   }catch{
     document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Could not load predictions. Check Apps Script URL or <a href="predict.html">submit the first prediction</a>.</p></div>';
@@ -414,25 +412,22 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
     const awayWinner=result===away?' winner':'';
     if(hv.length>0){
       const lbl=hp>=MIN?home.split(' ')[0]+' '+hp+'%':'';
-      segs+='<div class="bar-seg seg-home${homeWinner}" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-home'+homeWinner+'" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     if(dv.length>0){
       const lbl=dp>=MIN?'Draw '+dp+'%':'';
-      segs+='<div class="bar-seg seg-draw${drawWinner}" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-draw'+drawWinner+'" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     if(av.length>0){
       const lbl=ap>=MIN?away.split(' ')[0]+' '+ap+'%':'';
-      segs+='<div class="bar-seg seg-away${awayWinner}" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-away'+awayWinner+'" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     barHtml='<div class="bar-track">'+segs+'</div>';
   }
   return '<div class="match-row">'
     +'<div class="match-info">'
-      +'<div class="match-teams">'
-      +esc(home)
-      +' <span class="match-vs">vs</span> '
-      +esc(away)
-      +(result?'<span class="result-badge">FT – '+esc(result)+'</span>':'')
+      +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)
+      +(result?' <span class="result-badge">FT – '+esc(result)+'</span>':'')
       +'</div>'
       +'<div class="match-meta"><span class="match-date">'+date+'</span>'+(time?' &middot; '+time:'')+(venue?' &middot; <span style="opacity:.6">'+esc(venue)+'</span>':'')+'</div>'
     +'</div>'
