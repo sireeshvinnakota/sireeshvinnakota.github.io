@@ -30,6 +30,8 @@ h1 span{color:var(--gold)}
 .last-updated{font-size:11px;color:var(--muted)}
 .btn-sm{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 14px;cursor:pointer;transition:all .15s}
 .btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm.gold{border-color:rgba(232,200,74,0.5);color:var(--gold)}
+.btn-sm.gold:hover{background:var(--gold);color:var(--pitch)}
 .stats-bar{display:flex;gap:24px;flex-wrap:wrap;background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);padding:14px 20px;margin-bottom:24px}
 .stat{font-size:12px;color:var(--muted)}
 .stat strong{display:block;font-family:'Bebas Neue';font-size:26px;color:var(--white);line-height:1}
@@ -104,6 +106,7 @@ h1 span{color:var(--gold)}
   <div class="top-bar">
     <a href="predict.html" class="back-link">&larr; Submit your predictions</a>
     <div class="right-controls">
+      <a href="leaderboard.html" class="btn-sm gold">🏆 Leaderboard</a>
       <span class="last-updated" id="last-updated">Loading&hellip;</span>
       <button class="btn-sm" onclick="loadData()">&circlearrowleft; Refresh</button>
     </div>
