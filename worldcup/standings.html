@@ -83,6 +83,14 @@ h1 span{color:var(--gold)}
 .spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty-state a{color:var(--gold)}
+
+.result-badge{
+  display:inline-block;margin-left:8px;padding:2px 6px;border-radius:3px;
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  background:rgba(232,200,74,.15);border:1px solid rgba(232,200,74,.4);color:var(--gold)
+}
+.bar-seg.winner{box-shadow:inset 0 0 0 2px var(--gold);filter:brightness(1.15)}
+
 </style>
 </head>
 <body>
@@ -111,7 +119,7 @@ h1 span{color:var(--gold)}
     <button class="filter-btn active" id="btn-all" onclick="setFilter('all',this)">All Groups</button>
     <div class="group-select-wrap">
       <select class="group-select" id="group-select" onchange="onGroupSelect(this)">
-        <option value="">Group ▾</option>
+        <option value="">Group</option>
         <option value="A">Group A</option>
         <option value="B">Group B</option>
         <option value="C">Group C</option>
@@ -262,7 +270,7 @@ const SCHEDULE = {
 
 function getMatches(t){const m=[];for(let i=0;i<t.length;i++)for(let j=i+1;j<t.length;j++)m.push([t[i],t[j]]);return m}
 
-let allData=[], currentFilter='all';
+let allData=[], results={}, currentFilter='all';
 
 const tooltip=document.getElementById('tooltip');
 let ttOn=false;
@@ -293,7 +301,9 @@ async function loadData(){
   try{
     const r=await fetch(APPS_SCRIPT_URL+'?action=get',{cache:'no-store'});
     const j=await r.json();
-    allData=j.data||[];render();
+    allData=j.data||[];
+    results=j.results||{};
+    render();
     document.getElementById('last-updated').textContent='Updated '+new Date().toLocaleTimeString();
   }catch{
     document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Could not load predictions. Check Apps Script URL or <a href="predict.html">submit the first prediction</a>.</p></div>';
@@ -382,6 +392,7 @@ function render(){
 function buildMatchRow(letter,mi,home,away,schedEntry){
   const [,,date,time,venue]=schedEntry||['','','','',''];
   const key=letter+'_'+mi;
+  const result=results[key];
   const hv=[],dv=[],av=[];
   allData.forEach(p=>{
     const pick=(p.picks||{})[key]||'';
@@ -398,23 +409,31 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
     barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
   } else {
     let segs='';
+    const homeWinner=result===home?' winner':'';
+    const drawWinner=result==='Draw'?' winner':'';
+    const awayWinner=result===away?' winner':'';
     if(hv.length>0){
       const lbl=hp>=MIN?home.split(' ')[0]+' '+hp+'%':'';
-      segs+='<div class="bar-seg seg-home" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-home${homeWinner}" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     if(dv.length>0){
       const lbl=dp>=MIN?'Draw '+dp+'%':'';
-      segs+='<div class="bar-seg seg-draw" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-draw${drawWinner}" style="flex:'+dp+'" data-label="Draw" data-names="'+encodeURIComponent(JSON.stringify(dv))+'" data-color="var(--col-draw)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     if(av.length>0){
       const lbl=ap>=MIN?away.split(' ')[0]+' '+ap+'%':'';
-      segs+='<div class="bar-seg seg-away" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
+      segs+='<div class="bar-seg seg-away${awayWinner}" style="flex:'+ap+'" data-label="'+escA(away)+'" data-names="'+encodeURIComponent(JSON.stringify(av))+'" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
     }
     barHtml='<div class="bar-track">'+segs+'</div>';
   }
   return '<div class="match-row">'
     +'<div class="match-info">'
-      +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)+'</div>'
+      +'<div class="match-teams">'
+      +esc(home)
+      +' <span class="match-vs">vs</span> '
+      +esc(away)
+      +(result?'<span class="result-badge">FT – '+esc(result)+'</span>':'')
+      +'</div>'
       +'<div class="match-meta"><span class="match-date">'+date+'</span>'+(time?' &middot; '+time:'')+(venue?' &middot; <span style="opacity:.6">'+esc(venue)+'</span>':'')+'</div>'
     +'</div>'
     +'<div class="vote-col"><div class="vote-bar-wrap">'+barHtml+'</div></div>'
