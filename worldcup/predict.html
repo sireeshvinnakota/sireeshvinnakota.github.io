@@ -76,6 +76,7 @@
     margin-bottom: 14px;
   }
   h1 span { color: var(--gold); }
+  h1 a { color: inherit; text-decoration: none; }
   .subtitle { font-size: 14px; color: var(--muted); }
 
   .card {
@@ -295,9 +296,13 @@
 <div class="page">
   <header>
     <p class="eyebrow">USA · Canada · Mexico</p>
-    <h1>WORLD CUP<br><span>2026</span></h1>
+    <h1><a href="index.html">WORLD CUP<br><span>2026</span></a></h1>
     <p class="subtitle">Group Stage Prediction Form &nbsp;·&nbsp; June 11 – 27</p>
   </header>
+
+  <div class="top-bar" style="margin-bottom:24px">
+    <a href="index.html" class="back-link">⌂ Home</a>
+  </div>
 
   <div class="card open" id="card-info">
     <div class="card-header" onclick="toggleCard('card-info')">
