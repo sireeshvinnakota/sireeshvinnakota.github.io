@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — Predict</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pitch:#0D3D2B;--pitch-mid:#112E1F;--pitch-lt:#1A4A35;
+  --gold:#E8C84A;--white:#F5F5F0;
+  --muted:#8AA89A;--text:#E8E4DC;
+  --border:rgba(255,255,255,0.09);--stripe:rgba(255,255,255,0.025);
+  --radius:8px;
+}
+body{
+  background:var(--pitch);color:var(--text);
+  font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 20px;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:repeating-linear-gradient(90deg,var(--stripe) 0,var(--stripe) 1px,transparent 1px,transparent 80px);
+  pointer-events:none;z-index:0;
+}
+.page{position:relative;z-index:1;width:100%;max-width:480px;text-align:center;}
+
+header{margin-bottom:52px;}
+.eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(56px,14vw,100px);
+  line-height:.88;color:var(--white);letter-spacing:.02em;margin-bottom:18px;
+}
+h1 span{color:var(--gold);}
+.subtitle{font-size:13px;color:var(--muted);}
+
+/* ── Nav grid ── */
+.nav-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:32px;
+}
+
+.nav-card{
+  background:var(--pitch-mid);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px 16px;
+  text-decoration:none;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:border-color .15s, background .15s, transform .1s;
+  cursor:pointer;
+}
+.nav-card:hover{
+  border-color:rgba(232,200,74,0.45);
+  background:var(--pitch-lt);
+  transform:translateY(-2px);
+}
+.nav-card:active{transform:translateY(0);}
+
+.nav-card .icon{font-size:28px;line-height:1;}
+.nav-card .label{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:17px;letter-spacing:.06em;
+  color:var(--white);line-height:1.1;
+}
+.nav-card .desc{font-size:11px;color:var(--muted);line-height:1.4;}
+
+/* Primary card gets gold accent */
+.nav-card.primary{border-color:rgba(232,200,74,0.3);}
+.nav-card.primary .label{color:var(--gold);}
+
+.footer-note{font-size:11px;color:rgba(138,168,154,0.5);}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
+    <h1>WORLD CUP<br><span>2026</span></h1>
+    <p class="subtitle">Group Stage &nbsp;&middot;&nbsp; June 11 – 27</p>
+  </header>
+
+  <div class="nav-grid">
+    <a href="predict.html" class="nav-card primary">
+      <span class="icon">⚽</span>
+      <span class="label">Submit New Picks</span>
+      <span class="desc">First time here? Lock in your group stage predictions.</span>
+    </a>
+    <a href="my-picks.html" class="nav-card">
+      <span class="icon">📋</span>
+      <span class="label">View Your Picks</span>
+      <span class="desc">Review or edit your existing predictions.</span>
+    </a>
+    <a href="standings.html" class="nav-card">
+      <span class="icon">📊</span>
+      <span class="label">Predictions</span>
+      <span class="desc">See how everyone picked each match.</span>
+    </a>
+    <a href="leaderboard.html" class="nav-card">
+      <span class="icon">🏆</span>
+      <span class="label">Leaderboard</span>
+      <span class="desc">Who's winning the prediction game?</span>
+    </a>
+  </div>
+
+  <p class="footer-note">Picks lock when each match kicks off</p>
+</div>
+</body>
+</html>

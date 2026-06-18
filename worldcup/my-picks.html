@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — My Picks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pitch:#0D3D2B;--pitch-mid:#112E1F;--pitch-lt:#1A4A35;
+  --gold:#E8C84A;--gold-dim:#C4A830;--white:#F5F5F0;
+  --muted:#8AA89A;--text:#E8E4DC;
+  --border:rgba(255,255,255,0.09);--stripe:rgba(255,255,255,0.025);
+  --error:#E05555;--success:#4CAF70;
+  --radius:6px;
+}
+body{
+  background:var(--pitch);color:var(--text);
+  font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;min-height:100vh;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:repeating-linear-gradient(90deg,var(--stripe) 0,var(--stripe) 1px,transparent 1px,transparent 80px);
+  pointer-events:none;z-index:0;
+}
+.page{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 20px 80px;}
+
+header{text-align:center;padding:52px 0 36px;border-bottom:1px solid var(--border);margin-bottom:36px;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,9vw,80px);line-height:.9;color:var(--white);letter-spacing:.02em;margin-bottom:14px;}
+h1 span{color:var(--gold);}
+.subtitle{font-size:14px;color:var(--muted);}
+
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px;}
+.back-link{color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s;}
+.back-link:hover{color:var(--gold);}
+
+/* ── Auth card ── */
+.auth-card{
+  background:var(--pitch-mid);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px;margin-bottom:24px;
+}
+.auth-card h2{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;
+  color:var(--white);margin-bottom:20px;
+}
+.field-group{margin-bottom:16px;}
+label{
+  display:block;font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+}
+select,input[type="email"]{
+  width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);
+  border-radius:4px;color:var(--text);font-family:'Inter',sans-serif;
+  font-size:14px;padding:10px 14px;transition:border-color .15s;
+  appearance:none;-webkit-appearance:none;
+}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238AA89A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;cursor:pointer;
+}
+select:focus,input:focus{outline:none;border-color:var(--gold);}
+select::placeholder,input::placeholder{color:rgba(168,184,168,0.4);}
+option{background:#0D3D2B;color:var(--text);}
+
+/* hidden by default, revealed progressively */
+.hidden{display:none!important;}
+
+.btn-verify{
+  font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.08em;
+  background:var(--gold);color:var(--pitch);border:none;
+  border-radius:var(--radius);padding:12px 36px;
+  cursor:pointer;transition:background .15s,transform .1s;margin-top:4px;
+}
+.btn-verify:hover{background:#f0d255;transform:translateY(-1px);}
+.btn-verify:active{transform:translateY(0);}
+.btn-verify:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+.auth-error{
+  margin-top:12px;padding:10px 14px;
+  background:rgba(224,85,85,.12);border:1px solid var(--error);
+  border-radius:var(--radius);color:#ff8a8a;font-size:13px;
+}
+
+/* ── Identity strip (shown after auth) ── */
+.identity-strip{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  background:var(--pitch-mid);border:1px solid rgba(232,200,74,0.25);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;
+}
+.identity-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);}
+.identity-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.btn-edit{
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.06em;
+  background:transparent;border:1px solid var(--gold);color:var(--gold);
+  border-radius:var(--radius);padding:8px 22px;cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.btn-edit:hover{background:var(--gold);color:var(--pitch);}
+.btn-edit-cancel{
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.06em;
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:var(--radius);padding:8px 22px;cursor:pointer;
+  transition:border-color .15s,color .15s;
+}
+.btn-edit-cancel:hover{border-color:var(--muted);color:var(--text);}
+
+/* ── Progress bar (edit mode) ── */
+.progress-wrap{
+  position:sticky;top:0;z-index:10;
+  background:var(--pitch-mid);border-bottom:1px solid var(--border);
+  padding:10px 20px;display:flex;align-items:center;gap:14px;margin-bottom:24px;
+}
+.progress-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .3s;}
+.progress-label{font-size:12px;color:var(--muted);white-space:nowrap;min-width:60px;text-align:right;}
+
+/* ── Cards ── */
+.card{
+  background:var(--pitch-mid);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:16px;overflow:hidden;
+}
+.card-header{
+  background:var(--pitch-lt);padding:14px 20px;
+  display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;
+}
+.card-header:hover{background:#1f5a40;}
+.group-badge{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);width:32px;flex-shrink:0;}
+.card-header h2{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.08em;color:var(--white);flex:1;}
+.team-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.team-pill{font-size:11px;font-weight:500;background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:3px;padding:2px 7px;color:var(--muted);}
+.chevron{color:var(--muted);font-size:12px;transition:transform .2s;flex-shrink:0;}
+.card.open .chevron{transform:rotate(180deg);}
+.card-body{display:none;padding:0;}
+.card.open .card-body{display:block;}
+
+/* group summary badge on header */
+.group-progress{
+  font-size:11px;font-weight:600;
+  background:rgba(232,200,74,0.12);border:1px solid rgba(232,200,74,0.2);
+  border-radius:3px;padding:2px 8px;color:var(--gold);white-space:nowrap;
+}
+
+/* ── Match rows ── */
+.match-row{
+  display:flex;align-items:center;gap:0;
+  padding:8px 20px;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.match-row:last-child{border-bottom:none;}
+.match-row:nth-child(even){background:var(--stripe);}
+
+/* read-only pick display */
+.pick-group{display:flex;width:100%;gap:6px;align-items:center;}
+.pick-btn{
+  flex:1;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  padding:8px 6px;border-radius:5px;border:1px solid var(--border);
+  background:rgba(255,255,255,0.04);color:var(--muted);
+  cursor:pointer;transition:background .12s,border-color .12s,color .12s,transform .08s;
+  text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;
+}
+/* in view mode (not editing): selected pick is highlighted, no hover */
+.view-mode .pick-btn{cursor:default;pointer-events:none;}
+.view-mode .pick-btn.home.active{background:#1e4fa8;border-color:#4a7fd5;color:#fff;}
+.view-mode .pick-btn.draw{flex:0 0 58px;font-size:11px;letter-spacing:.04em;color:rgba(168,184,168,0.6);}
+.view-mode .pick-btn.draw.active{background:#3d3d3d;border-color:#888;color:#ccc;}
+.view-mode .pick-btn.away.active{background:#8a1e1e;border-color:#d05555;color:#fff;}
+.view-mode .pick-btn:not(.active){opacity:.38;}
+
+/* in edit mode: identical to predict.html interactive buttons */
+.edit-mode .pick-btn:hover{background:rgba(255,255,255,0.1);color:var(--white);border-color:rgba(255,255,255,0.25);}
+.edit-mode .pick-btn:active{transform:scale(0.97);}
+.edit-mode .pick-btn.home.active{background:#1e4fa8;border-color:#4a7fd5;color:#fff;}
+.edit-mode .pick-btn.draw{flex:0 0 58px;font-size:11px;letter-spacing:.04em;color:rgba(168,184,168,0.6);}
+.edit-mode .pick-btn.draw:hover{color:var(--white);}
+.edit-mode .pick-btn.draw.active{background:#3d3d3d;border-color:#888;color:#ccc;}
+.edit-mode .pick-btn.away.active{background:#8a1e1e;border-color:#d05555;color:#fff;}
+
+/* unpicked in view mode gets a subtle "no pick" indicator */
+.no-pick-badge{
+  font-size:10px;color:rgba(168,184,168,0.4);
+  white-space:nowrap;flex-shrink:0;padding-left:10px;
+}
+
+/* locked match (result in) */
+.match-row.locked .pick-btn{cursor:not-allowed;opacity:.45;pointer-events:none;}
+.match-row.locked .pick-btn.winner{opacity:1;pointer-events:none;box-shadow:0 0 0 2px var(--gold);}
+.match-row.locked .pick-btn.home.winner{background:#1e4fa8;border-color:#4a7fd5;color:#fff;}
+.match-row.locked .pick-btn.draw.winner{background:#3d3d3d;border-color:#888;color:#ccc;}
+.match-row.locked .pick-btn.away.winner{background:#8a1e1e;border-color:#d05555;color:#fff;}
+.locked-badge{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-left:10px;flex-shrink:0;}
+
+/* ── Correct/incorrect indicators ── */
+.result-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:8px;}
+.result-dot.correct{background:var(--success);}
+.result-dot.wrong{background:var(--error);}
+
+/* ── Submit (edit mode) ── */
+.submit-wrap{margin-top:28px;text-align:center;}
+.btn-submit{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.1em;
+  background:var(--gold);color:var(--pitch);border:none;
+  border-radius:var(--radius);padding:16px 56px;
+  cursor:pointer;transition:background .15s,transform .1s;
+}
+.btn-submit:hover{background:#f0d255;transform:translateY(-1px);}
+.btn-submit:active{transform:translateY(0);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.status{margin-top:16px;padding:12px 18px;border-radius:var(--radius);font-size:14px;font-weight:500;display:none;}
+.status.error{background:rgba(224,85,85,.15);border:1px solid var(--error);color:#ff8a8a;display:block;}
+.status.success{background:rgba(76,175,112,.15);border:1px solid var(--success);color:#7ee8a2;display:block;}
+
+/* ── Loading ── */
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-inline{color:var(--muted);font-size:13px;padding:12px 0;}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
+    <h1>WORLD CUP <span>2026</span><br>MY PICKS</h1>
+    <p class="subtitle">View or edit your group stage predictions</p>
+  </header>
+
+  <div class="top-bar">
+    <a href="index.html" class="back-link">&larr; Back to home</a>
+  </div>
+
+  <!-- ── Step 1: Name select ── -->
+  <div class="auth-card" id="auth-card">
+    <h2>Find Your Picks</h2>
+
+    <div class="field-group">
+      <label for="sel-name">Your name</label>
+      <select id="sel-name">
+        <option value="">— select your name —</option>
+      </select>
+      <div class="loading-inline hidden" id="names-loading"><span class="spinner"></span>Loading participants&hellip;</div>
+    </div>
+
+    <!-- ── Step 2: Email (revealed after name chosen) ── -->
+    <div class="field-group hidden" id="email-field">
+      <label for="inp-email">Email address (to verify it&rsquo;s you)</label>
+      <input type="email" id="inp-email" placeholder="you@example.com" autocomplete="email">
+    </div>
+
+    <button class="btn-verify hidden" id="btn-verify" onclick="verifyUser()">View My Picks</button>
+    <div class="auth-error hidden" id="auth-error"></div>
+  </div>
+
+  <!-- ── Authenticated view (hidden until verified) ── -->
+  <div class="hidden" id="picks-section">
+
+    <div class="identity-strip">
+      <div>
+        <div class="identity-name" id="id-name"></div>
+        <div class="identity-sub" id="id-sub"></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-edit-cancel hidden" id="btn-cancel" onclick="cancelEdit()">Cancel</button>
+        <button class="btn-edit" id="btn-edit" onclick="enterEditMode()">Edit Picks</button>
+      </div>
+    </div>
+
+    <div class="progress-wrap hidden" id="progress-wrap">
+      <span style="font-size:12px;color:var(--muted);white-space:nowrap">Group picks</span>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+      <span class="progress-label" id="progress-label">0 / 72</span>
+    </div>
+
+    <div id="groups-container"></div>
+
+    <div class="submit-wrap hidden" id="submit-wrap">
+      <div id="status-msg" class="status"></div>
+      <button class="btn-submit" id="btn-submit" onclick="submitEdits()">SAVE MY PICKS</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbL3pVg3gIvLbgc9jk_wqcJiqa1XTEJGVAf26qyRnGJ1jD5pSFiojA9mFOq7Gj4lso/exec";
+
+const GROUPS = {
+  A: ["Mexico","South Africa","South Korea","Czechia"],
+  B: ["Canada","Bosnia-Herzegovina","Qatar","Switzerland"],
+  C: ["Brazil","Haiti","Morocco","Scotland"],
+  D: ["United States","Paraguay","Australia","Türkiye"],
+  E: ["Germany","Curaçao","Ivory Coast","Ecuador"],
+  F: ["Netherlands","Japan","Sweden","Tunisia"],
+  G: ["Belgium","Egypt","Iran","New Zealand"],
+  H: ["Spain","Cape Verde","Saudi Arabia","Uruguay"],
+  I: ["France","Iraq","Norway","Senegal"],
+  J: ["Algeria","Argentina","Austria","Jordan"],
+  K: ["Colombia","Congo DR","Portugal","Uzbekistan"],
+  L: ["Croatia","England","Ghana","Panama"],
+};
+
+// State
+let allParticipants = []; // [{name, email, phone, picks:{}}]
+let currentUser = null;   // the matched participant object
+let results = {};         // {key: winner} from sheet
+let editMode = false;
+let editPicks = {};       // mutable copy during edit
+let totalPicks = 0;
+let filledPicks = 0;
+
+// ── Utilities ──────────────────────────────────────────────────────────────
+function getMatches(teams) {
+  const m = [];
+  for (let i = 0; i < teams.length; i++)
+    for (let j = i+1; j < teams.length; j++)
+      m.push([teams[i], teams[j]]);
+  return m;
+}
+
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+function esc(s)  { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Load participant names ─────────────────────────────────────────────────
+async function loadNames() {
+  show('names-loading');
+  try {
+    const r = await fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' });
+    const j = await r.json();
+    allParticipants = j.data || [];
+    results = j.results || {};
+
+    const sel = document.getElementById('sel-name');
+    allParticipants
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.name;
+        opt.textContent = p.name;
+        sel.appendChild(opt);
+      });
+  } catch(e) {
+    document.getElementById('auth-error').textContent = 'Could not load participants. Check your connection.';
+    document.getElementById('auth-error').classList.remove('hidden');
+  }
+  hide('names-loading');
+}
+
+// Reveal email field once a name is chosen
+document.getElementById('sel-name').addEventListener('change', function() {
+  const val = this.value;
+  if (val) {
+    show('email-field');
+    show('btn-verify');
+    hide('auth-error');
+  } else {
+    hide('email-field');
+    hide('btn-verify');
+  }
+});
+
+// ── Verify ────────────────────────────────────────────────────────────────
+function verifyUser() {
+  const name  = document.getElementById('sel-name').value;
+  const email = document.getElementById('inp-email').value.trim().toLowerCase();
+  const errEl = document.getElementById('auth-error');
+  errEl.classList.add('hidden');
+
+  if (!email) {
+    errEl.textContent = 'Please enter your email address.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  const match = allParticipants.find(p =>
+    p.name === name && p.email.trim().toLowerCase() === email
+  );
+
+  if (!match) {
+    errEl.textContent = "That email doesn\u2019t match what we have on file for this name. Try again or contact Sireesh.";
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  currentUser = match;
+  showPicks();
+}
+
+// ── Show picks (view mode) ─────────────────────────────────────────────────
+function showPicks() {
+  hide('auth-card');
+  show('picks-section');
+
+  const pickedCount = Object.values(currentUser.picks || {}).filter(v => v).length;
+  document.getElementById('id-name').textContent = currentUser.name;
+  document.getElementById('id-sub').textContent = pickedCount + ' of 72 matches picked';
+
+  buildGroups(currentUser.picks || {}, false);
+}
+
+// ── Build group cards ──────────────────────────────────────────────────────
+function buildGroups(picks, isEdit) {
+  const container = document.getElementById('groups-container');
+  container.innerHTML = '';
+  totalPicks = 0;
+  filledPicks = 0;
+
+  const mode = isEdit ? 'edit-mode' : 'view-mode';
+
+  Object.entries(GROUPS).forEach(([letter, teams]) => {
+    const matches = getMatches(teams);
+    totalPicks += matches.length;
+
+    // Count filled for this group
+    let groupFilled = 0;
+    matches.forEach(([,], mi) => {
+      const key = `${letter}_${mi}`;
+      if (picks[key]) groupFilled++;
+    });
+    filledPicks += groupFilled;
+
+    const card = document.createElement('div');
+    card.className = 'card open';
+    card.id = `card-${letter}`;
+
+    const pillsHtml = teams.map(t => `<span class="team-pill">${esc(t)}</span>`).join('');
+    const progressBadge = `<span class="group-progress">${groupFilled}/${matches.length}</span>`;
+
+    card.innerHTML = `
+      <div class="card-header" onclick="toggleCard('card-${letter}')">
+        <span class="group-badge">${letter}</span>
+        <h2>GROUP ${letter}</h2>
+        <div class="team-pills">${pillsHtml}</div>
+        ${progressBadge}
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body ${mode}" id="body-${letter}"></div>
+    `;
+
+    const body = card.querySelector('.card-body');
+
+    matches.forEach(([home, away], mi) => {
+      const key = `${letter}_${mi}`;
+      const pick = picks[key] || '';
+      const result = results[key] || '';
+      const isLocked = !!result;
+
+      const row = document.createElement('div');
+      row.className = 'match-row' + (isLocked ? ' locked' : '');
+      row.dataset.key = key;
+
+      const homeActive  = pick === home  ? ' active' : '';
+      const drawActive  = pick === 'Draw'? ' active' : '';
+      const awayActive  = pick === away  ? ' active' : '';
+
+      const homeWinner  = result === home  ? ' winner' : '';
+      const drawWinner  = result === 'Draw'? ' winner' : '';
+      const awayWinner  = result === away  ? ' winner' : '';
+
+      // Result dot: show in view mode when result is known and pick was made
+      let dotHtml = '';
+      if (!isEdit && result && pick) {
+        const correct = pick === result;
+        dotHtml = `<span class="result-dot ${correct ? 'correct' : 'wrong'}" title="${correct ? 'Correct!' : 'Incorrect'}"></span>`;
+      }
+
+      let noBadgeHtml = '';
+      if (!isEdit && !pick && !isLocked) {
+        noBadgeHtml = `<span class="no-pick-badge">no pick</span>`;
+      }
+
+      const clickAttr = isEdit && !isLocked
+        ? `onclick="onPickBtn(this)"`
+        : '';
+
+      row.innerHTML = `
+        <div class="pick-group" id="pick-group-${key}">
+          <button type="button" class="pick-btn home${homeActive}${homeWinner}" data-key="${key}" data-value="${esc(home)}" ${clickAttr}>${esc(home)}</button>
+          <button type="button" class="pick-btn draw${drawActive}${drawWinner}" data-key="${key}" data-value="Draw" ${clickAttr}>Draw</button>
+          <button type="button" class="pick-btn away${awayActive}${awayWinner}" data-key="${key}" data-value="${esc(away)}" ${clickAttr}>${esc(away)}</button>
+        </div>
+        ${noBadgeHtml}
+        ${dotHtml}
+        ${isLocked ? '<span class="locked-badge">FT</span>' : ''}
+      `;
+      body.appendChild(row);
+    });
+
+    container.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+function toggleCard(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ── Edit mode ──────────────────────────────────────────────────────────────
+function enterEditMode() {
+  editMode = true;
+  editPicks = Object.assign({}, currentUser.picks || {});
+  buildGroups(editPicks, true);
+  show('progress-wrap');
+  show('submit-wrap');
+  show('btn-cancel');
+  document.getElementById('btn-edit').textContent = 'Editing…';
+  document.getElementById('btn-edit').disabled = true;
+  hide('status-msg');
+  document.getElementById('status-msg').className = 'status';
+}
+
+function cancelEdit() {
+  editMode = false;
+  buildGroups(currentUser.picks || {}, false);
+  hide('progress-wrap');
+  hide('submit-wrap');
+  hide('btn-cancel');
+  document.getElementById('btn-edit').textContent = 'Edit Picks';
+  document.getElementById('btn-edit').disabled = false;
+}
+
+// ── Pick interaction (edit mode) ───────────────────────────────────────────
+function onPickBtn(btn) {
+  const key = btn.dataset.key;
+  if (results[key]) return; // locked
+
+  const val = btn.dataset.value;
+  const prev = editPicks[key];
+
+  document.querySelectorAll(`#pick-group-${key} .pick-btn`).forEach(b => b.classList.remove('active'));
+
+  if (prev === val) {
+    delete editPicks[key];
+    if (prev) filledPicks--;
+  } else {
+    btn.classList.add('active');
+    editPicks[key] = val;
+    if (!prev) filledPicks++;
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = totalPicks > 0 ? (filledPicks / totalPicks) * 100 : 0;
+  const fill = document.getElementById('progress-fill');
+  const label = document.getElementById('progress-label');
+  if (fill)  fill.style.width = pct + '%';
+  if (label) label.textContent = `${filledPicks} / ${totalPicks}`;
+}
+
+// ── Submit edits ───────────────────────────────────────────────────────────
+async function submitEdits() {
+  const statusEl = document.getElementById('status-msg');
+  const btnEl    = document.getElementById('btn-submit');
+
+  statusEl.className = 'status';
+
+  const openCount = Object.entries(GROUPS).reduce((acc, [letter, teams]) => {
+    return acc + getMatches(teams).filter(([,], mi) => {
+      const key = `${letter}_${mi}`;
+      return !results[key] && !editPicks[key];
+    }).length;
+  }, 0);
+
+  if (openCount > 0) {
+    const ok = confirm(`You have ${openCount} unpicked matches. Save anyway?`);
+    if (!ok) return;
+  }
+
+  btnEl.disabled = true;
+  btnEl.textContent = 'SAVING…';
+
+  const payload = {
+    name:      currentUser.name,
+    email:     currentUser.email,
+    phone:     currentUser.phone || '',
+    timestamp: new Date().toISOString(),
+    picks:     editPicks,
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+    // Update local state
+    currentUser.picks = Object.assign({}, editPicks);
+    statusEl.className = 'status success';
+    statusEl.textContent = '\u2713 Picks saved for ' + currentUser.name + '!';
+    btnEl.textContent = 'SAVED \u2713';
+
+    // Exit edit mode after short delay
+    setTimeout(() => {
+      cancelEdit();
+      // Refresh identity sub-text
+      const pickedCount = Object.values(currentUser.picks).filter(v => v).length;
+      document.getElementById('id-sub').textContent = pickedCount + ' of 72 matches picked';
+    }, 1200);
+
+  } catch(err) {
+    statusEl.className = 'status error';
+    statusEl.textContent = 'Save failed. Please try again.';
+    btnEl.disabled = false;
+    btnEl.textContent = 'SAVE MY PICKS';
+  }
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+loadNames();
+</script>
+</body>
+</html>
