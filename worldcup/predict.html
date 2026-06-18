@@ -197,6 +197,21 @@
     padding-left: 10px;
     flex-shrink: 0;
   }
+  .ip-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pitch);
+    background: var(--gold);
+    border-radius: 3px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    margin-left: 10px;
+    flex-shrink: 0;
+    animation: ip-blink 1.2s ease-in-out infinite;
+  }
+  @keyframes ip-blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
   /* ── Info form ── */
   .info-card { padding: 24px; }
@@ -433,15 +448,23 @@ function applyLocks() {
     const row = document.querySelector(`.match-row[data-key="${key}"]`);
     if (!row) return;
     row.classList.add('locked');
-    // highlight the winning button
-    row.querySelectorAll('.pick-btn').forEach(btn => {
-      if (btn.dataset.value === winner) btn.classList.add('winner');
-    });
-    // add FT badge if not already there
-    if (!row.querySelector('.locked-badge')) {
+    const isIP = winner === 'IP';
+    if (!isIP) {
+      // highlight the winning button only for final results
+      row.querySelectorAll('.pick-btn').forEach(btn => {
+        if (btn.dataset.value === winner) btn.classList.add('winner');
+      });
+    }
+    // add badge if not already there
+    if (!row.querySelector('.locked-badge, .ip-badge')) {
       const badge = document.createElement('span');
-      badge.className = 'locked-badge';
-      badge.textContent = 'FT';
+      if (isIP) {
+        badge.className = 'ip-badge';
+        badge.textContent = 'LIVE';
+      } else {
+        badge.className = 'locked-badge';
+        badge.textContent = 'FT';
+      }
       row.appendChild(badge);
     }
   });

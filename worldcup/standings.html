@@ -93,6 +93,11 @@ h1 a{color:inherit;text-decoration:none}
   font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   background:rgba(232,200,74,.15);border:1px solid rgba(232,200,74,.4);color:var(--gold)
 }
+.result-badge.ip{
+  background:var(--gold);color:var(--pitch);border-color:var(--gold);
+  animation:ip-blink 1.2s ease-in-out infinite;
+}
+@keyframes ip-blink{0%,100%{opacity:1}50%{opacity:.35}}
 .bar-seg.winner{box-shadow:inset 0 0 0 2px var(--gold);filter:brightness(1.15)}
 
 </style>
@@ -397,6 +402,8 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
   const [,,date,time,venue]=schedEntry||['','','','',''];
   const key=letter+'_'+mi;
   const result=results[key];
+  const isIP=result==='IP';
+  const isFinal=result && !isIP;
   const hv=[],dv=[],av=[];
   allData.forEach(p=>{
     const pick=(p.picks||{})[key]||'';
@@ -413,9 +420,9 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
     barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
   } else {
     let segs='';
-    const homeWinner=result===home?' winner':'';
-    const drawWinner=result==='Draw'?' winner':'';
-    const awayWinner=result===away?' winner':'';
+    const homeWinner=isFinal && result===home?' winner':'';
+    const drawWinner=isFinal && result==='Draw'?' winner':'';
+    const awayWinner=isFinal && result===away?' winner':'';
     if(hv.length>0){
       const lbl=hp>=MIN?home.split(' ')[0]+' '+hp+'%':'';
       segs+='<div class="bar-seg seg-home'+homeWinner+'" style="flex:'+hp+'" data-label="'+escA(home)+'" data-names="'+encodeURIComponent(JSON.stringify(hv))+'" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">'+lbl+'</span></div>';
@@ -430,10 +437,13 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
     }
     barHtml='<div class="bar-track">'+segs+'</div>';
   }
+  const badgeHtml=isIP
+    ?'<div class="result-badge-row"><span class="result-badge ip">LIVE</span></div>'
+    :isFinal?'<div class="result-badge-row"><span class="result-badge">FT \u2013 '+esc(result)+'</span></div>':'';
   return '<div class="match-row">'
     +'<div class="match-info">'
       +'<div class="match-teams">'+esc(home)+' <span class="match-vs">vs</span> '+esc(away)+'</div>'
-      +(result?'<div class="result-badge-row"><span class="result-badge">FT – '+esc(result)+'</span></div>':'')
+      +badgeHtml
       +'<div class="match-meta"><span class="match-date">'+date+'</span>'+(time?' &middot; '+time:'')+(venue?' &middot; <span style="opacity:.6">'+esc(venue)+'</span>':'')+'</div>'
     +'</div>'
     +'<div class="vote-col"><div class="vote-bar-wrap">'+barHtml+'</div></div>'

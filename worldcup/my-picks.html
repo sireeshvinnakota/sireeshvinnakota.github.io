@@ -195,6 +195,8 @@ option{background:#0D3D2B;color:var(--text);}
 .match-row.locked .pick-btn.draw.winner{background:#3d3d3d;border-color:#888;color:#ccc;}
 .match-row.locked .pick-btn.away.winner{background:#8a1e1e;border-color:#d05555;color:#fff;}
 .locked-badge{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-left:10px;flex-shrink:0;}
+.ip-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pitch);background:var(--gold);border-radius:3px;padding:2px 6px;white-space:nowrap;margin-left:10px;flex-shrink:0;animation:ip-blink 1.2s ease-in-out infinite;}
+@keyframes ip-blink{0%,100%{opacity:1}50%{opacity:.35}}
 
 /* ── Correct/incorrect indicators ── */
 .result-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:8px;}
@@ -447,7 +449,9 @@ function buildGroups(picks, isEdit) {
       const key = `${letter}_${mi}`;
       const pick = picks[key] || '';
       const result = results[key] || '';
+      const isIP = result === 'IP';
       const isLocked = !!result;
+      const isFinal = isLocked && !isIP;
 
       const row = document.createElement('div');
       row.className = 'match-row' + (isLocked ? ' locked' : '');
@@ -457,13 +461,13 @@ function buildGroups(picks, isEdit) {
       const drawActive  = pick === 'Draw'? ' active' : '';
       const awayActive  = pick === away  ? ' active' : '';
 
-      const homeWinner  = result === home  ? ' winner' : '';
-      const drawWinner  = result === 'Draw'? ' winner' : '';
-      const awayWinner  = result === away  ? ' winner' : '';
+      const homeWinner  = isFinal && result === home  ? ' winner' : '';
+      const drawWinner  = isFinal && result === 'Draw'? ' winner' : '';
+      const awayWinner  = isFinal && result === away  ? ' winner' : '';
 
-      // Result dot: show in view mode when result is known and pick was made
+      // Result dot: only for final results (not IP)
       let dotHtml = '';
-      if (!isEdit && result && pick) {
+      if (!isEdit && isFinal && pick) {
         const correct = pick === result;
         dotHtml = `<span class="result-dot ${correct ? 'correct' : 'wrong'}" title="${correct ? 'Correct!' : 'Incorrect'}"></span>`;
       }
@@ -477,6 +481,10 @@ function buildGroups(picks, isEdit) {
         ? `onclick="onPickBtn(this)"`
         : '';
 
+      const badgeHtml = isIP
+        ? '<span class="ip-badge">LIVE</span>'
+        : isLocked ? '<span class="locked-badge">FT</span>' : '';
+
       row.innerHTML = `
         <div class="pick-group" id="pick-group-${key}">
           <button type="button" class="pick-btn home${homeActive}${homeWinner}" data-key="${key}" data-value="${esc(home)}" ${clickAttr}>${esc(home)}</button>
@@ -485,7 +493,7 @@ function buildGroups(picks, isEdit) {
         </div>
         ${noBadgeHtml}
         ${dotHtml}
-        ${isLocked ? '<span class="locked-badge">FT</span>' : ''}
+        ${badgeHtml}
       `;
       body.appendChild(row);
     });
