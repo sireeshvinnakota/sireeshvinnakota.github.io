@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — Choose Stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pitch:#0D3D2B;--pitch-mid:#112E1F;--pitch-lt:#1A4A35;
+  --gold:#E8C84A;--white:#F5F5F0;
+  --muted:#8AA89A;--text:#E8E4DC;
+  --border:rgba(255,255,255,0.09);--stripe:rgba(255,255,255,0.025);
+  --radius:8px;
+}
+body{
+  background:var(--pitch);color:var(--text);
+  font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 20px;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:repeating-linear-gradient(90deg,var(--stripe) 0,var(--stripe) 1px,transparent 1px,transparent 80px);
+  pointer-events:none;z-index:0;
+}
+.page{position:relative;z-index:1;width:100%;max-width:480px;text-align:center;}
+
+header{margin-bottom:16px;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,12vw,80px);line-height:.88;color:var(--white);letter-spacing:.02em;margin-bottom:14px;}
+h1 span{color:var(--gold);}
+h1 a{color:inherit;text-decoration:none;}
+
+/* Identity strip */
+.identity-strip{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:rgba(232,200,74,0.07);border:1px solid rgba(232,200,74,0.2);
+  border-radius:var(--radius);padding:12px 18px;margin-bottom:32px;
+  font-size:13px;
+}
+.identity-strip .name{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:.04em;}
+.identity-strip .mode-badge{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;margin-left:4px;
+}
+.mode-badge.edit{background:rgba(138,168,154,.15);border:1px solid rgba(138,168,154,.3);color:var(--muted);}
+.mode-badge.new{background:rgba(232,200,74,.15);border:1px solid rgba(232,200,74,.3);color:var(--gold);}
+
+.choose-label{
+  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;
+}
+
+.stage-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;
+}
+
+.stage-card{
+  background:var(--pitch-mid);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px 16px 24px;
+  text-decoration:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:border-color .15s,background .15s,transform .1s;
+  position:relative;
+}
+.stage-card:hover{border-color:rgba(232,200,74,.45);background:var(--pitch-lt);transform:translateY(-2px);}
+.stage-card:active{transform:translateY(0);}
+.stage-card.primary{border-color:rgba(232,200,74,.3);}
+
+.stage-card .icon{font-size:36px;line-height:1;}
+.stage-card .label{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;
+  color:var(--white);line-height:1.1;
+}
+.stage-card.primary .label{color:var(--gold);}
+.stage-card .desc{font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* "Coming soon" overlay */
+.stage-card.disabled{
+  opacity:.55;cursor:not-allowed;pointer-events:none;
+}
+.soon-badge{
+  position:absolute;top:10px;right:10px;
+  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(138,168,154,.15);border:1px solid rgba(138,168,154,.25);
+  border-radius:3px;padding:2px 6px;color:var(--muted);
+}
+
+.back-link{
+  display:block;text-align:center;margin-top:8px;
+  color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s;
+}
+.back-link:hover{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
+    <h1><a href="index.html">WORLD CUP<br><span>2026</span></a></h1>
+  </header>
+
+  <div class="identity-strip" id="identity-strip" style="display:none"></div>
+
+  <p class="choose-label">Choose a stage to predict</p>
+
+  <div class="stage-grid">
+    <div class="stage-card primary" id="card-groups" onclick="goGroups()">
+      <span class="icon">⚽</span>
+      <span class="label">Group Stage</span>
+      <span class="desc">Pick winners for all 72 group matches across 12 groups.</span>
+    </div>
+    <div class="stage-card" id="card-r32" onclick="goR32()">
+      <span class="icon">🏆</span>
+      <span class="label">Round of 32</span>
+      <span class="desc">Predict the Round of 32 knockout matchups.</span>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">⌂ Back to home</a>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const intent = params.get('intent') || 'edit';
+
+const userStr = sessionStorage.getItem('wc2026_user');
+const user    = userStr ? JSON.parse(userStr) : null;
+
+// For "edit" intent, require a logged-in user
+if (intent === 'edit' && !user) {
+  window.location.href = 'login.html?intent=edit';
+}
+
+// Show identity strip
+const strip = document.getElementById('identity-strip');
+if (intent === 'edit' && user) {
+  strip.style.display = 'flex';
+  strip.innerHTML =
+    '<span style="color:var(--muted);font-size:12px;">Editing as</span>'
+    + '<span class="name">' + esc(user.name) + '</span>'
+    + '<span class="mode-badge edit">Edit</span>';
+} else if (intent === 'new') {
+  strip.style.display = 'flex';
+  strip.innerHTML =
+    '<span style="color:var(--muted);font-size:12px;">Submitting</span>'
+    + '<span class="name" style="color:var(--white);">New Picks</span>'
+    + '<span class="mode-badge new">New</span>';
+}
+
+function goGroups() {
+  if (intent === 'edit') {
+    window.location.href = 'my-picks.html';
+  } else {
+    window.location.href = 'predict.html';
+  }
+}
+
+function goR32() {
+  if (intent === 'edit') {
+    window.location.href = 'knockouts.html?mode=edit';
+  } else {
+    window.location.href = 'knockouts.html?mode=new';
+  }
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>

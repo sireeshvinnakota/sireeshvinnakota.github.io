@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — Round of 32</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pitch:#0D3D2B;--pitch-mid:#112E1F;--pitch-lt:#1A4A35;
+  --gold:#E8C84A;--gold-dim:#C4A830;--white:#F5F5F0;
+  --muted:#8AA89A;--text:#E8E4DC;
+  --border:rgba(255,255,255,0.09);--stripe:rgba(255,255,255,0.025);
+  --error:#E05555;--success:#4CAF70;--radius:6px;
+}
+body{background:var(--pitch);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(90deg,var(--stripe) 0,var(--stripe) 1px,transparent 1px,transparent 80px);pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 20px 80px;}
+
+header{text-align:center;padding:52px 0 36px;border-bottom:1px solid var(--border);margin-bottom:36px;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,9vw,78px);line-height:.9;color:var(--white);letter-spacing:.02em;margin-bottom:14px;}
+h1 span{color:var(--gold);}
+h1 a{color:inherit;text-decoration:none;}
+.subtitle{font-size:14px;color:var(--muted);}
+
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px;}
+.back-link{color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s;}
+.back-link:hover{color:var(--gold);}
+
+/* ── Identity strip ── */
+.identity-strip{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  background:var(--pitch-mid);border:1px solid rgba(232,200,74,0.25);
+  border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;
+}
+.identity-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);}
+.identity-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.btn-edit{
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.06em;
+  background:transparent;border:1px solid var(--gold);color:var(--gold);
+  border-radius:var(--radius);padding:8px 22px;cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.btn-edit:hover{background:var(--gold);color:var(--pitch);}
+.btn-edit-cancel{
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.06em;
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:var(--radius);padding:8px 22px;cursor:pointer;
+  transition:border-color .15s,color .15s;
+}
+.btn-edit-cancel:hover{border-color:var(--muted);color:var(--text);}
+
+/* ── Name entry (new mode) ── */
+.info-card{background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
+.info-card h2{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;color:var(--white);margin-bottom:18px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:500px){.form-grid{grid-template-columns:1fr;}}
+label{display:block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+input[type="text"],input[type="email"],input[type="tel"]{
+  width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);
+  border-radius:4px;color:var(--text);font-family:'Inter',sans-serif;
+  font-size:14px;padding:10px 14px;transition:border-color .15s;
+}
+input:focus{outline:none;border-color:var(--gold);}
+input::placeholder{color:rgba(168,184,168,0.4);}
+
+/* ── Progress bar ── */
+.progress-wrap{
+  position:sticky;top:0;z-index:10;
+  background:var(--pitch-mid);border-bottom:1px solid var(--border);
+  padding:10px 20px;display:flex;align-items:center;gap:14px;margin-bottom:24px;
+}
+.progress-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .3s;}
+.progress-label{font-size:12px;color:var(--muted);white-space:nowrap;min-width:60px;text-align:right;}
+
+/* ── Match cards ── */
+.section-label{
+  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;margin-top:8px;
+}
+.match-card{
+  background:var(--pitch-mid);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:10px;overflow:hidden;
+  transition:border-color .15s;
+}
+.match-card:hover{border-color:rgba(255,255,255,0.15);}
+
+.match-header{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;background:var(--pitch-lt);
+  border-bottom:1px solid var(--border);
+}
+.match-num{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.08em;
+  color:var(--muted);flex-shrink:0;
+}
+.match-slot-label{
+  font-size:11px;color:var(--muted);flex:1;
+}
+.locked-badge{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);flex-shrink:0;}
+.ip-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pitch);background:var(--gold);border-radius:3px;padding:2px 6px;flex-shrink:0;animation:ip-blink 1.2s ease-in-out infinite;}
+@keyframes ip-blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+.pick-row{
+  display:flex;align-items:center;gap:6px;padding:10px 16px;
+}
+.pick-btn{
+  flex:1;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+  padding:10px 8px;border-radius:5px;border:1px solid var(--border);
+  background:rgba(255,255,255,0.04);color:var(--muted);
+  cursor:pointer;transition:background .12s,border-color .12s,color .12s,transform .08s;
+  text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;
+}
+.pick-btn:hover{background:rgba(255,255,255,0.1);color:var(--white);border-color:rgba(255,255,255,0.25);}
+.pick-btn:active{transform:scale(0.97);}
+.pick-btn.home.active{background:#1e4fa8;border-color:#4a7fd5;color:#fff;}
+.pick-btn.away.active{background:#8a1e1e;border-color:#d05555;color:#fff;}
+
+/* Locked/winner states */
+.pick-btn.winner{opacity:1;pointer-events:none;box-shadow:0 0 0 2px var(--gold);}
+.pick-btn.home.winner{background:#1e4fa8;border-color:#4a7fd5;color:#fff;}
+.pick-btn.away.winner{background:#8a1e1e;border-color:#d05555;color:#fff;}
+.match-card.locked .pick-btn{cursor:not-allowed;opacity:.45;pointer-events:none;}
+.match-card.locked .pick-btn.winner{opacity:1;}
+
+/* View mode */
+.view-mode .pick-btn{cursor:default;pointer-events:none;}
+.view-mode .pick-btn:not(.active){opacity:.38;}
+.view-mode .match-card.locked .pick-btn:not(.winner):not(.active){opacity:.22;}
+
+/* Result dot */
+.result-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:4px;}
+.result-dot.correct{background:var(--success);}
+.result-dot.wrong{background:var(--error);}
+
+/* TBD state */
+.tbd-notice{
+  padding:10px 16px;font-size:12px;color:var(--muted);
+  font-style:italic;border-top:1px solid rgba(255,255,255,0.04);
+}
+
+/* ── Submit / save ── */
+.submit-wrap{margin-top:28px;text-align:center;}
+.btn-submit{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.1em;
+  background:var(--gold);color:var(--pitch);border:none;
+  border-radius:var(--radius);padding:16px 56px;
+  cursor:pointer;transition:background .15s,transform .1s;
+}
+.btn-submit:hover{background:#f0d255;transform:translateY(-1px);}
+.btn-submit:active{transform:translateY(0);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.status{margin-top:16px;padding:12px 18px;border-radius:var(--radius);font-size:14px;font-weight:500;display:none;}
+.status.error{background:rgba(224,85,85,.15);border:1px solid var(--error);color:#ff8a8a;display:block;}
+.status.success{background:rgba(76,175,112,.15);border:1px solid var(--success);color:#7ee8a2;display:block;}
+
+.nav-links{display:flex;gap:20px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.view-link{display:inline-block;color:var(--gold);font-size:13px;text-decoration:none;border-bottom:1px solid rgba(232,200,74,0.3);}
+.view-link:hover{border-bottom-color:var(--gold);}
+
+/* ── Loading / empty ── */
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state{color:var(--muted);font-size:13px;padding:40px 0;text-align:center;}
+.empty-notice{
+  text-align:center;padding:40px 20px;
+  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--muted);font-size:13px;
+}
+.empty-notice strong{display:block;font-family:'Bebas Neue';font-size:32px;color:var(--white);margin-bottom:8px;}
+
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
+    <h1><a href="index.html">WORLD CUP <span>2026</span><br>ROUND OF 32</a></h1>
+    <p class="subtitle">Knockout Stage Predictions</p>
+  </header>
+
+  <div class="top-bar">
+    <a href="stage-select.html" id="back-link" class="back-link">← Choose Stage</a>
+  </div>
+
+  <!-- New mode: collect user details -->
+  <div class="info-card hidden" id="info-card">
+    <h2>Your Details</h2>
+    <div class="form-grid">
+      <div>
+        <label for="f-name">Name</label>
+        <input type="text" id="f-name" placeholder="e.g. Sireesh" required>
+      </div>
+      <div>
+        <label for="f-email">Email</label>
+        <input type="email" id="f-email" placeholder="you@example.com" required>
+      </div>
+      <div>
+        <label for="f-phone">Phone (optional)</label>
+        <input type="tel" id="f-phone" placeholder="+1 (555) 000-0000">
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit mode: identity strip -->
+  <div class="identity-strip hidden" id="identity-strip">
+    <div>
+      <div class="identity-name" id="id-name"></div>
+      <div class="identity-sub" id="id-sub"></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-edit-cancel hidden" id="btn-cancel" onclick="cancelEdit()">Cancel</button>
+      <button class="btn-edit" id="btn-edit" onclick="enterEditMode()">Edit Picks</button>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-wrap hidden" id="progress-wrap">
+    <span style="font-size:12px;color:var(--muted);white-space:nowrap">R32 picks</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-label" id="progress-label">0 / 16</span>
+  </div>
+
+  <!-- Match list -->
+  <div id="matches-container">
+    <div class="loading-state"><span class="spinner"></span>Loading matches&hellip;</div>
+  </div>
+
+  <!-- Submit / save -->
+  <div class="submit-wrap hidden" id="submit-wrap">
+    <div id="status-msg" class="status"></div>
+    <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">LOCK IN MY PICKS</button>
+    <div class="nav-links">
+      <a href="leaderboard.html" class="view-link">→ Leaderboard</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbL3pVg3gIvLbgc9jk_wqcJiqa1XTEJGVAf26qyRnGJ1jD5pSFiojA9mFOq7Gj4lso/exec";
+
+const params = new URLSearchParams(location.search);
+const mode   = params.get('mode') || 'new'; // 'new' | 'edit'
+
+const userStr = sessionStorage.getItem('wc2026_user');
+const sessionUser = userStr ? JSON.parse(userStr) : null;
+
+// Guard: edit mode requires a logged-in user
+if (mode === 'edit' && !sessionUser) {
+  window.location.href = 'login.html?intent=edit';
+}
+
+// State
+let matches   = [];   // [{id, slot, home, away}] from sheet
+let r32results = {};  // {id: winner} from sheet
+let picks     = {};   // {id: team}
+let editPicks = {};   // mutable copy during edit
+let editMode  = false;
+let currentUser = sessionUser; // for edit mode
+
+// ── Utilities ─────────────────────────────────────────────────────────────
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function show(id){document.getElementById(id).classList.remove('hidden');}
+function hide(id){document.getElementById(id).classList.add('hidden');}
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+async function init() {
+  // Set back-link intent
+  document.getElementById('back-link').href =
+    'stage-select.html?intent=' + (mode === 'edit' ? 'edit' : 'new');
+
+  if (mode === 'new') {
+    show('info-card');
+    show('progress-wrap');
+    show('submit-wrap');
+  } else {
+    // Edit mode: show identity strip in view mode initially
+    show('identity-strip');
+    document.getElementById('id-name').textContent = currentUser.name;
+  }
+
+  await loadData();
+}
+
+async function loadData() {
+  try {
+    const r = await fetch(APPS_SCRIPT_URL + '?action=getR32', { cache: 'no-store' });
+    const j = await r.json();
+
+    // matches: [{id:"R32_1", slot:"1A vs 2B", home:"France", away:"Argentina"}, ...]
+    // home/away may be "" if not yet known
+    matches    = j.matches   || [];
+    r32results = j.r32results || {};
+
+    if (mode === 'edit' && currentUser) {
+      picks = (currentUser.r32picks || {});
+      // Also try to pull fresh picks from server data if included
+      if (j.r32data) {
+        const me = j.r32data.find(p => p.name === currentUser.name);
+        if (me) picks = me.r32picks || {};
+      }
+      const pickedCount = Object.values(picks).filter(v => v).length;
+      document.getElementById('id-sub').textContent =
+        pickedCount + ' of ' + matches.length + ' R32 matches picked';
+      buildMatches(picks, false);
+    } else {
+      show('progress-wrap');
+      buildMatches({}, true);
+    }
+
+  } catch(e) {
+    document.getElementById('matches-container').innerHTML =
+      '<div class="empty-notice"><strong>Error</strong>Could not load Round of 32 matches. Check your connection and refresh.</div>';
+  }
+}
+
+// ── Build match cards ─────────────────────────────────────────────────────
+function buildMatches(currentPicks, isEditable) {
+  const container = document.getElementById('matches-container');
+  container.innerHTML = '';
+  container.className = isEditable ? '' : 'view-mode';
+
+  if (!matches.length) {
+    container.innerHTML =
+      '<div class="empty-notice">'
+      + '<strong>Coming Soon</strong>'
+      + 'Round of 32 matchups will appear here once the group stage concludes and the bracket is set.'
+      + '</div>';
+    if (mode === 'new') hide('submit-wrap');
+    return;
+  }
+
+  let filled = 0;
+  const total = matches.length;
+
+  matches.forEach((m, idx) => {
+    const { id, slot, home, away } = m;
+    const result  = r32results[id] || '';
+    const isIP    = result === 'IP';
+    const isLocked = !!result && !isIP;
+    const isFinal  = !!result && !isIP;
+    const pick     = currentPicks[id] || '';
+
+    if (pick) filled++;
+
+    const homeActive = pick === home  ? ' active' : '';
+    const awayActive = pick === away  ? ' active' : '';
+    const homeWinner = isFinal && result === home ? ' winner' : '';
+    const awayWinner = isFinal && result === away ? ' winner' : '';
+
+    // Result indicator (edit/view modes)
+    let dotHtml = '';
+    if (!isEditable && isFinal && pick) {
+      const correct = pick === result;
+      dotHtml = `<span class="result-dot ${correct ? 'correct' : 'wrong'}" title="${correct ? 'Correct!' : 'Incorrect'}"></span>`;
+    }
+
+    const badgeHtml = isIP
+      ? '<span class="ip-badge">LIVE</span>'
+      : isFinal ? '<span class="locked-badge">FT</span>' : '';
+
+    const clickAttr = isEditable && !isFinal && !isIP && home && away
+      ? 'onclick="onPick(this)"' : '';
+
+    const card = document.createElement('div');
+    card.className = 'match-card' + (isFinal || isIP ? ' locked' : '');
+    card.dataset.id = id;
+
+    const tbdHtml = (!home || !away)
+      ? '<div class="tbd-notice">⏳ Teams TBD — matchup not yet confirmed</div>'
+      : '';
+
+    // Only show pick buttons if both teams are known
+    const pickRowHtml = (home && away)
+      ? `<div class="pick-row">
+          <button type="button" class="pick-btn home${homeActive}${homeWinner}" data-id="${id}" data-value="${esc(home)}" ${clickAttr}>${esc(home)}</button>
+          <button type="button" class="pick-btn away${awayActive}${awayWinner}" data-id="${id}" data-value="${esc(away)}" ${clickAttr}>${esc(away)}</button>
+          ${dotHtml}
+        </div>`
+      : tbdHtml;
+
+    card.innerHTML = `
+      <div class="match-header">
+        <span class="match-num">Match ${idx + 1}</span>
+        <span class="match-slot-label">${esc(slot || '')}</span>
+        ${badgeHtml}
+      </div>
+      ${pickRowHtml}
+    `;
+
+    container.appendChild(card);
+  });
+
+  updateProgress(filled, matches.length);
+}
+
+// ── Pick interaction ───────────────────────────────────────────────────────
+function onPick(btn) {
+  const id  = btn.dataset.id;
+  const val = btn.dataset.value;
+
+  const currentPicks = editMode ? editPicks : picks;
+  const prev = currentPicks[id];
+
+  // Deselect all in this match
+  document.querySelectorAll(`.match-card[data-id="${id}"] .pick-btn`)
+    .forEach(b => b.classList.remove('active'));
+
+  if (prev === val) {
+    delete currentPicks[id];
+  } else {
+    btn.classList.add('active');
+    currentPicks[id] = val;
+  }
+
+  const filled = Object.values(currentPicks).filter(v => v).length;
+  updateProgress(filled, matches.length);
+}
+
+function updateProgress(filled, total) {
+  const pct = total > 0 ? (filled / total) * 100 : 0;
+  const fill  = document.getElementById('progress-fill');
+  const label = document.getElementById('progress-label');
+  if (fill)  fill.style.width = pct + '%';
+  if (label) label.textContent = filled + ' / ' + total;
+}
+
+// ── Edit mode ──────────────────────────────────────────────────────────────
+function enterEditMode() {
+  editMode = true;
+  editPicks = Object.assign({}, picks);
+  buildMatches(editPicks, true);
+  show('progress-wrap');
+  show('submit-wrap');
+  show('btn-cancel');
+  document.getElementById('btn-edit').textContent = 'Editing…';
+  document.getElementById('btn-edit').disabled = true;
+  document.getElementById('btn-submit').textContent = 'SAVE MY PICKS';
+  hide('status-msg');
+}
+
+function cancelEdit() {
+  editMode = false;
+  buildMatches(picks, false);
+  hide('progress-wrap');
+  hide('submit-wrap');
+  hide('btn-cancel');
+  document.getElementById('btn-edit').textContent = 'Edit Picks';
+  document.getElementById('btn-edit').disabled = false;
+}
+
+// ── Submit / save ──────────────────────────────────────────────────────────
+async function handleSubmit() {
+  const statusEl = document.getElementById('status-msg');
+  const btnEl    = document.getElementById('btn-submit');
+  statusEl.className = 'status';
+
+  let name, email, phone, r32picks;
+
+  if (mode === 'new') {
+    name  = (document.getElementById('f-name').value || '').trim();
+    email = (document.getElementById('f-email').value || '').trim();
+    phone = (document.getElementById('f-phone').value || '').trim();
+    if (!name || !email) {
+      statusEl.className = 'status error';
+      statusEl.textContent = 'Please fill in your name and email before submitting.';
+      return;
+    }
+    r32picks = picks;
+  } else {
+    name     = currentUser.name;
+    email    = currentUser.email;
+    phone    = currentUser.phone || '';
+    r32picks = editPicks;
+  }
+
+  const openCount = matches.filter(m => {
+    // Only count matches where both teams are known and no result yet
+    return m.home && m.away && !r32results[m.id] && !r32picks[m.id];
+  }).length;
+
+  if (openCount > 0) {
+    const ok = confirm(`You have ${openCount} unpicked matches. Submit anyway?`);
+    if (!ok) return;
+  }
+
+  btnEl.disabled = true;
+  btnEl.textContent = mode === 'edit' ? 'SAVING…' : 'SUBMITTING…';
+
+  const payload = {
+    name, email, phone,
+    timestamp: new Date().toISOString(),
+    r32picks,
+    action: 'postR32',
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+
+    if (mode === 'edit') {
+      picks = Object.assign({}, editPicks);
+      statusEl.className = 'status success';
+      statusEl.textContent = '✓ R32 picks saved for ' + name + '!';
+      btnEl.textContent = 'SAVED ✓';
+      setTimeout(() => {
+        cancelEdit();
+        const pickedCount = Object.values(picks).filter(v => v).length;
+        document.getElementById('id-sub').textContent = pickedCount + ' of ' + matches.length + ' R32 matches picked';
+      }, 1200);
+    } else {
+      statusEl.className = 'status success';
+      statusEl.innerHTML = `✓ R32 picks locked in for <strong>${esc(name)}</strong>!<br><a href="leaderboard.html" class="view-link">→ Leaderboard</a>`;
+      btnEl.textContent = 'SUBMITTED ✓';
+    }
+  } catch(err) {
+    statusEl.className = 'status error';
+    statusEl.textContent = 'Submission failed. Please try again or contact Sireesh.';
+    btnEl.disabled = false;
+    btnEl.textContent = mode === 'edit' ? 'SAVE MY PICKS' : 'LOCK IN MY PICKS';
+  }
+}
+
+init();
+</script>
+</body>
+</html>

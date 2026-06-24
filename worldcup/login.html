@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WC 2026 — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pitch:#0D3D2B;--pitch-mid:#112E1F;--pitch-lt:#1A4A35;
+  --gold:#E8C84A;--white:#F5F5F0;
+  --muted:#8AA89A;--text:#E8E4DC;
+  --border:rgba(255,255,255,0.09);--stripe:rgba(255,255,255,0.025);
+  --error:#E05555;--success:#4CAF70;--radius:6px;
+}
+body{
+  background:var(--pitch);color:var(--text);
+  font-family:'Inter',sans-serif;font-size:15px;line-height:1.5;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 20px;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:repeating-linear-gradient(90deg,var(--stripe) 0,var(--stripe) 1px,transparent 1px,transparent 80px);
+  pointer-events:none;z-index:0;
+}
+.page{position:relative;z-index:1;width:100%;max-width:420px;}
+
+header{text-align:center;margin-bottom:36px;}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,12vw,80px);line-height:.88;color:var(--white);letter-spacing:.02em;margin-bottom:14px;}
+h1 span{color:var(--gold);}
+h1 a{color:inherit;text-decoration:none;}
+.subtitle{font-size:13px;color:var(--muted);}
+
+.auth-card{
+  background:var(--pitch-mid);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px;
+}
+.card-title{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;
+  color:var(--white);margin-bottom:6px;
+}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:22px;}
+
+.field-group{margin-bottom:16px;}
+label{
+  display:block;font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+}
+select,input[type="email"]{
+  width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);
+  border-radius:4px;color:var(--text);font-family:'Inter',sans-serif;
+  font-size:14px;padding:10px 14px;transition:border-color .15s;
+  appearance:none;-webkit-appearance:none;
+}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238AA89A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;cursor:pointer;
+}
+select:focus,input:focus{outline:none;border-color:var(--gold);}
+input::placeholder{color:rgba(168,184,168,0.4);}
+option{background:#0D3D2B;color:var(--text);}
+
+.hidden{display:none!important;}
+
+.btn-verify{
+  font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.08em;
+  background:var(--gold);color:var(--pitch);border:none;
+  border-radius:var(--radius);padding:13px 36px;width:100%;
+  cursor:pointer;transition:background .15s,transform .1s;margin-top:4px;
+}
+.btn-verify:hover{background:#f0d255;transform:translateY(-1px);}
+.btn-verify:active{transform:translateY(0);}
+.btn-verify:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+.auth-error{
+  margin-top:12px;padding:10px 14px;
+  background:rgba(224,85,85,.12);border:1px solid var(--error);
+  border-radius:var(--radius);color:#ff8a8a;font-size:13px;
+}
+
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin:22px 0;color:var(--muted);font-size:11px;
+}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.btn-new{
+  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.08em;
+  background:transparent;color:var(--gold);border:1px solid rgba(232,200,74,0.4);
+  border-radius:var(--radius);padding:12px 36px;width:100%;
+  cursor:pointer;transition:background .15s,border-color .15s,transform .1s;
+}
+.btn-new:hover{background:rgba(232,200,74,0.08);border-color:var(--gold);transform:translateY(-1px);}
+.btn-new:active{transform:translateY(0);}
+
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-inline{color:var(--muted);font-size:12px;padding:8px 0;}
+
+.back-link{
+  display:block;text-align:center;margin-top:20px;
+  color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s;
+}
+.back-link:hover{color:var(--gold);}
+
+/* intent badge */
+.intent-badge{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;margin-bottom:8px;
+}
+.intent-badge.new{background:rgba(232,200,74,.15);border:1px solid rgba(232,200,74,.3);color:var(--gold);}
+.intent-badge.edit{background:rgba(138,168,154,.12);border:1px solid rgba(138,168,154,.25);color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
+    <h1><a href="index.html">WORLD CUP<br><span>2026</span></a></h1>
+    <p class="subtitle" id="page-subtitle">Sign in to continue</p>
+  </header>
+
+  <!-- ── Returning user: verify identity ── -->
+  <div class="auth-card" id="login-card">
+    <div class="card-title">Find Your Account</div>
+    <p class="card-sub">Select your name and enter the email you used when signing up.</p>
+
+    <div class="field-group">
+      <label for="sel-name">Your name</label>
+      <select id="sel-name">
+        <option value="">— select your name —</option>
+      </select>
+      <div class="loading-inline hidden" id="names-loading"><span class="spinner"></span>Loading participants&hellip;</div>
+    </div>
+
+    <div class="field-group hidden" id="email-field">
+      <label for="inp-email">Email address</label>
+      <input type="email" id="inp-email" placeholder="you@example.com" autocomplete="email">
+    </div>
+
+    <button class="btn-verify hidden" id="btn-verify" onclick="verifyUser()">Sign In &amp; Continue →</button>
+    <div class="auth-error hidden" id="auth-error"></div>
+
+    <div class="divider" id="new-divider">or</div>
+    <button class="btn-new" id="btn-new" onclick="goNew()">✦ New here? Submit picks for the first time</button>
+  </div>
+
+  <a href="index.html" class="back-link">⌂ Back to home</a>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbL3pVg3gIvLbgc9jk_wqcJiqa1XTEJGVAf26qyRnGJ1jD5pSFiojA9mFOq7Gj4lso/exec";
+
+// Read intent from URL: ?intent=edit (default) or ?intent=new
+// We also read ?stage for deep-linking back from stage-select
+const params = new URLSearchParams(location.search);
+const intent = params.get('intent') || 'edit';
+
+// Update subtitle based on intent
+if (intent === 'edit') {
+  document.getElementById('page-subtitle').textContent = 'Sign in to view or edit your picks';
+}
+
+let allParticipants = [];
+
+async function loadNames() {
+  document.getElementById('names-loading').classList.remove('hidden');
+  try {
+    const r = await fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' });
+    const j = await r.json();
+    allParticipants = j.data || [];
+    const sel = document.getElementById('sel-name');
+    allParticipants
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.name;
+        opt.textContent = p.name;
+        sel.appendChild(opt);
+      });
+  } catch(e) {
+    const err = document.getElementById('auth-error');
+    err.textContent = 'Could not load participants. Check your connection.';
+    err.classList.remove('hidden');
+  }
+  document.getElementById('names-loading').classList.add('hidden');
+}
+
+document.getElementById('sel-name').addEventListener('change', function() {
+  if (this.value) {
+    document.getElementById('email-field').classList.remove('hidden');
+    document.getElementById('btn-verify').classList.remove('hidden');
+    document.getElementById('auth-error').classList.add('hidden');
+  } else {
+    document.getElementById('email-field').classList.add('hidden');
+    document.getElementById('btn-verify').classList.add('hidden');
+  }
+});
+
+function verifyUser() {
+  const name  = document.getElementById('sel-name').value;
+  const email = document.getElementById('inp-email').value.trim().toLowerCase();
+  const errEl = document.getElementById('auth-error');
+  errEl.classList.add('hidden');
+
+  if (!email) {
+    errEl.textContent = 'Please enter your email address.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  const match = allParticipants.find(p =>
+    p.name === name && p.email.trim().toLowerCase() === email
+  );
+
+  if (!match) {
+    errEl.textContent = "That email doesn\u2019t match what we have on file. Try again or contact Sireesh.";
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  // Store user in sessionStorage and forward to stage selector
+  sessionStorage.setItem('wc2026_user', JSON.stringify(match));
+  sessionStorage.setItem('wc2026_intent', 'edit');
+  window.location.href = 'stage-select.html?intent=edit';
+}
+
+function goNew() {
+  // No auth needed for new submissions — go straight to stage selector in "new" mode
+  sessionStorage.removeItem('wc2026_user');
+  sessionStorage.setItem('wc2026_intent', 'new');
+  window.location.href = 'stage-select.html?intent=new';
+}
+
+loadNames();
+</script>
+</body>
+</html>
