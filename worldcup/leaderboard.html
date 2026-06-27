@@ -146,7 +146,7 @@ h1 a{color:inherit;text-decoration:none}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP <span>2026</span><br>LEADERBOARD</a></h1>
-    <p class="subtitle">1 point per correct group stage prediction</p>
+    <p class="subtitle">Group stage: 1 pt per correct pick &nbsp;&middot;&nbsp; Round of 32: 2 pts per correct pick</p>
   </header>
 
   <div class="top-bar">
@@ -172,9 +172,13 @@ const TOTAL_MATCHES = 72; // 12 groups × 6 matches each
 async function loadData() {
   document.getElementById('last-updated').textContent = 'Refreshing\u2026';
   try {
-    const r = await fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' });
+    const [r, rr32] = await Promise.all([
+      fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' }),
+      fetch(APPS_SCRIPT_URL + '?action=getR32', { cache: 'no-store' })
+    ]);
     const j = await r.json();
-    render(j.data || [], j.results || {});
+    const jr32 = await rr32.json();
+    render(j.data || [], j.results || {}, jr32.matches || [], jr32.r32results || {}, jr32.r32data || []);
     document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
   } catch(e) {
     document.getElementById('main-content').innerHTML =
@@ -183,8 +187,9 @@ async function loadData() {
   }
 }
 
-function render(data, results) {
+function render(data, results, r32matches, r32results, r32data) {
   const decidedCount = Object.keys(results).length;
+  const r32decidedCount = Object.keys(r32results).filter(k => r32results[k] && r32results[k] !== 'IP').length;
 
   // ── Progress strip ──
   const pStrip = document.getElementById('progress-strip');
@@ -199,54 +204,58 @@ function render(data, results) {
 
   if (!data.length) {
     document.getElementById('main-content').innerHTML =
-      '<div class="empty-state"><p>No predictions yet. <a href="predict.html">Be the first!</a></p></div>';
+      '<div class="empty-state"><p>No predictions yet. <a href="knockouts.html?mode=new">Be the first!</a></p></div>';
     return;
   }
 
-  if (decidedCount === 0) {
-    document.getElementById('summary-strip').style.display = 'none';
-    document.getElementById('main-content').innerHTML =
-      '<div class="no-results-notice">'
-        + '<strong>No results yet</strong>'
-        + 'The leaderboard will update as match results are entered. Check back after the first games!'
-      + '</div>';
-    return;
-  }
+  // Build r32picks lookup by name
+  const r32ByName = {};
+  r32data.forEach(p => { r32ByName[p.name] = p.r32picks || {}; });
 
   // ── Score each participant ──
   const scored = data.map(p => {
-    let correct = 0;
+    let groupCorrect = 0;
     const picks = p.picks || {};
     Object.entries(results).forEach(([key, winner]) => {
-      if (picks[key] === winner) correct++;
+      if (picks[key] === winner) groupCorrect++;
     });
+
+    let r32Correct = 0;
+    const r32picks = r32ByName[p.name] || {};
+    Object.entries(r32results).forEach(([key, winner]) => {
+      if (winner && winner !== 'IP' && r32picks[key] === winner) r32Correct++;
+    });
+
+    const totalScore = groupCorrect + r32Correct * 2;
+
     // max possible = decided matches they actually picked
     const picked = Object.entries(results).filter(([key]) => picks[key]).length;
-    return { name: p.name, correct, picked, decidedCount };
+    return { name: p.name, groupCorrect, r32Correct, totalScore, picked, decidedCount };
   });
 
-  // Sort: by correct desc, then by name asc for ties
-  scored.sort((a, b) => b.correct - a.correct || a.name.localeCompare(b.name));
+  // Sort: by totalScore desc, then by name asc for ties
+  scored.sort((a, b) => b.totalScore - a.totalScore || a.name.localeCompare(b.name));
 
   // Assign ranks (ties share rank)
   let rank = 1;
   scored.forEach((p, i) => {
-    if (i > 0 && p.correct < scored[i-1].correct) rank = i + 1;
+    if (i > 0 && p.totalScore < scored[i-1].totalScore) rank = i + 1;
     p.rank = rank;
   });
 
-  const leader = scored[0].correct;
+  const leader = scored[0].totalScore;
 
   // ── Summary strip ──
   const sStrip = document.getElementById('summary-strip');
   sStrip.style.display = 'flex';
-  const topTied = scored.filter(p => p.correct === leader);
+  const topTied = scored.filter(p => p.totalScore === leader);
   const leadLabel = topTied.length > 1
     ? topTied.map(p => p.name.split(' ')[0]).join(', ')
     : scored[0].name;
   sStrip.innerHTML =
     '<div class="summary-stat"><strong>' + data.length + '</strong>Participants</div>'
-    + '<div class="summary-stat"><strong>' + decidedCount + '</strong>Results in</div>'
+    + '<div class="summary-stat"><strong>' + decidedCount + '</strong>Group results in</div>'
+    + '<div class="summary-stat"><strong>' + r32decidedCount + '</strong>R32 results in</div>'
     + '<div class="summary-stat"><strong>' + leader + '</strong>Top score</div>'
     + '<div class="summary-stat"><strong style="font-size:18px;line-height:1.2">' + esc(leadLabel) + '</strong>Leading</div>';
 
@@ -262,20 +271,20 @@ function render(data, results) {
   scored.forEach((p, i) => {
     const rankCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
     const medal = p.rank <= 3 ? '<span class="medal">' + medals[p.rank-1] + '</span>' : '';
-    const tieBadge = scored.filter(q => q.correct === p.correct).length > 1
+    const tieBadge = scored.filter(q => q.totalScore === p.totalScore).length > 1
       ? '<span class="tie-badge">TIE</span>' : '';
-    const barPct = leader > 0 ? Math.round(p.correct / leader * 100) : 0;
+    const barPct = leader > 0 ? Math.round(p.totalScore / leader * 100) : 0;
     const barCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
-    // accuracy among decided matches they picked
-    const accuracy = p.picked > 0 ? Math.round(p.correct / p.picked * 100) : 0;
+    const accuracy = p.picked > 0 ? Math.round(p.groupCorrect / p.picked * 100) : 0;
+    const r32Line = p.r32Correct > 0 ? ' &middot; ' + p.r32Correct + ' R32 (+' + (p.r32Correct*2) + 'pts)' : '';
 
     html += '<div class="lb-row">'
       + '<div class="col-rank' + (p.rank <= 3 ? ' r' + p.rank : '') + '">' + medal + (p.rank > 3 ? p.rank : '') + '</div>'
       + '<div class="col-name">'
           + '<div class="name-main">' + esc(p.name) + tieBadge + '</div>'
-          + '<div class="name-sub">' + accuracy + '% accuracy &middot; ' + p.picked + ' of ' + decidedCount + ' played</div>'
+          + '<div class="name-sub">' + p.groupCorrect + ' group' + r32Line + ' &middot; ' + accuracy + '% group accuracy</div>'
         + '</div>'
-      + '<div class="col-correct' + (p.rank === 1 ? ' leading' : '') + '">' + p.correct + '</div>'
+      + '<div class="col-correct' + (p.rank === 1 ? ' leading' : '') + '">' + p.totalScore + '</div>'
       + '<div class="col-bar"><div class="score-bar-bg"><div class="score-bar-fill' + barCls + '" style="width:' + barPct + '%"></div></div></div>'
       + '</div>';
   });

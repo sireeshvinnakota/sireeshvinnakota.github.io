@@ -225,17 +225,17 @@ function verifyUser() {
     return;
   }
 
-  // Store user in sessionStorage and forward to stage selector
+  // Store user in sessionStorage and forward to R32 knockouts
   sessionStorage.setItem('wc2026_user', JSON.stringify(match));
   sessionStorage.setItem('wc2026_intent', 'edit');
   window.location.href = 'stage-select.html?intent=edit';
 }
 
 function goNew() {
-  // No auth needed for new submissions — go straight to stage selector in "new" mode
+  // No auth needed for new submissions — go straight to R32 knockouts
   sessionStorage.removeItem('wc2026_user');
   sessionStorage.setItem('wc2026_intent', 'new');
-  window.location.href = 'stage-select.html?intent=new';
+  window.location.href = 'knockouts.html?mode=new';
 }
 
 loadNames();

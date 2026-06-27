@@ -440,8 +440,12 @@ function enterEditMode() {
   show('btn-cancel');
   document.getElementById('btn-edit').textContent = 'Editing…';
   document.getElementById('btn-edit').disabled = true;
-  document.getElementById('btn-submit').textContent = 'SAVE MY PICKS';
-  hide('status-msg');
+  const btnEl = document.getElementById('btn-submit');
+  btnEl.textContent = 'SAVE MY PICKS';
+  btnEl.disabled = false;
+  const statusEl = document.getElementById('status-msg');
+  statusEl.className = 'status';
+  statusEl.textContent = '';
 }
 
 function cancelEdit() {

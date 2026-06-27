@@ -82,24 +82,35 @@ h1 a{color:inherit;text-decoration:none}
 .tooltip-team{font-weight:700;margin-bottom:5px;font-size:13px}
 .tooltip-names{line-height:1.8}
 .tooltip-count{font-size:10px;color:var(--muted);margin-top:4px}
-.loading-wrap,.empty-state{text-align:center;padding:80px 20px;color:var(--muted)}
-.spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.empty-state a{color:var(--gold)}
-
-.result-badge-row{margin-top:6px;margin-bottom:8px}
-.result-badge{
-  display:inline-block;margin-left:8px;padding:2px 6px;border-radius:3px;
-  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  background:rgba(232,200,74,.15);border:1px solid rgba(232,200,74,.4);color:var(--gold)
+/* ── Bracket view (R32) ── */
+#bracket-view{display:none;}
+.bracket-match{
+  background:var(--pitch-mid);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:10px;overflow:hidden;
+  transition:border-color .15s;
 }
-.result-badge.ip{
-  background:var(--gold);color:var(--pitch);border-color:var(--gold);
-  animation:ip-blink 1.2s ease-in-out infinite;
+.bracket-match:hover{border-color:rgba(255,255,255,0.15);}
+.bracket-header{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 14px;background:var(--pitch-lt);
+  border-bottom:1px solid var(--border);
 }
-@keyframes ip-blink{0%,100%{opacity:1}50%{opacity:.35}}
+.bracket-num{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.08em;color:var(--muted);flex-shrink:0;}
+.bracket-slot{font-size:11px;color:var(--muted);flex:1;}
+.bracket-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);flex-shrink:0;}
+.bracket-badge.ip{color:var(--pitch);background:var(--gold);border-radius:3px;padding:2px 5px;animation:ip-blink 1.2s ease-in-out infinite;}
+.bracket-teams{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.bracket-team{
+  padding:10px 14px;background:var(--pitch-mid);
+  display:flex;flex-direction:column;gap:3px;
+}
+.bracket-team-name{font-size:13px;font-weight:600;color:var(--white);}
+.bracket-team.winner .bracket-team-name{color:var(--gold);}
+.bracket-team.loser .bracket-team-name{color:var(--muted);opacity:.55;}
+.bracket-vote-bar{height:4px;border-radius:2px;background:rgba(255,255,255,0.06);margin-top:3px;overflow:hidden;}
+.bracket-vote-fill{height:100%;border-radius:2px;background:var(--gold);transition:width .4s;}
+.bracket-vote-label{font-size:10px;color:var(--muted);}
 .bar-seg.winner{box-shadow:inset 0 0 0 2px var(--gold);filter:brightness(1.15)}
-
 </style>
 </head>
 <body>
@@ -107,16 +118,20 @@ h1 a{color:inherit;text-decoration:none}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP <span>2026</span><br>PREDICTIONS</a></h1>
-    <p class="subtitle">Group Stage &mdash; How everyone voted</p>
+    <p class="subtitle" id="stage-subtitle">Group Stage &mdash; How everyone voted</p>
   </header>
   <div class="top-bar">
     <a href="index.html" class="back-link">⌂ Home</a>
     <div class="right-controls">
-      <a href="predict.html" class="btn-sm">⚽ Submit picks</a>
       <a href="leaderboard.html" class="btn-sm gold">🏆 Leaderboard</a>
       <span class="last-updated" id="last-updated">Loading&hellip;</span>
       <button class="btn-sm" onclick="loadData()">&circlearrowleft; Refresh</button>
     </div>
+  </div>
+  <!-- Stage tab switcher -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;">
+    <button class="filter-btn active" id="tab-groups" onclick="switchStage('groups')">⚽ Group Stage</button>
+    <button class="filter-btn" id="tab-r32" onclick="switchStage('r32')">🏆 Round of 32</button>
   </div>
   <div id="stats-bar" class="stats-bar" style="display:none"></div>
   <div class="legend">
@@ -154,6 +169,7 @@ h1 a{color:inherit;text-decoration:none}
   <div id="main-content">
     <div class="loading-wrap"><div class="spinner"></div><p>Loading predictions&hellip;</p></div>
   </div>
+  <div id="bracket-view" style="display:none;"></div>
 </div>
 <div class="tooltip" id="tooltip">
   <div class="tooltip-team" id="tt-team"></div>
@@ -162,6 +178,9 @@ h1 a{color:inherit;text-decoration:none}
 </div>
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxdVZ_jskYcRR7uaVSuC2vZ8uTN402uYSgbEXh4pyY9CB8O8D88xMcoITXLpadTSw0/exec";
+
+let currentStage = 'groups'; // 'groups' | 'r32'
+let r32matches = [], r32results = {}, r32data = [];
 
 const GROUPS = {
   A:["Mexico","South Africa","South Korea","Czechia"],
@@ -310,14 +329,103 @@ document.addEventListener('mousemove',e=>{if(ttOn)moveTip(e)});
 async function loadData(){
   document.getElementById('last-updated').textContent='Refreshing\u2026';
   try{
-    const r=await fetch(APPS_SCRIPT_URL+'?action=get',{cache:'no-store'});
+    const [r, rr32] = await Promise.all([
+      fetch(APPS_SCRIPT_URL+'?action=get',{cache:'no-store'}),
+      fetch(APPS_SCRIPT_URL+'?action=getR32',{cache:'no-store'})
+    ]);
     const j=await r.json();
-    allData=j.data||[];results=j.results||{};render();
+    allData=j.data||[];results=j.results||{};
+    const jr32=await rr32.json();
+    r32matches=jr32.matches||[];r32results=jr32.r32results||{};r32data=jr32.r32data||[];
+    if(currentStage==='groups') render(); else renderBracket();
     document.getElementById('last-updated').textContent='Updated '+new Date().toLocaleTimeString();
   }catch{
-    document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Could not load predictions. Check Apps Script URL or <a href="predict.html">submit the first prediction</a>.</p></div>';
+    document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Could not load predictions. Check your connection.</p></div>';
     document.getElementById('last-updated').textContent='Error';
   }
+}
+
+function switchStage(stage){
+  currentStage=stage;
+  document.getElementById('tab-groups').classList.toggle('active', stage==='groups');
+  document.getElementById('tab-r32').classList.toggle('active', stage==='r32');
+  document.getElementById('filter-row').style.display = stage==='groups' ? '' : 'none';
+  document.getElementById('stats-bar').style.display = stage==='groups' ? '' : 'none';
+  const legend=document.querySelector('.legend');
+  if(legend) legend.style.display = stage==='groups' ? '' : 'none';
+  document.getElementById('stage-subtitle').textContent = stage==='groups'
+    ? 'Group Stage \u2014 How everyone voted'
+    : 'Round of 32 \u2014 How everyone picked';
+  if(stage==='groups'){ render(); } else { renderBracket(); }
+}
+
+function renderBracket(){
+  document.getElementById('main-content').style.display='none';
+  const bv=document.getElementById('bracket-view');
+  bv.style.display='block';
+
+  if(!r32matches.length){
+    bv.innerHTML='<div class="empty-state"><p>Round of 32 matchups not yet available.</p></div>';
+    return;
+  }
+
+  let html='';
+  r32matches.forEach((m,idx)=>{
+    const {id,slot,home,away}=m;
+    const result=r32results[id]||'';
+    const isIP=result==='IP';
+    const isFinal=!!result&&!isIP;
+
+    // Count votes
+    const homePickers=[], awayPickers=[];
+    r32data.forEach(p=>{
+      const pick=(p.r32picks||{})[id]||'';
+      if(pick===home) homePickers.push(p.name);
+      else if(pick===away) awayPickers.push(p.name);
+    });
+    const total=homePickers.length+awayPickers.length;
+    const homePct=total>0?Math.round(homePickers.length/total*100):50;
+    const awayPct=total>0?100-homePct:50;
+
+    const badgeHtml=isIP
+      ?'<span class="bracket-badge ip">LIVE</span>'
+      :isFinal?'<span class="bracket-badge">FT</span>':'';
+
+    const homeWinner=isFinal&&result===home;
+    const awayWinner=isFinal&&result===away;
+
+    const homeCls=homeWinner?' winner':awayWinner?' loser':'';
+    const awayCls=awayWinner?' winner':homeWinner?' loser':'';
+
+    const homeVoteLine=total>0
+      ?`<div class="bracket-vote-bar"><div class="bracket-vote-fill" style="width:${homePct}%"></div></div><div class="bracket-vote-label">${homePickers.length} pick${homePickers.length!==1?'s':''} (${homePct}%)</div>`
+      :'<div class="bracket-vote-label" style="color:rgba(138,168,154,0.4);font-style:italic">No picks yet</div>';
+    const awayVoteLine=total>0
+      ?`<div class="bracket-vote-bar"><div class="bracket-vote-fill" style="width:${awayPct}%"></div></div><div class="bracket-vote-label">${awayPickers.length} pick${awayPickers.length!==1?'s':''} (${awayPct}%)</div>`
+      :'';
+
+    const homeDisplay=home||'TBD';
+    const awayDisplay=away||'TBD';
+
+    html+=`<div class="bracket-match">
+      <div class="bracket-header">
+        <span class="bracket-num">Match ${idx+1}</span>
+        <span class="bracket-slot">${esc(slot||'')}</span>
+        ${badgeHtml}
+      </div>
+      <div class="bracket-teams">
+        <div class="bracket-team${homeCls}">
+          <div class="bracket-team-name">${esc(homeDisplay)}</div>
+          ${home?homeVoteLine:''}
+        </div>
+        <div class="bracket-team${awayCls}">
+          <div class="bracket-team-name">${esc(awayDisplay)}</div>
+          ${away?awayVoteLine:''}
+        </div>
+      </div>
+    </div>`;
+  });
+  bv.innerHTML=html;
 }
 
 function getDateLabel(offsetDays){
@@ -346,6 +454,8 @@ function onGroupSelect(sel){
 }
 
 function render(){
+  document.getElementById('main-content').style.display='';
+  document.getElementById('bracket-view').style.display='none';
   if(allData.length){
     const total=allData.reduce((s,p)=>s+Object.values(p.picks||{}).filter(v=>v).length,0);
     const sb=document.getElementById('stats-bar');sb.style.display='flex';
