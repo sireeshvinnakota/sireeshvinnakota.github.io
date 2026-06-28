@@ -107,9 +107,7 @@ h1 a{color:inherit;text-decoration:none}
 .bracket-team-name{font-size:13px;font-weight:600;color:var(--white);}
 .bracket-team.winner .bracket-team-name{color:var(--gold);}
 .bracket-team.loser .bracket-team-name{color:var(--muted);opacity:.55;}
-.bracket-vote-bar{height:4px;border-radius:2px;background:rgba(255,255,255,0.06);margin-top:3px;overflow:hidden;}
-.bracket-vote-fill{height:100%;border-radius:2px;background:var(--gold);transition:width .4s;}
-.bracket-vote-label{font-size:10px;color:var(--muted);}
+.bracket-bar-wrap{margin-top:8px;}
 .bar-seg.winner{box-shadow:inset 0 0 0 2px var(--gold);filter:brightness(1.15)}
 </style>
 </head>
@@ -352,7 +350,7 @@ function switchStage(stage){
   document.getElementById('filter-row').style.display = stage==='groups' ? '' : 'none';
   document.getElementById('stats-bar').style.display = stage==='groups' ? '' : 'none';
   const legend=document.querySelector('.legend');
-  if(legend) legend.style.display = stage==='groups' ? '' : 'none';
+  if(legend) legend.style.display = '';
   document.getElementById('stage-subtitle').textContent = stage==='groups'
     ? 'Group Stage \u2014 How everyone voted'
     : 'Round of 32 \u2014 How everyone picked';
@@ -397,15 +395,30 @@ function renderBracket(){
     const homeCls=homeWinner?' winner':awayWinner?' loser':'';
     const awayCls=awayWinner?' winner':homeWinner?' loser':'';
 
-    const homeVoteLine=total>0
-      ?`<div class="bracket-vote-bar"><div class="bracket-vote-fill" style="width:${homePct}%"></div></div><div class="bracket-vote-label">${homePickers.length} pick${homePickers.length!==1?'s':''} (${homePct}%)</div>`
-      :'<div class="bracket-vote-label" style="color:rgba(138,168,154,0.4);font-style:italic">No picks yet</div>';
-    const awayVoteLine=total>0
-      ?`<div class="bracket-vote-bar"><div class="bracket-vote-fill" style="width:${awayPct}%"></div></div><div class="bracket-vote-label">${awayPickers.length} pick${awayPickers.length!==1?'s':''} (${awayPct}%)</div>`
-      :'';
-
     const homeDisplay=home||'TBD';
     const awayDisplay=away||'TBD';
+
+    // Build shared segmented bar (same as group stage)
+    let barHtml;
+    if(!home||!away){
+      barHtml='<div class="no-votes"><span class="no-votes-text">TBD</span></div>';
+    } else if(total===0){
+      barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
+    } else {
+      const MIN=8;
+      const homeWinnerCls=homeWinner?' winner':'';
+      const awayWinnerCls=awayWinner?' winner':'';
+      let segs='';
+      if(homePickers.length>0){
+        const lbl=homePct>=MIN?homeDisplay.split(' ')[0]+' '+homePct+'%':'';
+        segs+=`<div class="bar-seg seg-home${homeWinnerCls}" style="flex:${homePct}" data-label="${escA(homeDisplay)}" data-names="${encodeURIComponent(JSON.stringify(homePickers))}" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">${lbl}</span></div>`;
+      }
+      if(awayPickers.length>0){
+        const lbl=awayPct>=MIN?awayDisplay.split(' ')[0]+' '+awayPct+'%':'';
+        segs+=`<div class="bar-seg seg-away${awayWinnerCls}" style="flex:${awayPct}" data-label="${escA(awayDisplay)}" data-names="${encodeURIComponent(JSON.stringify(awayPickers))}" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">${lbl}</span></div>`;
+      }
+      barHtml=`<div class="bar-track">${segs}</div>`;
+    }
 
     html+=`<div class="bracket-match">
       <div class="bracket-header">
@@ -416,12 +429,13 @@ function renderBracket(){
       <div class="bracket-teams">
         <div class="bracket-team${homeCls}">
           <div class="bracket-team-name">${esc(homeDisplay)}</div>
-          ${home?homeVoteLine:''}
         </div>
         <div class="bracket-team${awayCls}">
           <div class="bracket-team-name">${esc(awayDisplay)}</div>
-          ${away?awayVoteLine:''}
         </div>
+      </div>
+      <div class="bracket-bar-wrap" style="padding:8px 14px 10px;">
+        ${barHtml}
       </div>
     </div>`;
   });
