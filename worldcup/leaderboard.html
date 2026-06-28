@@ -146,7 +146,7 @@ h1 a{color:inherit;text-decoration:none}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP <span>2026</span><br>LEADERBOARD</a></h1>
-    <p class="subtitle">Group stage: 1 pt per correct pick &nbsp;&middot;&nbsp; Round of 32: 2 pts per correct pick</p>
+    <p class="subtitle">Group stage: 1 pt per correct pick &nbsp;&middot;&nbsp; Round of 32: 5 pts per correct pick</p>
   </header>
 
   <div class="top-bar">
@@ -226,7 +226,7 @@ function render(data, results, r32matches, r32results, r32data) {
       if (winner && winner !== 'IP' && r32picks[key] === winner) r32Correct++;
     });
 
-    const totalScore = groupCorrect + r32Correct * 2;
+    const totalScore = groupCorrect + r32Correct * 5;
 
     // max possible = decided matches they actually picked
     const picked = Object.entries(results).filter(([key]) => picks[key]).length;
@@ -276,7 +276,7 @@ function render(data, results, r32matches, r32results, r32data) {
     const barPct = leader > 0 ? Math.round(p.totalScore / leader * 100) : 0;
     const barCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
     const accuracy = p.picked > 0 ? Math.round(p.groupCorrect / p.picked * 100) : 0;
-    const r32Line = p.r32Correct > 0 ? ' &middot; ' + p.r32Correct + ' R32 (+' + (p.r32Correct*2) + 'pts)' : '';
+    const r32Line = p.r32Correct > 0 ? ' &middot; ' + p.r32Correct + ' R32 (+' + (p.r32Correct*5) + 'pts)' : '';
 
     html += '<div class="lb-row">'
       + '<div class="col-rank' + (p.rank <= 3 ? ' r' + p.rank : '') + '">' + medal + (p.rank > 3 ? p.rank : '') + '</div>'
