@@ -26,7 +26,7 @@ body::before{
   background-image:repeating-linear-gradient(90deg,var(--stripe) 0,var(--stripe) 1px,transparent 1px,transparent 80px);
   pointer-events:none;z-index:0;
 }
-.page{position:relative;z-index:1;width:100%;max-width:480px;text-align:center;}
+.page{position:relative;z-index:1;width:100%;max-width:560px;text-align:center;}
 
 header{margin-bottom:16px;}
 .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
@@ -60,9 +60,9 @@ h1 a{color:inherit;text-decoration:none;}
 
 .stage-card{
   background:var(--pitch-mid);border:1px solid var(--border);
-  border-radius:var(--radius);padding:28px 16px 24px;
+  border-radius:var(--radius);padding:24px 16px 20px;
   text-decoration:none;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;gap:10px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
   transition:border-color .15s,background .15s,transform .1s;
   position:relative;
 }
@@ -70,13 +70,14 @@ h1 a{color:inherit;text-decoration:none;}
 .stage-card:active{transform:translateY(0);}
 .stage-card.primary{border-color:rgba(232,200,74,.3);}
 
-.stage-card .icon{font-size:36px;line-height:1;}
+.stage-card .icon{font-size:30px;line-height:1;}
 .stage-card .label{
-  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;
+  font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:.06em;
   color:var(--white);line-height:1.1;
 }
 .stage-card.primary .label{color:var(--gold);}
 .stage-card .desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.stage-card .pts{font-size:10px;color:var(--gold-dim,var(--gold));opacity:.75;font-weight:600;letter-spacing:.04em;}
 
 /* "Coming soon" overlay */
 .stage-card.disabled{
@@ -112,11 +113,37 @@ h1 a{color:inherit;text-decoration:none;}
       <span class="icon">⚽</span>
       <span class="label">Group Stage</span>
       <span class="desc">View your group stage predictions.</span>
+      <span class="pts">1 pt / correct pick</span>
     </div>
-    <div class="stage-card primary" id="card-r32" onclick="goR32()">
+    <div class="stage-card primary" id="card-r32" onclick="goStage('r32')">
       <span class="icon">🏆</span>
       <span class="label">Round of 32</span>
-      <span class="desc">View or edit your Round of 32 knockout picks.</span>
+      <span class="desc">View or edit your R32 knockout picks.</span>
+      <span class="pts">5 pts / correct pick</span>
+    </div>
+    <div class="stage-card" id="card-r16" onclick="goStage('r16')">
+      <span class="icon">🥈</span>
+      <span class="label">Round of 16</span>
+      <span class="desc">View or edit your R16 knockout picks.</span>
+      <span class="pts">10 pts / correct pick</span>
+    </div>
+    <div class="stage-card" id="card-qf" onclick="goStage('qf')">
+      <span class="icon">🥇</span>
+      <span class="label">Quarterfinals</span>
+      <span class="desc">View or edit your QF picks.</span>
+      <span class="pts">20 pts / correct pick</span>
+    </div>
+    <div class="stage-card" id="card-sf" onclick="goStage('sf')">
+      <span class="icon">🔥</span>
+      <span class="label">Semifinals</span>
+      <span class="desc">View or edit your SF picks.</span>
+      <span class="pts">40 pts / correct pick</span>
+    </div>
+    <div class="stage-card" id="card-final" onclick="goStage('final')">
+      <span class="icon">👑</span>
+      <span class="label">The Final</span>
+      <span class="desc">View or edit your Final pick.</span>
+      <span class="pts">80 pts / correct pick</span>
     </div>
   </div>
 
@@ -157,8 +184,8 @@ function goGroups() {
   window.location.href = 'my-picks.html';
 }
 
-function goR32() {
-  window.location.href = 'knockouts.html?mode=edit';
+function goStage(stageKey) {
+  window.location.href = 'knockouts.html?mode=edit&stage=' + stageKey;
 }
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }

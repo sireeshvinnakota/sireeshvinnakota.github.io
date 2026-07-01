@@ -25,7 +25,7 @@ header{text-align:center;padding:52px 0 36px;border-bottom:1px solid var(--borde
 h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,8vw,72px);line-height:.9;color:var(--white);letter-spacing:.02em;margin-bottom:14px}
 h1 span{color:var(--gold)}
 h1 a{color:inherit;text-decoration:none}
-.subtitle{font-size:14px;color:var(--muted)}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6}
 
 .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px}
 .back-link{color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s}
@@ -37,12 +37,12 @@ h1 a{color:inherit;text-decoration:none}
 
 /* ── Summary strip ── */
 .summary-strip{
-  display:flex;gap:0;
+  display:flex;gap:0;flex-wrap:wrap;
   background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
   margin-bottom:28px;overflow:hidden;
 }
 .summary-stat{
-  flex:1;padding:14px 18px;
+  flex:1;min-width:90px;padding:14px 18px;
   border-right:1px solid var(--border);
   font-size:12px;color:var(--muted);
 }
@@ -52,11 +52,12 @@ h1 a{color:inherit;text-decoration:none}
 /* ── Progress indicator (games decided / total) ── */
 .progress-strip{
   background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
-  padding:12px 18px;margin-bottom:28px;
+  padding:12px 18px;margin-bottom:12px;
 }
 .progress-label-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
 .progress-bar-bg{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
 .progress-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s}
+#progress-stack{margin-bottom:28px}
 
 /* ── Leaderboard table ── */
 .lb-table{width:100%;border-collapse:collapse}
@@ -97,7 +98,7 @@ h1 a{color:inherit;text-decoration:none}
 /* Name column */
 .col-name{padding:0 8px}
 .name-main{font-size:14px;font-weight:600;color:var(--white)}
-.name-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.name-sub{font-size:11px;color:var(--muted);margin-top:1px;line-height:1.6}
 
 /* Correct picks */
 .col-correct{
@@ -131,14 +132,6 @@ h1 a{color:inherit;text-decoration:none}
 .spinner{display:inline-block;width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty-state a{color:var(--gold)}
-
-/* No results yet notice */
-.no-results-notice{
-  text-align:center;padding:40px 20px;
-  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
-  color:var(--muted);font-size:13px;
-}
-.no-results-notice strong{display:block;font-family:'Bebas Neue';font-size:32px;color:var(--white);margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -146,7 +139,7 @@ h1 a{color:inherit;text-decoration:none}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP <span>2026</span><br>LEADERBOARD</a></h1>
-    <p class="subtitle">Group stage: 1 pt per correct pick &nbsp;&middot;&nbsp; Round of 32: 5 pts per correct pick</p>
+    <p class="subtitle">Group: 1 pt &middot; R32: 5 pts &middot; R16: 10 pts &middot; QF: 20 pts &middot; SF: 40 pts &middot; Final: 80 pts <span style="opacity:.65">(per correct pick)</span></p>
   </header>
 
   <div class="top-bar">
@@ -159,7 +152,7 @@ h1 a{color:inherit;text-decoration:none}
   </div>
 
   <div id="summary-strip" class="summary-strip" style="display:none"></div>
-  <div id="progress-strip" class="progress-strip" style="display:none"></div>
+  <div id="progress-stack" style="display:none"></div>
   <div id="main-content">
     <div class="loading-wrap"><div class="spinner"></div><p>Loading leaderboard&hellip;</p></div>
   </div>
@@ -169,16 +162,29 @@ h1 a{color:inherit;text-decoration:none}
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxdVZ_jskYcRR7uaVSuC2vZ8uTN402uYSgbEXh4pyY9CB8O8D88xMcoITXLpadTSw0/exec";
 const TOTAL_MATCHES = 72; // 12 groups × 6 matches each
 
+// Knockout stage registry — same shape as knockouts.html / Apps Script STAGES
+const KO_STAGES = [
+  { key:'r32',   short:'R32',   getAction:'getR32',   picksField:'r32picks',   resultsField:'r32results',   dataField:'r32data',   points:5  },
+  { key:'r16',   short:'R16',   getAction:'getR16',   picksField:'r16picks',   resultsField:'r16results',   dataField:'r16data',   points:10 },
+  { key:'qf',    short:'QF',    getAction:'getQF',    picksField:'qfpicks',    resultsField:'qfresults',    dataField:'qfdata',    points:20 },
+  { key:'sf',    short:'SF',    getAction:'getSF',    picksField:'sfpicks',    resultsField:'sfresults',    dataField:'sfdata',    points:40 },
+  { key:'final', short:'Final', getAction:'getFinal', picksField:'finalpicks', resultsField:'finalresults', dataField:'finaldata', points:80 },
+];
+
 async function loadData() {
   document.getElementById('last-updated').textContent = 'Refreshing\u2026';
   try {
-    const [r, rr32] = await Promise.all([
-      fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' }),
-      fetch(APPS_SCRIPT_URL + '?action=getR32', { cache: 'no-store' })
-    ]);
-    const j = await r.json();
-    const jr32 = await rr32.json();
-    render(j.data || [], j.results || {}, jr32.matches || [], jr32.r32results || {}, jr32.r32data || []);
+    const requests = [fetch(APPS_SCRIPT_URL + '?action=get', { cache: 'no-store' })]
+      .concat(KO_STAGES.map(s => fetch(APPS_SCRIPT_URL + '?action=' + s.getAction, { cache: 'no-store' })));
+
+    const responses = await Promise.all(requests);
+    const jGroups = await responses[0].json();
+    const koJson = {};
+    for (let i = 0; i < KO_STAGES.length; i++) {
+      koJson[KO_STAGES[i].key] = await responses[i + 1].json();
+    }
+
+    render(jGroups.data || [], jGroups.results || {}, koJson);
     document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
   } catch(e) {
     document.getElementById('main-content').innerHTML =
@@ -187,20 +193,34 @@ async function loadData() {
   }
 }
 
-function render(data, results, r32matches, r32results, r32data) {
+function render(data, results, koJson) {
   const decidedCount = Object.keys(results).length;
-  const r32decidedCount = Object.keys(r32results).filter(k => r32results[k] && r32results[k] !== 'IP').length;
 
-  // ── Progress strip ──
-  const pStrip = document.getElementById('progress-strip');
-  pStrip.style.display = 'block';
+  // ── Progress strips (group + each knockout stage that has matchups) ──
+  const pStack = document.getElementById('progress-stack');
+  pStack.style.display = 'block';
   const pct = Math.round(decidedCount / TOTAL_MATCHES * 100);
-  pStrip.innerHTML =
-    '<div class="progress-label-row">'
-      + '<span>Group stage progress</span>'
-      + '<span>' + decidedCount + ' / ' + TOTAL_MATCHES + ' matches decided</span>'
-    + '</div>'
-    + '<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>';
+  let stacksHtml = '<div class="progress-strip"><div class="progress-label-row">'
+    + '<span>Group stage progress</span>'
+    + '<span>' + decidedCount + ' / ' + TOTAL_MATCHES + ' matches decided</span>'
+    + '</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div></div>';
+
+  const koDecided = {}; // key -> decided count
+  KO_STAGES.forEach(s => {
+    const j = koJson[s.key] || {};
+    const stageResults = j[s.resultsField] || {};
+    const stageMatches = j.matches || [];
+    const dCount = Object.keys(stageResults).filter(k => stageResults[k] && stageResults[k] !== 'IP').length;
+    koDecided[s.key] = dCount;
+    if (stageMatches.length) {
+      const kpct = Math.round(dCount / stageMatches.length * 100);
+      stacksHtml += '<div class="progress-strip"><div class="progress-label-row">'
+        + '<span>' + s.short + ' progress</span>'
+        + '<span>' + dCount + ' / ' + stageMatches.length + ' matches decided</span>'
+        + '</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + kpct + '%"></div></div></div>';
+    }
+  });
+  pStack.innerHTML = stacksHtml;
 
   if (!data.length) {
     document.getElementById('main-content').innerHTML =
@@ -208,9 +228,15 @@ function render(data, results, r32matches, r32results, r32data) {
     return;
   }
 
-  // Build r32picks lookup by name
-  const r32ByName = {};
-  r32data.forEach(p => { r32ByName[p.name] = p.r32picks || {}; });
+  // Build per-stage picks lookup by name
+  const koByName = {}; // key -> {name: picks}
+  KO_STAGES.forEach(s => {
+    const j = koJson[s.key] || {};
+    const stageData = j[s.dataField] || [];
+    const lookup = {};
+    stageData.forEach(p => { lookup[p.name] = p[s.picksField] || {}; });
+    koByName[s.key] = lookup;
+  });
 
   // ── Score each participant ──
   const scored = data.map(p => {
@@ -220,17 +246,26 @@ function render(data, results, r32matches, r32results, r32data) {
       if (picks[key] === winner) groupCorrect++;
     });
 
-    let r32Correct = 0;
-    const r32picks = r32ByName[p.name] || {};
-    Object.entries(r32results).forEach(([key, winner]) => {
-      if (winner && winner !== 'IP' && r32picks[key] === winner) r32Correct++;
+    const koBreakdown = []; // [{short, correct, points}]
+    let koScore = 0;
+
+    KO_STAGES.forEach(s => {
+      const j = koJson[s.key] || {};
+      const stageResults = j[s.resultsField] || {};
+      const stagePicks = (koByName[s.key] || {})[p.name] || {};
+      let correct = 0;
+      Object.entries(stageResults).forEach(([key, winner]) => {
+        if (winner && winner !== 'IP' && stagePicks[key] === winner) correct++;
+      });
+      if (correct > 0) koBreakdown.push({ short: s.short, correct, points: correct * s.points });
+      koScore += correct * s.points;
     });
 
-    const totalScore = groupCorrect + r32Correct * 5;
+    const totalScore = groupCorrect + koScore;
 
-    // max possible = decided matches they actually picked
+    // max possible = decided group matches they actually picked
     const picked = Object.entries(results).filter(([key]) => picks[key]).length;
-    return { name: p.name, groupCorrect, r32Correct, totalScore, picked, decidedCount };
+    return { name: p.name, groupCorrect, koBreakdown, totalScore, picked, decidedCount };
   });
 
   // Sort: by totalScore desc, then by name asc for ties
@@ -252,19 +287,21 @@ function render(data, results, r32matches, r32results, r32data) {
   const leadLabel = topTied.length > 1
     ? topTied.map(p => p.name.split(' ')[0]).join(', ')
     : scored[0].name;
-  sStrip.innerHTML =
-    '<div class="summary-stat"><strong>' + data.length + '</strong>Participants</div>'
-    + '<div class="summary-stat"><strong>' + decidedCount + '</strong>Group results in</div>'
-    + '<div class="summary-stat"><strong>' + r32decidedCount + '</strong>R32 results in</div>'
-    + '<div class="summary-stat"><strong>' + leader + '</strong>Top score</div>'
+  let statsHtml = '<div class="summary-stat"><strong>' + data.length + '</strong>Participants</div>'
+    + '<div class="summary-stat"><strong>' + decidedCount + '</strong>Group results in</div>';
+  KO_STAGES.forEach(s => {
+    statsHtml += '<div class="summary-stat"><strong>' + (koDecided[s.key] || 0) + '</strong>' + s.short + ' results in</div>';
+  });
+  statsHtml += '<div class="summary-stat"><strong>' + leader + '</strong>Top score</div>'
     + '<div class="summary-stat"><strong style="font-size:18px;line-height:1.2">' + esc(leadLabel) + '</strong>Leading</div>';
+  sStrip.innerHTML = statsHtml;
 
   // ── Build rows ──
   const medals = ['🥇','🥈','🥉'];
   let html = '<div class="lb-row header-row">'
     + '<div class="col col-rank">#</div>'
     + '<div class="col col-name">Name</div>'
-    + '<div class="col col-correct" style="text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:Inter">Correct</div>'
+    + '<div class="col col-correct" style="text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:Inter">Score</div>'
     + '<div class="col col-bar"></div>'
     + '</div>';
 
@@ -276,13 +313,15 @@ function render(data, results, r32matches, r32results, r32data) {
     const barPct = leader > 0 ? Math.round(p.totalScore / leader * 100) : 0;
     const barCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
     const accuracy = p.picked > 0 ? Math.round(p.groupCorrect / p.picked * 100) : 0;
-    const r32Line = p.r32Correct > 0 ? ' &middot; ' + p.r32Correct + ' R32 (+' + (p.r32Correct*5) + 'pts)' : '';
+    const koLine = p.koBreakdown.length
+      ? ' &middot; ' + p.koBreakdown.map(b => b.correct + ' ' + b.short + ' (+' + b.points + ')').join(' &middot; ')
+      : '';
 
     html += '<div class="lb-row">'
       + '<div class="col-rank' + (p.rank <= 3 ? ' r' + p.rank : '') + '">' + medal + (p.rank > 3 ? p.rank : '') + '</div>'
       + '<div class="col-name">'
           + '<div class="name-main">' + esc(p.name) + tieBadge + '</div>'
-          + '<div class="name-sub">' + p.groupCorrect + ' group' + r32Line + ' &middot; ' + accuracy + '% group accuracy</div>'
+          + '<div class="name-sub">' + p.groupCorrect + ' group' + koLine + ' &middot; ' + accuracy + '% group accuracy</div>'
         + '</div>'
       + '<div class="col-correct' + (p.rank === 1 ? ' leading' : '') + '">' + p.totalScore + '</div>'
       + '<div class="col-bar"><div class="score-bar-bg"><div class="score-bar-fill' + barCls + '" style="width:' + barPct + '%"></div></div></div>'

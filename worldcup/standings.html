@@ -127,9 +127,13 @@ h1 a{color:inherit;text-decoration:none}
     </div>
   </div>
   <!-- Stage tab switcher -->
-  <div style="display:flex;gap:8px;margin-bottom:20px;">
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
     <button class="filter-btn active" id="tab-groups" onclick="switchStage('groups')">⚽ Group Stage</button>
     <button class="filter-btn" id="tab-r32" onclick="switchStage('r32')">🏆 Round of 32</button>
+    <button class="filter-btn" id="tab-r16" onclick="switchStage('r16')">🥈 Round of 16</button>
+    <button class="filter-btn" id="tab-qf" onclick="switchStage('qf')">🥇 Quarterfinals</button>
+    <button class="filter-btn" id="tab-sf" onclick="switchStage('sf')">🔥 Semifinals</button>
+    <button class="filter-btn" id="tab-final" onclick="switchStage('final')">👑 Final</button>
   </div>
   <div id="stats-bar" class="stats-bar" style="display:none"></div>
   <div class="legend">
@@ -177,8 +181,17 @@ h1 a{color:inherit;text-decoration:none}
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxdVZ_jskYcRR7uaVSuC2vZ8uTN402uYSgbEXh4pyY9CB8O8D88xMcoITXLpadTSw0/exec";
 
-let currentStage = 'groups'; // 'groups' | 'r32'
-let r32matches = [], r32results = {}, r32data = [];
+let currentStage = 'groups'; // 'groups' | 'r32' | 'r16' | 'qf' | 'sf' | 'final'
+
+// Knockout stage registry — same shape as knockouts.html / Apps Script STAGES
+const KO_STAGES = {
+  r32:   { short:'R32',   label:'Round of 32',   getAction:'getR32',   picksField:'r32picks',   resultsField:'r32results',   dataField:'r32data'   },
+  r16:   { short:'R16',   label:'Round of 16',   getAction:'getR16',   picksField:'r16picks',   resultsField:'r16results',   dataField:'r16data'   },
+  qf:    { short:'QF',    label:'Quarterfinals', getAction:'getQF',    picksField:'qfpicks',    resultsField:'qfresults',    dataField:'qfdata'    },
+  sf:    { short:'SF',    label:'Semifinals',    getAction:'getSF',    picksField:'sfpicks',    resultsField:'sfresults',    dataField:'sfdata'    },
+  final: { short:'Final', label:'The Final',     getAction:'getFinal', picksField:'finalpicks', resultsField:'finalresults', dataField:'finaldata' },
+};
+let koData = {}; // key -> {matches, results, data}
 
 const GROUPS = {
   A:["Mexico","South Africa","South Korea","Czechia"],
@@ -327,15 +340,19 @@ document.addEventListener('mousemove',e=>{if(ttOn)moveTip(e)});
 async function loadData(){
   document.getElementById('last-updated').textContent='Refreshing\u2026';
   try{
-    const [r, rr32] = await Promise.all([
-      fetch(APPS_SCRIPT_URL+'?action=get',{cache:'no-store'}),
-      fetch(APPS_SCRIPT_URL+'?action=getR32',{cache:'no-store'})
-    ]);
-    const j=await r.json();
+    const koKeys=Object.keys(KO_STAGES);
+    const requests=[fetch(APPS_SCRIPT_URL+'?action=get',{cache:'no-store'})]
+      .concat(koKeys.map(k=>fetch(APPS_SCRIPT_URL+'?action='+KO_STAGES[k].getAction,{cache:'no-store'})));
+    const responses=await Promise.all(requests);
+    const j=await responses[0].json();
     allData=j.data||[];results=j.results||{};
-    const jr32=await rr32.json();
-    r32matches=jr32.matches||[];r32results=jr32.r32results||{};r32data=jr32.r32data||[];
-    if(currentStage==='groups') render(); else renderBracket();
+    for(let i=0;i<koKeys.length;i++){
+      const key=koKeys[i];
+      const def=KO_STAGES[key];
+      const jk=await responses[i+1].json();
+      koData[key]={matches:jk.matches||[], results:jk[def.resultsField]||{}, data:jk[def.dataField]||[]};
+    }
+    if(currentStage==='groups') render(); else renderBracket(currentStage);
     document.getElementById('last-updated').textContent='Updated '+new Date().toLocaleTimeString();
   }catch{
     document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Could not load predictions. Check your connection.</p></div>';
@@ -345,39 +362,45 @@ async function loadData(){
 
 function switchStage(stage){
   currentStage=stage;
-  document.getElementById('tab-groups').classList.toggle('active', stage==='groups');
-  document.getElementById('tab-r32').classList.toggle('active', stage==='r32');
+  ['groups',...Object.keys(KO_STAGES)].forEach(s=>{
+    const el=document.getElementById('tab-'+s);
+    if(el) el.classList.toggle('active', stage===s);
+  });
   document.getElementById('filter-row').style.display = stage==='groups' ? '' : 'none';
   document.getElementById('stats-bar').style.display = stage==='groups' ? '' : 'none';
   const legend=document.querySelector('.legend');
   if(legend) legend.style.display = '';
   document.getElementById('stage-subtitle').textContent = stage==='groups'
     ? 'Group Stage \u2014 How everyone voted'
-    : 'Round of 32 \u2014 How everyone picked';
-  if(stage==='groups'){ render(); } else { renderBracket(); }
+    : (KO_STAGES[stage].label + ' \u2014 How everyone picked');
+  if(stage==='groups'){ render(); } else { renderBracket(stage); }
 }
 
-function renderBracket(){
+function renderBracket(stage){
   document.getElementById('main-content').style.display='none';
   const bv=document.getElementById('bracket-view');
   bv.style.display='block';
 
-  if(!r32matches.length){
-    bv.innerHTML='<div class="empty-state"><p>Round of 32 matchups not yet available.</p></div>';
+  const def=KO_STAGES[stage];
+  const stageState=koData[stage]||{matches:[],results:{},data:[]};
+  const matches=stageState.matches, stageResults=stageState.results, stageData=stageState.data;
+
+  if(!matches.length){
+    bv.innerHTML='<div class="empty-state"><p>'+esc(def.label)+' matchups not yet available.</p></div>';
     return;
   }
 
   let html='';
-  r32matches.forEach((m,idx)=>{
+  matches.forEach((m,idx)=>{
     const {id,slot,home,away}=m;
-    const result=r32results[id]||'';
+    const result=stageResults[id]||'';
     const isIP=result==='IP';
     const isFinal=!!result&&!isIP;
 
     // Count votes
     const homePickers=[], awayPickers=[];
-    r32data.forEach(p=>{
-      const pick=(p.r32picks||{})[id]||'';
+    stageData.forEach(p=>{
+      const pick=(p[def.picksField]||{})[id]||'';
       if(pick===home) homePickers.push(p.name);
       else if(pick===away) awayPickers.push(p.name);
     });

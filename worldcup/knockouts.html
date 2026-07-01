@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WC 2026 — Round of 32</title>
+<title id="page-title">WC 2026 — Round of 32</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -29,6 +29,16 @@ h1 a{color:inherit;text-decoration:none;}
 .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px;}
 .back-link{color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s;}
 .back-link:hover{color:var(--gold);}
+
+/* ── Stage tabs ── */
+.stage-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;}
+.stage-tab{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:4px;padding:6px 13px;cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.stage-tab:hover{border-color:var(--gold);color:var(--gold);}
+.stage-tab.active{background:var(--gold);color:var(--pitch);border-color:var(--gold);}
 
 /* ── Identity strip ── */
 .identity-strip{
@@ -180,13 +190,16 @@ input::placeholder{color:rgba(168,184,168,0.4);}
 <div class="page">
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
-    <h1><a href="index.html">WORLD CUP <span>2026</span><br>ROUND OF 32</a></h1>
-    <p class="subtitle">Knockout Stage Predictions</p>
+    <h1><a href="index.html">WORLD CUP <span>2026</span><br><span id="stage-title">ROUND OF 32</span></a></h1>
+    <p class="subtitle" id="stage-subtitle">Knockout Stage Predictions</p>
   </header>
 
   <div class="top-bar">
     <a href="stage-select.html" id="back-link" class="back-link">← Choose Stage</a>
   </div>
+
+  <!-- Stage tabs (edit mode only) -->
+  <div class="stage-tabs hidden" id="stage-tabs"></div>
 
   <!-- New mode: collect user details -->
   <div class="info-card hidden" id="info-card">
@@ -221,9 +234,9 @@ input::placeholder{color:rgba(168,184,168,0.4);}
 
   <!-- Progress bar -->
   <div class="progress-wrap hidden" id="progress-wrap">
-    <span style="font-size:12px;color:var(--muted);white-space:nowrap">R32 picks</span>
+    <span style="font-size:12px;color:var(--muted);white-space:nowrap" id="progress-stage-label">Picks</span>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
-    <span class="progress-label" id="progress-label">0 / 16</span>
+    <span class="progress-label" id="progress-label">0 / 0</span>
   </div>
 
   <!-- Match list -->
@@ -244,8 +257,20 @@ input::placeholder{color:rgba(168,184,168,0.4);}
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxdVZ_jskYcRR7uaVSuC2vZ8uTN402uYSgbEXh4pyY9CB8O8D88xMcoITXLpadTSw0/exec";
 
+// ── Stage registry (mirrors the Apps Script STAGES config) ─────────────────
+const STAGE_META = {
+  r32:   { label:"Round of 32",   title:"ROUND OF 32",   short:"R32",   getAction:"getR32",   postAction:"postR32",   picksField:"r32picks",   resultsField:"r32results",   dataField:"r32data",   points:5  },
+  r16:   { label:"Round of 16",   title:"ROUND OF 16",   short:"R16",   getAction:"getR16",   postAction:"postR16",   picksField:"r16picks",   resultsField:"r16results",   dataField:"r16data",   points:10 },
+  qf:    { label:"Quarterfinals", title:"QUARTERFINALS", short:"QF",    getAction:"getQF",    postAction:"postQF",    picksField:"qfpicks",    resultsField:"qfresults",    dataField:"qfdata",    points:20 },
+  sf:    { label:"Semifinals",    title:"SEMIFINALS",    short:"SF",    getAction:"getSF",    postAction:"postSF",    picksField:"sfpicks",    resultsField:"sfresults",    dataField:"sfdata",    points:40 },
+  final: { label:"Final",         title:"THE FINAL",     short:"Final", getAction:"getFinal", postAction:"postFinal", picksField:"finalpicks", resultsField:"finalresults", dataField:"finaldata", points:80 },
+};
+const STAGE_ORDER = ["r32","r16","qf","sf","final"];
+
 const params = new URLSearchParams(location.search);
 const mode   = params.get('mode') || 'new'; // 'new' | 'edit'
+const stageKey = STAGE_META[params.get('stage')] ? params.get('stage') : 'r32';
+const stage    = STAGE_META[stageKey];
 
 const userStr = sessionStorage.getItem('wc2026_user');
 const sessionUser = userStr ? JSON.parse(userStr) : null;
@@ -256,12 +281,12 @@ if (mode === 'edit' && !sessionUser) {
 }
 
 // State
-let matches   = [];   // [{id, slot, home, away}] from sheet
-let r32results = {};  // {id: winner} from sheet
-let picks     = {};   // {id: team}
-let editPicks = {};   // mutable copy during edit
-let editMode  = false;
-let currentUser = sessionUser; // for edit mode
+let matches      = [];   // [{id, slot, home, away}] from sheet
+let stageResults = {};   // {id: winner} from sheet
+let picks        = {};   // {id: team}
+let editPicks    = {};   // mutable copy during edit
+let editMode     = false;
+let currentUser  = sessionUser; // for edit mode
 
 // ── Utilities ─────────────────────────────────────────────────────────────
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -270,6 +295,11 @@ function hide(id){document.getElementById(id).classList.add('hidden');}
 
 // ── Boot ──────────────────────────────────────────────────────────────────
 async function init() {
+  document.getElementById('page-title').textContent = 'WC 2026 — ' + stage.label;
+  document.getElementById('stage-title').textContent = stage.title;
+  document.getElementById('stage-subtitle').textContent = stage.label + ' Predictions \u00b7 ' + stage.points + ' pts per correct pick';
+  document.getElementById('progress-stage-label').textContent = stage.short + ' picks';
+
   // Set back-link intent
   document.getElementById('back-link').href =
     'stage-select.html?intent=' + (mode === 'edit' ? 'edit' : 'new');
@@ -279,34 +309,45 @@ async function init() {
     show('progress-wrap');
     show('submit-wrap');
   } else {
-    // Edit mode: show identity strip in view mode initially
+    // Edit mode: show identity strip + stage tabs
     show('identity-strip');
+    show('stage-tabs');
+    buildStageTabs();
     document.getElementById('id-name').textContent = currentUser.name;
   }
 
   await loadData();
 }
 
+function buildStageTabs() {
+  const wrap = document.getElementById('stage-tabs');
+  wrap.innerHTML = STAGE_ORDER.map(key => {
+    const meta = STAGE_META[key];
+    const activeCls = key === stageKey ? ' active' : '';
+    const href = 'knockouts.html?mode=edit&stage=' + key;
+    return `<a class="stage-tab${activeCls}" href="${href}">${esc(meta.short)}</a>`;
+  }).join('');
+}
+
 async function loadData() {
   try {
-    const r = await fetch(APPS_SCRIPT_URL + '?action=getR32', { cache: 'no-store' });
+    const r = await fetch(APPS_SCRIPT_URL + '?action=' + stage.getAction, { cache: 'no-store' });
     const j = await r.json();
 
     // matches: [{id:"R32_1", slot:"1A vs 2B", home:"France", away:"Argentina"}, ...]
     // home/away may be "" if not yet known
-    matches    = j.matches   || [];
-    r32results = j.r32results || {};
+    matches      = j.matches || [];
+    stageResults = j[stage.resultsField] || {};
 
     if (mode === 'edit' && currentUser) {
-      picks = (currentUser.r32picks || {});
-      // Also try to pull fresh picks from server data if included
-      if (j.r32data) {
-        const me = j.r32data.find(p => p.name === currentUser.name);
-        if (me) picks = me.r32picks || {};
-      }
+      picks = {};
+      const stageData = j[stage.dataField] || [];
+      const me = stageData.find(p => p.name === currentUser.name);
+      if (me) picks = me[stage.picksField] || {};
+
       const pickedCount = Object.values(picks).filter(v => v).length;
       document.getElementById('id-sub').textContent =
-        pickedCount + ' of ' + matches.length + ' R32 matches picked';
+        pickedCount + ' of ' + matches.length + ' ' + stage.short + ' matches picked';
       buildMatches(picks, false);
     } else {
       show('progress-wrap');
@@ -315,7 +356,7 @@ async function loadData() {
 
   } catch(e) {
     document.getElementById('matches-container').innerHTML =
-      '<div class="empty-notice"><strong>Error</strong>Could not load Round of 32 matches. Check your connection and refresh.</div>';
+      '<div class="empty-notice"><strong>Error</strong>Could not load ' + esc(stage.label) + ' matches. Check your connection and refresh.</div>';
   }
 }
 
@@ -329,7 +370,7 @@ function buildMatches(currentPicks, isEditable) {
     container.innerHTML =
       '<div class="empty-notice">'
       + '<strong>Coming Soon</strong>'
-      + 'Round of 32 matchups will appear here once the group stage concludes and the bracket is set.'
+      + esc(stage.label) + ' matchups will appear here once the previous round concludes and the bracket is set.'
       + '</div>';
     if (mode === 'new') hide('submit-wrap');
     return;
@@ -340,7 +381,7 @@ function buildMatches(currentPicks, isEditable) {
 
   matches.forEach((m, idx) => {
     const { id, slot, home, away } = m;
-    const result  = r32results[id] || '';
+    const result  = stageResults[id] || '';
     const isIP    = result === 'IP';
     const isLocked = !!result && !isIP;
     const isFinal  = !!result && !isIP;
@@ -464,7 +505,7 @@ async function handleSubmit() {
   const btnEl    = document.getElementById('btn-submit');
   statusEl.className = 'status';
 
-  let name, email, phone, r32picks;
+  let name, email, phone, stagePicks;
 
   if (mode === 'new') {
     name  = (document.getElementById('f-name').value || '').trim();
@@ -475,17 +516,17 @@ async function handleSubmit() {
       statusEl.textContent = 'Please fill in your name and email before submitting.';
       return;
     }
-    r32picks = picks;
+    stagePicks = picks;
   } else {
-    name     = currentUser.name;
-    email    = currentUser.email;
-    phone    = currentUser.phone || '';
-    r32picks = editPicks;
+    name       = currentUser.name;
+    email      = currentUser.email;
+    phone      = currentUser.phone || '';
+    stagePicks = editPicks;
   }
 
   const openCount = matches.filter(m => {
     // Only count matches where both teams are known and no result yet
-    return m.home && m.away && !r32results[m.id] && !r32picks[m.id];
+    return m.home && m.away && !stageResults[m.id] && !stagePicks[m.id];
   }).length;
 
   if (openCount > 0) {
@@ -499,9 +540,9 @@ async function handleSubmit() {
   const payload = {
     name, email, phone,
     timestamp: new Date().toISOString(),
-    r32picks,
-    action: 'postR32',
+    action: stage.postAction,
   };
+  payload[stage.picksField] = stagePicks;
 
   try {
     await fetch(APPS_SCRIPT_URL, {
@@ -514,16 +555,16 @@ async function handleSubmit() {
     if (mode === 'edit') {
       picks = Object.assign({}, editPicks);
       statusEl.className = 'status success';
-      statusEl.textContent = '✓ R32 picks saved for ' + name + '!';
+      statusEl.textContent = '✓ ' + stage.short + ' picks saved for ' + name + '!';
       btnEl.textContent = 'SAVED ✓';
       setTimeout(() => {
         cancelEdit();
         const pickedCount = Object.values(picks).filter(v => v).length;
-        document.getElementById('id-sub').textContent = pickedCount + ' of ' + matches.length + ' R32 matches picked';
+        document.getElementById('id-sub').textContent = pickedCount + ' of ' + matches.length + ' ' + stage.short + ' matches picked';
       }, 1200);
     } else {
       statusEl.className = 'status success';
-      statusEl.innerHTML = `✓ R32 picks locked in for <strong>${esc(name)}</strong>!<br><a href="leaderboard.html" class="view-link">→ Leaderboard</a>`;
+      statusEl.innerHTML = `✓ ${esc(stage.short)} picks locked in for <strong>${esc(name)}</strong>!<br><a href="leaderboard.html" class="view-link">→ Leaderboard</a>`;
       btnEl.textContent = 'SUBMITTED ✓';
     }
   } catch(err) {
