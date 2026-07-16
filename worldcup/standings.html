@@ -514,6 +514,14 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
     +'</div>';
 }
 
+// A match in the Final tab is the 3rd Place game if its id/slot mentions
+// "3rd" or "third" (case-insensitive) — mirrors Code.gs isThirdPlaceRow.
+// Everything else in the Final stage is the Championship match (wager-eligible).
+function isThirdPlaceMatch(m){
+  const t=(String(m.id||'')+' '+String(m.slot||'')).toLowerCase();
+  return t.indexOf('3rd')!==-1 || t.indexOf('third')!==-1;
+}
+
 function renderBracket(stage){
   document.getElementById('main-content').style.display='none';
   const bv=document.getElementById('bracket-view');
@@ -561,9 +569,12 @@ function renderBracket(stage){
     const homeDisplay=home||'TBD';
     const awayDisplay=away||'TBD';
 
-    const homeWagerHtml = (def.wagerField && total>0)
+    const isTP = stage==='final' && isThirdPlaceMatch(m);
+    const showWager = def.wagerField && !isTP;
+
+    const homeWagerHtml = (showWager && total>0)
       ? '<div class="bracket-team-wager">\ud83e\ude99 '+homeWager+' pts wagered</div>' : '';
-    const awayWagerHtml = (def.wagerField && total>0)
+    const awayWagerHtml = (showWager && total>0)
       ? '<div class="bracket-team-wager">\ud83e\ude99 '+awayWager+' pts wagered</div>' : '';
 
     // Build shared segmented bar (same as group stage)
@@ -590,7 +601,7 @@ function renderBracket(stage){
 
     html+=`<div class="bracket-match">
       <div class="bracket-header">
-        <span class="bracket-num">${stage==='final'?'The Final':'Match '+(idx+1)}</span>
+        <span class="bracket-num">${stage==='final'?(isTP?'🥉 3rd Place':'🏆 Championship'):'Match '+(idx+1)}</span>
         <span class="bracket-slot">${esc(slot||'')}</span>
         ${badgeHtml}
       </div>

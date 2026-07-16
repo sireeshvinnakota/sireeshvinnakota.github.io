@@ -222,7 +222,7 @@ h1 a{color:inherit;text-decoration:none;}
   <!-- Wager card -->
   <div class="wager-card hidden" id="wager-card">
     <h2>Your Wager</h2>
-    <p class="wager-desc">Stake points on your pick. If you're right, you gain the points you wagered — instead of the usual flat points for this round. If you're wrong, you gain nothing (but you don't lose anything either).</p>
+    <p class="wager-desc">Stake points on your Championship pick. If you're right, you <strong>double</strong> your wager. If you're wrong, you <strong>forfeit</strong> the wagered points — they're subtracted from your score. (The 3rd Place match is scored normally, flat 40 pts, no wager.)</p>
     <div class="wager-input-row">
       <input type="number" id="wager-input" min="0" step="1" value="0">
       <span class="wager-cap" id="wager-cap-label">of 0 points available</span>
@@ -285,6 +285,14 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function show(id){document.getElementById(id).classList.remove('hidden');}
 function hide(id){document.getElementById(id).classList.add('hidden');}
 
+// A match in the Final tab is the 3rd Place game if its id/slot mentions
+// "3rd" or "third" (case-insensitive) — see Code.gs isThirdPlaceRow. Everything
+// else in this stage is the Championship match.
+function isThirdPlaceMatch(m){
+  const t = (String(m.id||'') + ' ' + String(m.slot||'')).toLowerCase();
+  return t.indexOf('3rd') !== -1 || t.indexOf('third') !== -1;
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────────
 async function init() {
   show('identity-strip');
@@ -311,8 +319,9 @@ async function loadFinal() {
     }
 
     const pickedCount = Object.values(picks).filter(v => v).length;
-    document.getElementById('id-sub').textContent =
-      pickedCount ? 'Pick locked in \u00b7 wagered ' + currentWager + ' pts' : 'No Final pick yet';
+    document.getElementById('id-sub').textContent = !pickedCount
+      ? 'No picks yet'
+      : (currentWager > 0 ? 'Picks locked in \u00b7 wagered ' + currentWager + ' pts' : 'Picks locked in');
 
     buildMatches(picks, false);
   } catch(e) {
@@ -420,10 +429,15 @@ function buildMatches(currentPicks, isEditable) {
         </div>`
       : tbdHtml;
 
+    const tp = isThirdPlaceMatch(m);
+    const roleLabel = tp ? '🥉 3rd Place' : '🏆 Championship';
+    const pointsLabel = tp ? (m.points || 40) + ' pts' : 'wager';
+
     card.innerHTML = `
       <div class="match-header">
-        <span class="match-num">Final</span>
+        <span class="match-num">${roleLabel}</span>
         <span class="match-slot-label">${esc(slot || '')}</span>
+        <span class="match-slot-label" style="opacity:.7">${pointsLabel}</span>
         ${badgeHtml}
       </div>
       ${pickRowHtml}
@@ -432,16 +446,21 @@ function buildMatches(currentPicks, isEditable) {
     container.appendChild(card);
   });
 
-  // Wager card + submit only make sense once the matchup is known and not yet decided
-  const finalDecided = matches.some(m => {
-    const r = stageResults[m.id] || '';
-    return !!r && r !== 'IP';
-  });
-  const matchupKnown = matches.some(m => m.home && m.away);
+  // Wager card is tied specifically to the Championship match (3rd Place is
+  // scored flat and never carries a wager). Submit is shown as long as any
+  // match in this stage is still open for picks.
+  const champMatch = matches.find(m => !isThirdPlaceMatch(m));
+  const champResult = champMatch ? (stageResults[champMatch.id] || '') : '';
+  const champDecided = !!champResult && champResult !== 'IP';
+  const champMatchupKnown = !!(champMatch && champMatch.home && champMatch.away);
 
-  if (matchupKnown && !finalDecided) {
+  const anyOpen = matches.some(m => {
+    const r = stageResults[m.id] || '';
+    return m.home && m.away && !(r && r !== 'IP');
+  });
+
+  if (champMatchupKnown && !champDecided) {
     show('wager-card');
-    show('submit-wrap');
     document.getElementById('wager-input').value = isEditable ? editWager : currentWager;
     document.getElementById('wager-input').disabled = !isEditable;
     if (!isEditable && currentWager > 0) {
@@ -452,7 +471,12 @@ function buildMatches(currentPicks, isEditable) {
     }
   } else {
     hide('wager-card');
-    if (finalDecided) hide('submit-wrap');
+  }
+
+  if (anyOpen) {
+    show('submit-wrap');
+  } else {
+    hide('submit-wrap');
   }
 }
 
@@ -546,11 +570,15 @@ async function handleSubmit() {
     picks = Object.assign({}, stagePicks);
     currentWager = wager;
     statusEl.className = 'status success';
-    statusEl.textContent = '✓ Final pick saved for ' + currentUser.name + ' — wagering ' + wager + ' pts!';
+    statusEl.textContent = wager > 0
+      ? '✓ Picks saved for ' + currentUser.name + ' — wagering ' + wager + ' pts on the Championship!'
+      : '✓ Picks saved for ' + currentUser.name + '!';
     btnEl.textContent = 'SAVED ✓';
     setTimeout(() => {
       cancelEdit();
-      document.getElementById('id-sub').textContent = 'Pick locked in \u00b7 wagered ' + currentWager + ' pts';
+      document.getElementById('id-sub').textContent = currentWager > 0
+        ? 'Picks locked in \u00b7 wagered ' + currentWager + ' pts'
+        : 'Picks locked in';
     }, 1200);
   } catch(err) {
     statusEl.className = 'status error';

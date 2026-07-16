@@ -35,36 +35,39 @@ h1 a{color:inherit;text-decoration:none}
 .btn-sm{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:5px 14px;cursor:pointer;transition:all .15s}
 .btn-sm:hover{border-color:var(--gold);color:var(--gold)}
 
-/* ── Summary strip ── */
-.summary-strip{
-  display:flex;gap:0;flex-wrap:wrap;
-  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
-  margin-bottom:28px;overflow:hidden;
-}
-.summary-stat{
-  flex:1;min-width:90px;padding:14px 18px;
-  border-right:1px solid var(--border);
-  font-size:12px;color:var(--muted);
-}
-.summary-stat:last-child{border-right:none}
-.summary-stat strong{display:block;font-family:'Bebas Neue';font-size:28px;color:var(--white);line-height:1;margin-bottom:2px}
+/* ── Participant count line ── */
+.participant-line{font-size:12px;color:var(--muted);margin-bottom:24px;text-align:center}
+.participant-line strong{color:var(--white)}
 
-/* ── Progress indicator (games decided / total) ── */
-.progress-strip{
-  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
-  padding:12px 18px;margin-bottom:12px;
+/* ── Trophy case ── */
+.trophy-heading{
+  font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
 }
-.progress-label-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
-.progress-bar-bg{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
-.progress-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s}
-#progress-stack{margin-bottom:28px}
+.trophy-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+  gap:10px;margin-bottom:36px;
+}
+.trophy-card{
+  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 12px;text-align:center;
+}
+.trophy-card.overall{
+  border-color:rgba(232,200,74,0.5);background:var(--pitch-lt);
+  grid-column:1 / -1;
+}
+.trophy-icon{font-size:24px;margin-bottom:6px;line-height:1}
+.trophy-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.trophy-winner{font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--white);line-height:1.15}
+.trophy-winner.tbd{color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:500}
+.trophy-points{font-size:11px;color:var(--gold);margin-top:4px}
 
 /* ── Leaderboard table ── */
 .lb-table{width:100%;border-collapse:collapse}
 
 .lb-row{
   display:grid;
-  grid-template-columns:44px 1fr 80px 80px;
+  grid-template-columns:44px 1fr 80px;
   align-items:center;
   padding:0 4px;
   border-bottom:1px solid rgba(255,255,255,0.04);
@@ -98,9 +101,8 @@ h1 a{color:inherit;text-decoration:none}
 /* Name column */
 .col-name{padding:0 8px}
 .name-main{font-size:14px;font-weight:600;color:var(--white)}
-.name-sub{font-size:11px;color:var(--muted);margin-top:1px;line-height:1.6}
 
-/* Correct picks */
+/* Score */
 .col-correct{
   text-align:center;
   font-family:'Bebas Neue',sans-serif;
@@ -109,15 +111,7 @@ h1 a{color:inherit;text-decoration:none}
   line-height:1;
 }
 .col-correct.leading{color:var(--gold)}
-
-/* Score bar */
-.col-bar{padding:0 6px}
-.score-bar-bg{height:6px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
-.score-bar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .5s}
-.score-bar-fill.r1{background:var(--gold)}
-.score-bar-fill.r2{background:var(--silver)}
-.score-bar-fill.r3{background:var(--bronze)}
-.score-bar-fill.rest{background:rgba(138,168,154,0.4)}
+.col-correct.negative{color:#ff8a8a}
 
 /* Tie indicator */
 .tie-badge{
@@ -139,7 +133,7 @@ h1 a{color:inherit;text-decoration:none}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP <span>2026</span><br>LEADERBOARD</a></h1>
-    <p class="subtitle">Group: 1 pt &middot; R32: 5 pts &middot; R16: 10 pts &middot; QF: 20 pts &middot; SF: 40 pts &middot; Final: 80 pts <span style="opacity:.65">(per correct pick)</span></p>
+    <p class="subtitle">Group: 1 pt &middot; R32: 5 pts &middot; R16: 10 pts &middot; QF: 20 pts &middot; SF: 40 pts &middot; 3rd Place: 40 pts <span style="opacity:.65">(per correct pick)</span><br>Championship: wager-based &mdash; win doubles it, lose forfeits it</p>
   </header>
 
   <div class="top-bar">
@@ -151,8 +145,11 @@ h1 a{color:inherit;text-decoration:none}
     </div>
   </div>
 
-  <div id="summary-strip" class="summary-strip" style="display:none"></div>
-  <div id="progress-stack" style="display:none"></div>
+  <p class="participant-line" id="participant-line" style="display:none"></p>
+  <div id="trophy-case" style="display:none">
+    <p class="trophy-heading">🏆 Round Trophies</p>
+    <div class="trophy-grid" id="trophy-grid"></div>
+  </div>
   <div id="main-content">
     <div class="loading-wrap"><div class="spinner"></div><p>Loading leaderboard&hellip;</p></div>
   </div>
@@ -193,34 +190,26 @@ async function loadData() {
   }
 }
 
+// A match in the Final tab is the 3rd Place game if its id/slot mentions
+// "3rd" or "third" (case-insensitive) — mirrors Code.gs isThirdPlaceRow.
+// Everything else in the Final stage is the Championship match (wager-eligible).
+function isThirdPlaceMatch(m) {
+  const t = (String(m.id || '') + ' ' + String(m.slot || '')).toLowerCase();
+  return t.indexOf('3rd') !== -1 || t.indexOf('third') !== -1;
+}
+
+// Round trophies: one per stage, excluding the Final (per design, the Final/
+// 3rd Place round doesn't get its own trophy — only Overall Leader covers it).
+const TROPHY_STAGES = [
+  { key: 'group', label: 'Group Stage' },
+  { key: 'r32',   label: 'Round of 32' },
+  { key: 'r16',   label: 'Round of 16' },
+  { key: 'qf',    label: 'Quarterfinals' },
+  { key: 'sf',    label: 'Semifinals' },
+];
+
 function render(data, results, koJson) {
-  const decidedCount = Object.keys(results).length;
-
-  // ── Progress strips (group + each knockout stage that has matchups) ──
-  const pStack = document.getElementById('progress-stack');
-  pStack.style.display = 'block';
-  const pct = Math.round(decidedCount / TOTAL_MATCHES * 100);
-  let stacksHtml = '<div class="progress-strip"><div class="progress-label-row">'
-    + '<span>Group stage progress</span>'
-    + '<span>' + decidedCount + ' / ' + TOTAL_MATCHES + ' matches decided</span>'
-    + '</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div></div>';
-
-  const koDecided = {}; // key -> decided count
-  KO_STAGES.forEach(s => {
-    const j = koJson[s.key] || {};
-    const stageResults = j[s.resultsField] || {};
-    const stageMatches = j.matches || [];
-    const dCount = Object.keys(stageResults).filter(k => stageResults[k] && stageResults[k] !== 'IP').length;
-    koDecided[s.key] = dCount;
-    if (stageMatches.length) {
-      const kpct = Math.round(dCount / stageMatches.length * 100);
-      stacksHtml += '<div class="progress-strip"><div class="progress-label-row">'
-        + '<span>' + s.short + ' progress</span>'
-        + '<span>' + dCount + ' / ' + stageMatches.length + ' matches decided</span>'
-        + '</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' + kpct + '%"></div></div></div>';
-    }
-  });
-  pStack.innerHTML = stacksHtml;
+  const decidedCount = Object.keys(results).filter(k => results[k]).length;
 
   if (!data.length) {
     document.getElementById('main-content').innerHTML =
@@ -228,14 +217,30 @@ function render(data, results, koJson) {
     return;
   }
 
-  // Build per-stage picks lookup by name
-  const koByName = {}; // key -> {name: picks}
+  // Build per-stage picks lookup by name, plus per-stage match->points maps
+  const koByName = {};      // key -> {name: picks}
+  const koPointsMap = {};   // key -> {matchId: points}
+  const koWagerByName = {}; // final wager per name
+  const koDecided = {};     // key -> decided match count
+
   KO_STAGES.forEach(s => {
     const j = koJson[s.key] || {};
     const stageData = j[s.dataField] || [];
+    const stageMatches = j.matches || [];
+    const stageResults = j[s.resultsField] || {};
+
     const lookup = {};
-    stageData.forEach(p => { lookup[p.name] = p[s.picksField] || {}; });
+    stageData.forEach(p => {
+      lookup[p.name] = p[s.picksField] || {};
+      if (s.key === 'final') koWagerByName[p.name] = Number(p.finalwager || 0);
+    });
     koByName[s.key] = lookup;
+
+    const pointsMap = {};
+    stageMatches.forEach(m => { pointsMap[m.id] = Number(m.points || s.points); });
+    koPointsMap[s.key] = pointsMap;
+
+    koDecided[s.key] = Object.keys(stageResults).filter(k => stageResults[k] && stageResults[k] !== 'IP').length;
   });
 
   // ── Score each participant ──
@@ -243,29 +248,58 @@ function render(data, results, koJson) {
     let groupCorrect = 0;
     const picks = p.picks || {};
     Object.entries(results).forEach(([key, winner]) => {
-      if (picks[key] === winner) groupCorrect++;
+      if (winner && picks[key] === winner) groupCorrect++;
     });
+    const groupPoints = groupCorrect; // 1 pt each
 
-    const koBreakdown = []; // [{short, correct, points}]
+    const stagePointsMap = { group: groupPoints }; // for trophy lookup
     let koScore = 0;
 
     KO_STAGES.forEach(s => {
       const j = koJson[s.key] || {};
       const stageResults = j[s.resultsField] || {};
+      const stageMatches = j.matches || [];
+      const pointsMap = koPointsMap[s.key] || {};
       const stagePicks = (koByName[s.key] || {})[p.name] || {};
-      let correct = 0;
-      Object.entries(stageResults).forEach(([key, winner]) => {
-        if (winner && winner !== 'IP' && stagePicks[key] === winner) correct++;
-      });
-      if (correct > 0) koBreakdown.push({ short: s.short, correct, points: correct * s.points });
-      koScore += correct * s.points;
+
+      if (s.key === 'final') {
+        // 3rd Place: scored flat, like any other round
+        const tpMatches = stageMatches.filter(isThirdPlaceMatch);
+        let tpPoints = 0;
+        tpMatches.forEach(m => {
+          const winner = stageResults[m.id];
+          if (winner && winner !== 'IP' && stagePicks[m.id] === winner) {
+            tpPoints += pointsMap[m.id] || 40;
+          }
+        });
+
+        // Championship: wager-based. Win doubles the wager; lose forfeits
+        // (subtracts) the wagered points. No wager placed = no effect.
+        const champMatches = stageMatches.filter(m => !isThirdPlaceMatch(m));
+        const wager = Number(koWagerByName[p.name] || 0);
+        let champPoints = 0;
+        champMatches.forEach(m => {
+          const winner = stageResults[m.id];
+          if (winner && winner !== 'IP') {
+            champPoints += (stagePicks[m.id] === winner) ? (2 * wager) : -wager;
+          }
+        });
+
+        koScore += tpPoints + champPoints;
+      } else {
+        let pts = 0;
+        Object.entries(stageResults).forEach(([key, winner]) => {
+          if (winner && winner !== 'IP' && stagePicks[key] === winner) {
+            pts += pointsMap[key] || s.points;
+          }
+        });
+        stagePointsMap[s.key] = pts;
+        koScore += pts;
+      }
     });
 
-    const totalScore = groupCorrect + koScore;
-
-    // max possible = decided group matches they actually picked
-    const picked = Object.entries(results).filter(([key]) => picks[key]).length;
-    return { name: p.name, groupCorrect, koBreakdown, totalScore, picked, decidedCount };
+    const totalScore = groupPoints + koScore;
+    return { name: p.name, totalScore, stagePointsMap };
   });
 
   // Sort: by totalScore desc, then by name asc for ties
@@ -280,51 +314,65 @@ function render(data, results, koJson) {
 
   const leader = scored[0].totalScore;
 
-  // ── Summary strip ──
-  const sStrip = document.getElementById('summary-strip');
-  sStrip.style.display = 'flex';
-  const topTied = scored.filter(p => p.totalScore === leader);
-  const leadLabel = topTied.length > 1
-    ? topTied.map(p => p.name.split(' ')[0]).join(', ')
-    : scored[0].name;
-  let statsHtml = '<div class="summary-stat"><strong>' + data.length + '</strong>Participants</div>'
-    + '<div class="summary-stat"><strong>' + decidedCount + '</strong>Group results in</div>';
-  KO_STAGES.forEach(s => {
-    statsHtml += '<div class="summary-stat"><strong>' + (koDecided[s.key] || 0) + '</strong>' + s.short + ' results in</div>';
-  });
-  statsHtml += '<div class="summary-stat"><strong>' + leader + '</strong>Top score</div>'
-    + '<div class="summary-stat"><strong style="font-size:18px;line-height:1.2">' + esc(leadLabel) + '</strong>Leading</div>';
-  sStrip.innerHTML = statsHtml;
+  // ── Participant count line ──
+  const pLine = document.getElementById('participant-line');
+  pLine.style.display = 'block';
+  pLine.innerHTML = '<strong>' + data.length + '</strong> participants &middot; <strong>' + decidedCount + '</strong> / ' + TOTAL_MATCHES + ' group matches decided';
 
-  // ── Build rows ──
+  // ── Trophy case ──
+  const tCase = document.getElementById('trophy-case');
+  tCase.style.display = 'block';
+  const tGrid = document.getElementById('trophy-grid');
+
+  let trophyHtml = '';
+  TROPHY_STAGES.forEach(t => {
+    const decided = t.key === 'group' ? decidedCount : (koDecided[t.key] || 0);
+    const withPoints = scored.map(p => ({ name: p.name, points: p.stagePointsMap[t.key] || 0 }));
+    const max = Math.max(0, ...withPoints.map(w => w.points));
+    const winners = (decided > 0 && max > 0) ? withPoints.filter(w => w.points === max).map(w => w.name) : [];
+
+    const winnerHtml = winners.length
+      ? '<div class="trophy-winner">' + winners.map(esc).map(n => n.split(' ')[0]).join(', ') + '</div>'
+        + '<div class="trophy-points">' + max + ' pts</div>'
+      : '<div class="trophy-winner tbd">No results yet</div>';
+
+    trophyHtml += '<div class="trophy-card">'
+      + '<div class="trophy-icon">🏆</div>'
+      + '<div class="trophy-label">' + esc(t.label) + '</div>'
+      + winnerHtml
+      + '</div>';
+  });
+
+  const topTied = scored.filter(p => p.totalScore === leader);
+  const overallWinnerHtml = '<div class="trophy-winner">' + topTied.map(p => esc(p.name)).join(', ') + '</div>'
+    + '<div class="trophy-points">' + leader + ' pts</div>';
+
+  trophyHtml += '<div class="trophy-card overall">'
+    + '<div class="trophy-icon">👑</div>'
+    + '<div class="trophy-label">Overall Leader</div>'
+    + overallWinnerHtml
+    + '</div>';
+
+  tGrid.innerHTML = trophyHtml;
+
+  // ── Build simplified rows: rank, name, score ──
   const medals = ['🥇','🥈','🥉'];
   let html = '<div class="lb-row header-row">'
     + '<div class="col col-rank">#</div>'
     + '<div class="col col-name">Name</div>'
     + '<div class="col col-correct" style="text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:Inter">Score</div>'
-    + '<div class="col col-bar"></div>'
     + '</div>';
 
-  scored.forEach((p, i) => {
-    const rankCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
+  scored.forEach(p => {
     const medal = p.rank <= 3 ? '<span class="medal">' + medals[p.rank-1] + '</span>' : '';
     const tieBadge = scored.filter(q => q.totalScore === p.totalScore).length > 1
       ? '<span class="tie-badge">TIE</span>' : '';
-    const barPct = leader > 0 ? Math.round(p.totalScore / leader * 100) : 0;
-    const barCls = p.rank <= 3 ? ' r' + p.rank : ' rest';
-    const accuracy = p.picked > 0 ? Math.round(p.groupCorrect / p.picked * 100) : 0;
-    const koLine = p.koBreakdown.length
-      ? ' &middot; ' + p.koBreakdown.map(b => b.correct + ' ' + b.short + ' (+' + b.points + ')').join(' &middot; ')
-      : '';
+    const scoreCls = (p.rank === 1 ? ' leading' : '') + (p.totalScore < 0 ? ' negative' : '');
 
     html += '<div class="lb-row">'
       + '<div class="col-rank' + (p.rank <= 3 ? ' r' + p.rank : '') + '">' + medal + (p.rank > 3 ? p.rank : '') + '</div>'
-      + '<div class="col-name">'
-          + '<div class="name-main">' + esc(p.name) + tieBadge + '</div>'
-          + '<div class="name-sub">' + p.groupCorrect + ' group' + koLine + ' &middot; ' + accuracy + '% group accuracy</div>'
-        + '</div>'
-      + '<div class="col-correct' + (p.rank === 1 ? ' leading' : '') + '">' + p.totalScore + '</div>'
-      + '<div class="col-bar"><div class="score-bar-bg"><div class="score-bar-fill' + barCls + '" style="width:' + barPct + '%"></div></div></div>'
+      + '<div class="col-name"><div class="name-main">' + esc(p.name) + tieBadge + '</div></div>'
+      + '<div class="col-correct' + scoreCls + '">' + p.totalScore + '</div>'
       + '</div>';
   });
 
