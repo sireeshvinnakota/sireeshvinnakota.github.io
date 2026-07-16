@@ -214,20 +214,26 @@ h1 a{color:inherit;text-decoration:none;}
     </div>
   </div>
 
-  <!-- Match list -->
-  <div id="matches-container">
+  <!-- Championship match -->
+  <div id="champ-container">
     <div class="loading-state"><span class="spinner"></span>Loading the Final&hellip;</div>
   </div>
 
   <!-- Wager card -->
   <div class="wager-card hidden" id="wager-card">
     <h2>Your Wager</h2>
-    <p class="wager-desc">Stake points on your Championship pick. If you're right, you <strong>double</strong> your wager. If you're wrong, you <strong>forfeit</strong> the wagered points — they're subtracted from your score. (The 3rd Place match is scored normally, flat 40 pts, no wager.)</p>
+    <p class="wager-desc">Stake points on your Championship pick. If you're right, you <strong>double</strong> your wager. If you're wrong, you <strong>forfeit</strong> the wagered points — they're subtracted from your score.</p>
     <div class="wager-input-row">
       <input type="number" id="wager-input" min="0" step="1" value="0">
       <span class="wager-cap" id="wager-cap-label">of 0 points available</span>
     </div>
     <p class="wager-current hidden" id="wager-current-note"></p>
+  </div>
+
+  <!-- 3rd place match, clearly separate from the Championship + wager -->
+  <div id="thirdplace-section" class="hidden">
+    <p class="section-label">🥉 3RD PLACE MATCH &middot; WORTH +40 POINTS</p>
+    <div id="thirdplace-container"></div>
   </div>
 
   <!-- Submit / save -->
@@ -325,8 +331,11 @@ async function loadFinal() {
 
     buildMatches(picks, false);
   } catch(e) {
-    document.getElementById('matches-container').innerHTML =
+    document.getElementById('champ-container').innerHTML =
       '<div class="empty-notice"><strong>Error</strong>Could not load the Final matchup. Check your connection and refresh.</div>';
+    hide('wager-card');
+    hide('thirdplace-section');
+    hide('submit-wrap');
   }
 }
 
@@ -371,85 +380,109 @@ async function loadPreFinalScore() {
   }
 }
 
+// ── Build a single match card (shared by Championship + 3rd Place) ─────────
+function buildMatchCard(m, currentPicks, isEditable) {
+  const { id, slot, home, away } = m;
+  const result   = stageResults[id] || '';
+  const isIP     = result === 'IP';
+  const isFinal  = !!result && !isIP; // match has a confirmed result
+  const pick     = currentPicks[id] || '';
+
+  const homeActive = pick === home  ? ' active' : '';
+  const awayActive = pick === away  ? ' active' : '';
+  const homeWinner = isFinal && result === home ? ' winner' : '';
+  const awayWinner = isFinal && result === away ? ' winner' : '';
+
+  let dotHtml = '';
+  if (!isEditable && isFinal && pick) {
+    const correct = pick === result;
+    dotHtml = `<span class="result-dot ${correct ? 'correct' : 'wrong'}" title="${correct ? 'Correct!' : 'Incorrect'}"></span>`;
+  }
+
+  const badgeHtml = isIP
+    ? '<span class="ip-badge">LIVE</span>'
+    : isFinal ? '<span class="locked-badge">FT</span>' : '';
+
+  const clickAttr = isEditable && !isFinal && !isIP && home && away
+    ? 'onclick="onPick(this)"' : '';
+
+  const card = document.createElement('div');
+  card.className = 'match-card' + (isFinal || isIP ? ' locked' : '');
+  card.dataset.id = id;
+
+  const tbdHtml = (!home || !away)
+    ? '<div class="tbd-notice">⏳ Finalists TBD — matchup not yet confirmed</div>'
+    : '';
+
+  const pickRowHtml = (home && away)
+    ? `<div class="pick-row">
+        <button type="button" class="pick-btn home${homeActive}${homeWinner}" data-id="${id}" data-value="${esc(home)}" ${clickAttr}>${esc(home)}</button>
+        <button type="button" class="pick-btn away${awayActive}${awayWinner}" data-id="${id}" data-value="${esc(away)}" ${clickAttr}>${esc(away)}</button>
+        ${dotHtml}
+      </div>`
+    : tbdHtml;
+
+  const tp = isThirdPlaceMatch(m);
+  const roleLabel = tp ? '🥉 3rd Place' : '🏆 Championship';
+  const pointsLabel = tp ? '+' + (m.points || 40) + ' pts' : 'wager-based';
+
+  card.innerHTML = `
+    <div class="match-header">
+      <span class="match-num">${roleLabel}</span>
+      <span class="match-slot-label">${esc(slot || '')}</span>
+      <span class="match-slot-label" style="opacity:.7">${pointsLabel}</span>
+      ${badgeHtml}
+    </div>
+    ${pickRowHtml}
+  `;
+
+  return card;
+}
+
 // ── Build match card(s) ────────────────────────────────────────────────────
+// Render order: Championship pick → Wager card → 3rd Place pick (clearly
+// marked as worth +40 additional points). The Championship match is
+// identified as whichever match in the Final tab is NOT the 3rd place game
+// (id "third" / slot mentioning "3rd"/"third" — see isThirdPlaceMatch above).
 function buildMatches(currentPicks, isEditable) {
-  const container = document.getElementById('matches-container');
-  container.innerHTML = '';
-  container.className = isEditable ? '' : 'view-mode';
+  const champContainer = document.getElementById('champ-container');
+  const tpContainer     = document.getElementById('thirdplace-container');
+  champContainer.innerHTML = '';
+  tpContainer.innerHTML = '';
+  champContainer.className = isEditable ? '' : 'view-mode';
+  tpContainer.className = isEditable ? '' : 'view-mode';
 
   if (!matches.length) {
-    container.innerHTML =
+    champContainer.innerHTML =
       '<div class="empty-notice">'
       + '<strong>Coming Soon</strong>'
       + 'The Final matchup will appear here once the Semifinals conclude.'
       + '</div>';
     hide('wager-card');
+    hide('thirdplace-section');
     hide('submit-wrap');
     return;
   }
 
-  matches.forEach((m, idx) => {
-    const { id, slot, home, away } = m;
-    const result   = stageResults[id] || '';
-    const isIP     = result === 'IP';
-    const isFinal  = !!result && !isIP; // match has a confirmed result
-    const pick     = currentPicks[id] || '';
+  const champMatch = matches.find(m => !isThirdPlaceMatch(m));
+  const tpMatch     = matches.find(m => isThirdPlaceMatch(m));
 
-    const homeActive = pick === home  ? ' active' : '';
-    const awayActive = pick === away  ? ' active' : '';
-    const homeWinner = isFinal && result === home ? ' winner' : '';
-    const awayWinner = isFinal && result === away ? ' winner' : '';
+  if (champMatch) {
+    champContainer.appendChild(buildMatchCard(champMatch, currentPicks, isEditable));
+  } else {
+    champContainer.innerHTML = '<div class="empty-notice"><strong>Coming Soon</strong>The Championship matchup will appear here once the Semifinals conclude.</div>';
+  }
 
-    let dotHtml = '';
-    if (!isEditable && isFinal && pick) {
-      const correct = pick === result;
-      dotHtml = `<span class="result-dot ${correct ? 'correct' : 'wrong'}" title="${correct ? 'Correct!' : 'Incorrect'}"></span>`;
-    }
-
-    const badgeHtml = isIP
-      ? '<span class="ip-badge">LIVE</span>'
-      : isFinal ? '<span class="locked-badge">FT</span>' : '';
-
-    const clickAttr = isEditable && !isFinal && !isIP && home && away
-      ? 'onclick="onPick(this)"' : '';
-
-    const card = document.createElement('div');
-    card.className = 'match-card' + (isFinal || isIP ? ' locked' : '');
-    card.dataset.id = id;
-
-    const tbdHtml = (!home || !away)
-      ? '<div class="tbd-notice">⏳ Finalists TBD — matchup not yet confirmed</div>'
-      : '';
-
-    const pickRowHtml = (home && away)
-      ? `<div class="pick-row">
-          <button type="button" class="pick-btn home${homeActive}${homeWinner}" data-id="${id}" data-value="${esc(home)}" ${clickAttr}>${esc(home)}</button>
-          <button type="button" class="pick-btn away${awayActive}${awayWinner}" data-id="${id}" data-value="${esc(away)}" ${clickAttr}>${esc(away)}</button>
-          ${dotHtml}
-        </div>`
-      : tbdHtml;
-
-    const tp = isThirdPlaceMatch(m);
-    const roleLabel = tp ? '🥉 3rd Place' : '🏆 Championship';
-    const pointsLabel = tp ? (m.points || 40) + ' pts' : 'wager';
-
-    card.innerHTML = `
-      <div class="match-header">
-        <span class="match-num">${roleLabel}</span>
-        <span class="match-slot-label">${esc(slot || '')}</span>
-        <span class="match-slot-label" style="opacity:.7">${pointsLabel}</span>
-        ${badgeHtml}
-      </div>
-      ${pickRowHtml}
-    `;
-
-    container.appendChild(card);
-  });
+  if (tpMatch) {
+    show('thirdplace-section');
+    tpContainer.appendChild(buildMatchCard(tpMatch, currentPicks, isEditable));
+  } else {
+    hide('thirdplace-section');
+  }
 
   // Wager card is tied specifically to the Championship match (3rd Place is
   // scored flat and never carries a wager). Submit is shown as long as any
   // match in this stage is still open for picks.
-  const champMatch = matches.find(m => !isThirdPlaceMatch(m));
   const champResult = champMatch ? (stageResults[champMatch.id] || '') : '';
   const champDecided = !!champResult && champResult !== 'IP';
   const champMatchupKnown = !!(champMatch && champMatch.home && champMatch.away);
