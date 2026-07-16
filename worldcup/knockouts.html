@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">WC 2026 — Round of 32</title>
+<title id="page-title">WC 2026 — The Final</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -30,16 +30,6 @@ h1 a{color:inherit;text-decoration:none;}
 .back-link{color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s;}
 .back-link:hover{color:var(--gold);}
 
-/* ── Stage tabs ── */
-.stage-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;}
-.stage-tab{
-  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
-  background:transparent;border:1px solid var(--border);color:var(--muted);
-  border-radius:4px;padding:6px 13px;cursor:pointer;transition:all .15s;text-decoration:none;
-}
-.stage-tab:hover{border-color:var(--gold);color:var(--gold);}
-.stage-tab.active{background:var(--gold);color:var(--pitch);border-color:var(--gold);}
-
 /* ── Identity strip ── */
 .identity-strip{
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
@@ -63,29 +53,31 @@ h1 a{color:inherit;text-decoration:none;}
 }
 .btn-edit-cancel:hover{border-color:var(--muted);color:var(--text);}
 
-/* ── Name entry (new mode) ── */
-.info-card{background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;}
-.info-card h2{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;color:var(--white);margin-bottom:18px;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-@media(max-width:500px){.form-grid{grid-template-columns:1fr;}}
-label{display:block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-input[type="text"],input[type="email"],input[type="tel"]{
-  width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);
-  border-radius:4px;color:var(--text);font-family:'Inter',sans-serif;
-  font-size:14px;padding:10px 14px;transition:border-color .15s;
+/* ── Score / wager card ── */
+.score-card{
+  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
 }
-input:focus{outline:none;border-color:var(--gold);}
-input::placeholder{color:rgba(168,184,168,0.4);}
+.score-stat strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);line-height:1;}
+.score-stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
 
-/* ── Progress bar ── */
-.progress-wrap{
-  position:sticky;top:0;z-index:10;
-  background:var(--pitch-mid);border-bottom:1px solid var(--border);
-  padding:10px 20px;display:flex;align-items:center;gap:14px;margin-bottom:24px;
+.wager-card{
+  background:var(--pitch-mid);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;margin-bottom:20px;
 }
-.progress-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
-.progress-bar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .3s;}
-.progress-label{font-size:12px;color:var(--muted);white-space:nowrap;min-width:60px;text-align:right;}
+.wager-card h2{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;color:var(--white);margin-bottom:4px;}
+.wager-card .wager-desc{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.wager-input-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.wager-input-row input[type="number"]{
+  width:120px;background:rgba(0,0,0,0.3);border:1px solid var(--border);
+  border-radius:4px;color:var(--text);font-family:'Bebas Neue',sans-serif;
+  font-size:22px;padding:8px 14px;transition:border-color .15s;
+}
+.wager-input-row input[type="number"]:focus{outline:none;border-color:var(--gold);}
+.wager-input-row input:disabled{opacity:.5;cursor:not-allowed;}
+.wager-cap{font-size:12px;color:var(--muted);}
+.wager-locked-note{font-size:12px;color:var(--muted);font-style:italic;}
+.wager-current{font-size:13px;color:var(--gold);}
 
 /* ── Match cards ── */
 .section-label{
@@ -190,37 +182,15 @@ input::placeholder{color:rgba(168,184,168,0.4);}
 <div class="page">
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
-    <h1><a href="index.html">WORLD CUP <span>2026</span><br><span id="stage-title">ROUND OF 32</span></a></h1>
-    <p class="subtitle" id="stage-subtitle">Knockout Stage Predictions</p>
+    <h1><a href="index.html">WORLD CUP <span>2026</span><br><span id="stage-title">THE FINAL</span></a></h1>
+    <p class="subtitle" id="stage-subtitle">Pick the winner &amp; place your wager</p>
   </header>
 
   <div class="top-bar">
-    <a href="stage-select.html" id="back-link" class="back-link">← Choose Stage</a>
+    <a href="index.html" class="back-link">⌂ Home</a>
   </div>
 
-  <!-- Stage tabs (edit mode only) -->
-  <div class="stage-tabs hidden" id="stage-tabs"></div>
-
-  <!-- New mode: collect user details -->
-  <div class="info-card hidden" id="info-card">
-    <h2>Your Details</h2>
-    <div class="form-grid">
-      <div>
-        <label for="f-name">Name</label>
-        <input type="text" id="f-name" placeholder="e.g. Sireesh" required>
-      </div>
-      <div>
-        <label for="f-email">Email</label>
-        <input type="email" id="f-email" placeholder="you@example.com" required>
-      </div>
-      <div>
-        <label for="f-phone">Phone (optional)</label>
-        <input type="tel" id="f-phone" placeholder="+1 (555) 000-0000">
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit mode: identity strip -->
+  <!-- Identity strip -->
   <div class="identity-strip hidden" id="identity-strip">
     <div>
       <div class="identity-name" id="id-name"></div>
@@ -228,28 +198,45 @@ input::placeholder{color:rgba(168,184,168,0.4);}
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn-edit-cancel hidden" id="btn-cancel" onclick="cancelEdit()">Cancel</button>
-      <button class="btn-edit" id="btn-edit" onclick="enterEditMode()">Edit Picks</button>
+      <button class="btn-edit" id="btn-edit" onclick="enterEditMode()">Edit Pick</button>
     </div>
   </div>
 
-  <!-- Progress bar -->
-  <div class="progress-wrap hidden" id="progress-wrap">
-    <span style="font-size:12px;color:var(--muted);white-space:nowrap" id="progress-stage-label">Picks</span>
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
-    <span class="progress-label" id="progress-label">0 / 0</span>
+  <!-- Current score card -->
+  <div class="score-card hidden" id="score-card">
+    <div class="score-stat">
+      <strong id="score-value">0</strong>
+      <span>Points before the Final</span>
+    </div>
+    <div class="score-stat" style="opacity:.85">
+      <strong id="score-wager-cap">0</strong>
+      <span>Max you can wager</span>
+    </div>
   </div>
 
   <!-- Match list -->
   <div id="matches-container">
-    <div class="loading-state"><span class="spinner"></span>Loading matches&hellip;</div>
+    <div class="loading-state"><span class="spinner"></span>Loading the Final&hellip;</div>
+  </div>
+
+  <!-- Wager card -->
+  <div class="wager-card hidden" id="wager-card">
+    <h2>Your Wager</h2>
+    <p class="wager-desc">Stake points on your pick. If you're right, you gain the points you wagered — instead of the usual flat points for this round. If you're wrong, you gain nothing (but you don't lose anything either).</p>
+    <div class="wager-input-row">
+      <input type="number" id="wager-input" min="0" step="1" value="0">
+      <span class="wager-cap" id="wager-cap-label">of 0 points available</span>
+    </div>
+    <p class="wager-current hidden" id="wager-current-note"></p>
   </div>
 
   <!-- Submit / save -->
   <div class="submit-wrap hidden" id="submit-wrap">
     <div id="status-msg" class="status"></div>
-    <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">LOCK IN MY PICKS</button>
+    <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">SAVE MY PICK</button>
     <div class="nav-links">
       <a href="leaderboard.html" class="view-link">→ Leaderboard</a>
+      <a href="standings.html" class="view-link">→ Predictions</a>
     </div>
   </div>
 </div>
@@ -257,27 +244,30 @@ input::placeholder{color:rgba(168,184,168,0.4);}
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxdVZ_jskYcRR7uaVSuC2vZ8uTN402uYSgbEXh4pyY9CB8O8D88xMcoITXLpadTSw0/exec";
 
-// ── Stage registry (mirrors the Apps Script STAGES config) ─────────────────
-const STAGE_META = {
-  r32:   { label:"Round of 32",   title:"ROUND OF 32",   short:"R32",   getAction:"getR32",   postAction:"postR32",   picksField:"r32picks",   resultsField:"r32results",   dataField:"r32data",   points:5  },
-  r16:   { label:"Round of 16",   title:"ROUND OF 16",   short:"R16",   getAction:"getR16",   postAction:"postR16",   picksField:"r16picks",   resultsField:"r16results",   dataField:"r16data",   points:10 },
-  qf:    { label:"Quarterfinals", title:"QUARTERFINALS", short:"QF",    getAction:"getQF",    postAction:"postQF",    picksField:"qfpicks",    resultsField:"qfresults",    dataField:"qfdata",    points:20 },
-  sf:    { label:"Semifinals",    title:"SEMIFINALS",    short:"SF",    getAction:"getSF",    postAction:"postSF",    picksField:"sfpicks",    resultsField:"sfresults",    dataField:"sfdata",    points:40 },
-  final: { label:"Final",         title:"THE FINAL",     short:"Final", getAction:"getFinal", postAction:"postFinal", picksField:"finalpicks", resultsField:"finalresults", dataField:"finaldata", points:80 },
+// Only the Final remains open for picks — everything below is scoped to it.
+const stage = {
+  key: 'final', label: 'Final', title: 'THE FINAL', short: 'Final',
+  getAction: 'getFinal', postAction: 'postFinal',
+  picksField: 'finalpicks', resultsField: 'finalresults', dataField: 'finaldata',
+  wagerField: 'finalwager',
 };
-const STAGE_ORDER = ["r32","r16","qf","sf","final"];
 
-const params = new URLSearchParams(location.search);
-const mode   = params.get('mode') || 'new'; // 'new' | 'edit'
-const stageKey = STAGE_META[params.get('stage')] ? params.get('stage') : 'r32';
-const stage    = STAGE_META[stageKey];
+// Earlier stages, used only to total up each user's points earned so far
+// (their pre-Final score), which also serves as their wager cap.
+const PRIOR_STAGES = [
+  { getAction: 'get',     picksKind: 'group', points: 1  },
+  { getAction: 'getR32',  picksField: 'r32picks',  resultsField: 'r32results',  dataField: 'r32data',  points: 5  },
+  { getAction: 'getR16',  picksField: 'r16picks',  resultsField: 'r16results',  dataField: 'r16data',  points: 10 },
+  { getAction: 'getQF',   picksField: 'qfpicks',   resultsField: 'qfresults',   dataField: 'qfdata',   points: 20 },
+  { getAction: 'getSF',   picksField: 'sfpicks',   resultsField: 'sfresults',   dataField: 'sfdata',   points: 40 },
+];
 
 const userStr = sessionStorage.getItem('wc2026_user');
-const sessionUser = userStr ? JSON.parse(userStr) : null;
+const currentUser = userStr ? JSON.parse(userStr) : null;
 
-// Guard: edit mode requires a logged-in user
-if (mode === 'edit' && !sessionUser) {
-  window.location.href = 'login.html?intent=edit';
+// Guard: this page always requires a logged-in user now
+if (!currentUser) {
+  window.location.href = 'login.html';
 }
 
 // State
@@ -286,7 +276,9 @@ let stageResults = {};   // {id: winner} from sheet
 let picks        = {};   // {id: team}
 let editPicks    = {};   // mutable copy during edit
 let editMode     = false;
-let currentUser  = sessionUser; // for edit mode
+let currentWager  = 0;
+let editWager     = 0;
+let preFinalScore = 0;
 
 // ── Utilities ─────────────────────────────────────────────────────────────
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -295,72 +287,82 @@ function hide(id){document.getElementById(id).classList.add('hidden');}
 
 // ── Boot ──────────────────────────────────────────────────────────────────
 async function init() {
-  document.getElementById('page-title').textContent = 'WC 2026 — ' + stage.label;
-  document.getElementById('stage-title').textContent = stage.title;
-  document.getElementById('stage-subtitle').textContent = stage.label + ' Predictions \u00b7 ' + stage.points + ' pts per correct pick';
-  document.getElementById('progress-stage-label').textContent = stage.short + ' picks';
+  show('identity-strip');
+  document.getElementById('id-name').textContent = currentUser.name;
 
-  // Set back-link intent
-  document.getElementById('back-link').href =
-    'stage-select.html?intent=' + (mode === 'edit' ? 'edit' : 'new');
-
-  if (mode === 'new') {
-    show('info-card');
-    show('progress-wrap');
-    show('submit-wrap');
-  } else {
-    // Edit mode: show identity strip + stage tabs
-    show('identity-strip');
-    show('stage-tabs');
-    buildStageTabs();
-    document.getElementById('id-name').textContent = currentUser.name;
-  }
-
-  await loadData();
+  await Promise.all([loadFinal(), loadPreFinalScore()]);
 }
 
-function buildStageTabs() {
-  const wrap = document.getElementById('stage-tabs');
-  wrap.innerHTML = STAGE_ORDER.map(key => {
-    const meta = STAGE_META[key];
-    const activeCls = key === stageKey ? ' active' : '';
-    const href = 'knockouts.html?mode=edit&stage=' + key;
-    return `<a class="stage-tab${activeCls}" href="${href}">${esc(meta.short)}</a>`;
-  }).join('');
-}
-
-async function loadData() {
+async function loadFinal() {
   try {
     const r = await fetch(APPS_SCRIPT_URL + '?action=' + stage.getAction, { cache: 'no-store' });
     const j = await r.json();
 
-    // matches: [{id:"R32_1", slot:"1A vs 2B", home:"France", away:"Argentina"}, ...]
-    // home/away may be "" if not yet known
     matches      = j.matches || [];
     stageResults = j[stage.resultsField] || {};
 
-    if (mode === 'edit' && currentUser) {
-      picks = {};
-      const stageData = j[stage.dataField] || [];
-      const me = stageData.find(p => p.name === currentUser.name);
-      if (me) picks = me[stage.picksField] || {};
-
-      const pickedCount = Object.values(picks).filter(v => v).length;
-      document.getElementById('id-sub').textContent =
-        pickedCount + ' of ' + matches.length + ' ' + stage.short + ' matches picked';
-      buildMatches(picks, false);
-    } else {
-      show('progress-wrap');
-      buildMatches({}, true);
+    picks = {};
+    currentWager = 0;
+    const stageData = j[stage.dataField] || [];
+    const me = stageData.find(p => p.name === currentUser.name);
+    if (me) {
+      picks = me[stage.picksField] || {};
+      currentWager = Number(me[stage.wagerField] || 0);
     }
 
+    const pickedCount = Object.values(picks).filter(v => v).length;
+    document.getElementById('id-sub').textContent =
+      pickedCount ? 'Pick locked in \u00b7 wagered ' + currentWager + ' pts' : 'No Final pick yet';
+
+    buildMatches(picks, false);
   } catch(e) {
     document.getElementById('matches-container').innerHTML =
-      '<div class="empty-notice"><strong>Error</strong>Could not load ' + esc(stage.label) + ' matches. Check your connection and refresh.</div>';
+      '<div class="empty-notice"><strong>Error</strong>Could not load the Final matchup. Check your connection and refresh.</div>';
   }
 }
 
-// ── Build match cards ─────────────────────────────────────────────────────
+async function loadPreFinalScore() {
+  try {
+    const requests = PRIOR_STAGES.map(s => fetch(APPS_SCRIPT_URL + '?action=' + s.getAction, { cache: 'no-store' }));
+    const responses = await Promise.all(requests);
+
+    let total = 0;
+    for (let i = 0; i < PRIOR_STAGES.length; i++) {
+      const s = PRIOR_STAGES[i];
+      const j = await responses[i].json();
+
+      if (s.picksKind === 'group') {
+        const results = j.results || {};
+        const me = (j.data || []).find(p => p.name === currentUser.name);
+        if (me) {
+          Object.entries(results).forEach(([key, winner]) => {
+            if ((me.picks || {})[key] === winner) total += s.points;
+          });
+        }
+      } else {
+        const stageResultsX = j[s.resultsField] || {};
+        const me = (j[s.dataField] || []).find(p => p.name === currentUser.name);
+        if (me) {
+          const myPicks = me[s.picksField] || {};
+          Object.entries(stageResultsX).forEach(([key, winner]) => {
+            if (winner && winner !== 'IP' && myPicks[key] === winner) total += s.points;
+          });
+        }
+      }
+    }
+
+    preFinalScore = total;
+    document.getElementById('score-value').textContent = total;
+    document.getElementById('score-wager-cap').textContent = total;
+    document.getElementById('wager-cap-label').textContent = 'of ' + total + ' points available';
+    document.getElementById('wager-input').max = total;
+    show('score-card');
+  } catch(e) {
+    // Non-fatal — wager cap just won't be pre-filled if this fails
+  }
+}
+
+// ── Build match card(s) ────────────────────────────────────────────────────
 function buildMatches(currentPicks, isEditable) {
   const container = document.getElementById('matches-container');
   container.innerHTML = '';
@@ -370,31 +372,25 @@ function buildMatches(currentPicks, isEditable) {
     container.innerHTML =
       '<div class="empty-notice">'
       + '<strong>Coming Soon</strong>'
-      + esc(stage.label) + ' matchups will appear here once the previous round concludes and the bracket is set.'
+      + 'The Final matchup will appear here once the Semifinals conclude.'
       + '</div>';
-    if (mode === 'new') hide('submit-wrap');
+    hide('wager-card');
+    hide('submit-wrap');
     return;
   }
 
-  let filled = 0;
-  const total = matches.length;
-
   matches.forEach((m, idx) => {
     const { id, slot, home, away } = m;
-    const result  = stageResults[id] || '';
-    const isIP    = result === 'IP';
-    const isLocked = !!result && !isIP;
-    const isFinal  = !!result && !isIP;
+    const result   = stageResults[id] || '';
+    const isIP     = result === 'IP';
+    const isFinal  = !!result && !isIP; // match has a confirmed result
     const pick     = currentPicks[id] || '';
-
-    if (pick) filled++;
 
     const homeActive = pick === home  ? ' active' : '';
     const awayActive = pick === away  ? ' active' : '';
     const homeWinner = isFinal && result === home ? ' winner' : '';
     const awayWinner = isFinal && result === away ? ' winner' : '';
 
-    // Result indicator (edit/view modes)
     let dotHtml = '';
     if (!isEditable && isFinal && pick) {
       const correct = pick === result;
@@ -413,10 +409,9 @@ function buildMatches(currentPicks, isEditable) {
     card.dataset.id = id;
 
     const tbdHtml = (!home || !away)
-      ? '<div class="tbd-notice">⏳ Teams TBD — matchup not yet confirmed</div>'
+      ? '<div class="tbd-notice">⏳ Finalists TBD — matchup not yet confirmed</div>'
       : '';
 
-    // Only show pick buttons if both teams are known
     const pickRowHtml = (home && away)
       ? `<div class="pick-row">
           <button type="button" class="pick-btn home${homeActive}${homeWinner}" data-id="${id}" data-value="${esc(home)}" ${clickAttr}>${esc(home)}</button>
@@ -427,7 +422,7 @@ function buildMatches(currentPicks, isEditable) {
 
     card.innerHTML = `
       <div class="match-header">
-        <span class="match-num">Match ${idx + 1}</span>
+        <span class="match-num">Final</span>
         <span class="match-slot-label">${esc(slot || '')}</span>
         ${badgeHtml}
       </div>
@@ -437,7 +432,28 @@ function buildMatches(currentPicks, isEditable) {
     container.appendChild(card);
   });
 
-  updateProgress(filled, matches.length);
+  // Wager card + submit only make sense once the matchup is known and not yet decided
+  const finalDecided = matches.some(m => {
+    const r = stageResults[m.id] || '';
+    return !!r && r !== 'IP';
+  });
+  const matchupKnown = matches.some(m => m.home && m.away);
+
+  if (matchupKnown && !finalDecided) {
+    show('wager-card');
+    show('submit-wrap');
+    document.getElementById('wager-input').value = isEditable ? editWager : currentWager;
+    document.getElementById('wager-input').disabled = !isEditable;
+    if (!isEditable && currentWager > 0) {
+      document.getElementById('wager-current-note').textContent = 'Currently wagering ' + currentWager + ' pts on your pick.';
+      show('wager-current-note');
+    } else {
+      hide('wager-current-note');
+    }
+  } else {
+    hide('wager-card');
+    if (finalDecided) hide('submit-wrap');
+  }
 }
 
 // ── Pick interaction ───────────────────────────────────────────────────────
@@ -448,7 +464,6 @@ function onPick(btn) {
   const currentPicks = editMode ? editPicks : picks;
   const prev = currentPicks[id];
 
-  // Deselect all in this match
   document.querySelectorAll(`.match-card[data-id="${id}"] .pick-btn`)
     .forEach(b => b.classList.remove('active'));
 
@@ -458,31 +473,19 @@ function onPick(btn) {
     btn.classList.add('active');
     currentPicks[id] = val;
   }
-
-  const filled = Object.values(currentPicks).filter(v => v).length;
-  updateProgress(filled, matches.length);
-}
-
-function updateProgress(filled, total) {
-  const pct = total > 0 ? (filled / total) * 100 : 0;
-  const fill  = document.getElementById('progress-fill');
-  const label = document.getElementById('progress-label');
-  if (fill)  fill.style.width = pct + '%';
-  if (label) label.textContent = filled + ' / ' + total;
 }
 
 // ── Edit mode ──────────────────────────────────────────────────────────────
 function enterEditMode() {
   editMode = true;
   editPicks = Object.assign({}, picks);
+  editWager = currentWager;
   buildMatches(editPicks, true);
-  show('progress-wrap');
-  show('submit-wrap');
   show('btn-cancel');
   document.getElementById('btn-edit').textContent = 'Editing…';
   document.getElementById('btn-edit').disabled = true;
   const btnEl = document.getElementById('btn-submit');
-  btnEl.textContent = 'SAVE MY PICKS';
+  btnEl.textContent = 'SAVE MY PICK';
   btnEl.disabled = false;
   const statusEl = document.getElementById('status-msg');
   statusEl.className = 'status';
@@ -492,10 +495,8 @@ function enterEditMode() {
 function cancelEdit() {
   editMode = false;
   buildMatches(picks, false);
-  hide('progress-wrap');
-  hide('submit-wrap');
   hide('btn-cancel');
-  document.getElementById('btn-edit').textContent = 'Edit Picks';
+  document.getElementById('btn-edit').textContent = 'Edit Pick';
   document.getElementById('btn-edit').disabled = false;
 }
 
@@ -505,44 +506,34 @@ async function handleSubmit() {
   const btnEl    = document.getElementById('btn-submit');
   statusEl.className = 'status';
 
-  let name, email, phone, stagePicks;
+  const stagePicks = editMode ? editPicks : picks;
+  const wagerRaw = document.getElementById('wager-input').value;
+  const wager = Math.max(0, Math.floor(Number(wagerRaw) || 0));
 
-  if (mode === 'new') {
-    name  = (document.getElementById('f-name').value || '').trim();
-    email = (document.getElementById('f-email').value || '').trim();
-    phone = (document.getElementById('f-phone').value || '').trim();
-    if (!name || !email) {
-      statusEl.className = 'status error';
-      statusEl.textContent = 'Please fill in your name and email before submitting.';
-      return;
-    }
-    stagePicks = picks;
-  } else {
-    name       = currentUser.name;
-    email      = currentUser.email;
-    phone      = currentUser.phone || '';
-    stagePicks = editPicks;
+  if (!Object.values(stagePicks).some(v => v)) {
+    statusEl.className = 'status error';
+    statusEl.textContent = 'Please pick a winner for the Final before saving.';
+    return;
   }
 
-  const openCount = matches.filter(m => {
-    // Only count matches where both teams are known and no result yet
-    return m.home && m.away && !stageResults[m.id] && !stagePicks[m.id];
-  }).length;
-
-  if (openCount > 0) {
-    const ok = confirm(`You have ${openCount} unpicked matches. Submit anyway?`);
-    if (!ok) return;
+  if (wager > preFinalScore) {
+    statusEl.className = 'status error';
+    statusEl.textContent = `You can wager at most ${preFinalScore} points (your score so far).`;
+    return;
   }
 
   btnEl.disabled = true;
-  btnEl.textContent = mode === 'edit' ? 'SAVING…' : 'SUBMITTING…';
+  btnEl.textContent = 'SAVING…';
 
   const payload = {
-    name, email, phone,
+    name: currentUser.name,
+    email: currentUser.email,
+    phone: currentUser.phone || '',
     timestamp: new Date().toISOString(),
     action: stage.postAction,
   };
   payload[stage.picksField] = stagePicks;
+  payload[stage.wagerField] = wager;
 
   try {
     await fetch(APPS_SCRIPT_URL, {
@@ -552,26 +543,20 @@ async function handleSubmit() {
       body:    JSON.stringify(payload),
     });
 
-    if (mode === 'edit') {
-      picks = Object.assign({}, editPicks);
-      statusEl.className = 'status success';
-      statusEl.textContent = '✓ ' + stage.short + ' picks saved for ' + name + '!';
-      btnEl.textContent = 'SAVED ✓';
-      setTimeout(() => {
-        cancelEdit();
-        const pickedCount = Object.values(picks).filter(v => v).length;
-        document.getElementById('id-sub').textContent = pickedCount + ' of ' + matches.length + ' ' + stage.short + ' matches picked';
-      }, 1200);
-    } else {
-      statusEl.className = 'status success';
-      statusEl.innerHTML = `✓ ${esc(stage.short)} picks locked in for <strong>${esc(name)}</strong>!<br><a href="leaderboard.html" class="view-link">→ Leaderboard</a>`;
-      btnEl.textContent = 'SUBMITTED ✓';
-    }
+    picks = Object.assign({}, stagePicks);
+    currentWager = wager;
+    statusEl.className = 'status success';
+    statusEl.textContent = '✓ Final pick saved for ' + currentUser.name + ' — wagering ' + wager + ' pts!';
+    btnEl.textContent = 'SAVED ✓';
+    setTimeout(() => {
+      cancelEdit();
+      document.getElementById('id-sub').textContent = 'Pick locked in \u00b7 wagered ' + currentWager + ' pts';
+    }, 1200);
   } catch(err) {
     statusEl.className = 'status error';
-    statusEl.textContent = 'Submission failed. Please try again or contact Sireesh.';
+    statusEl.textContent = 'Save failed. Please try again or contact Sireesh.';
     btnEl.disabled = false;
-    btnEl.textContent = mode === 'edit' ? 'SAVE MY PICKS' : 'LOCK IN MY PICKS';
+    btnEl.textContent = 'SAVE MY PICK';
   }
 }
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WC 2026 — Predict</title>
+<title>WC 2026 — The Final</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -74,8 +74,8 @@ h1 span{color:var(--gold);}
 }
 .nav-card .desc{font-size:11px;color:var(--muted);line-height:1.4;}
 
-/* Primary card gets gold accent */
-.nav-card.primary{border-color:rgba(232,200,74,0.3);}
+/* Primary card gets gold accent, spans full width */
+.nav-card.primary{border-color:rgba(232,200,74,0.3);grid-column:1 / -1;}
 .nav-card.primary .label{color:var(--gold);}
 
 .footer-note{font-size:11px;color:rgba(138,168,154,0.5);}
@@ -88,24 +88,19 @@ h1 span{color:var(--gold);}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP<br><span>2026</span></a></h1>
-    <p class="subtitle">Round of 32 &nbsp;&middot;&nbsp; Knockout Stage</p>
+    <p class="subtitle">👑 The Final &nbsp;&middot;&nbsp; Pick a winner &amp; place your wager</p>
   </header>
 
   <div class="nav-grid">
-    <a href="knockouts.html?mode=new" class="nav-card primary">
-      <span class="icon">🏆</span>
-      <span class="label">Submit R32 Picks</span>
-      <span class="desc">Lock in your Round of 32 knockout predictions.</span>
-    </a>
-    <a href="login.html?intent=edit" class="nav-card">
-      <span class="icon">📋</span>
-      <span class="label">View / Edit Picks</span>
-      <span class="desc">Log in to view or update your predictions.</span>
+    <a href="login.html" class="nav-card primary">
+      <span class="icon">👑</span>
+      <span class="label">Log In &amp; Pick the Final</span>
+      <span class="desc">Sign in to enter your Final pick and wager.</span>
     </a>
     <a href="standings.html" class="nav-card">
       <span class="icon">📊</span>
       <span class="label">Predictions</span>
-      <span class="desc">See how everyone picked each match.</span>
+      <span class="desc">See how everyone picked the Final.</span>
     </a>
     <a href="leaderboard.html" class="nav-card">
       <span class="icon">🏆</span>
@@ -114,7 +109,7 @@ h1 span{color:var(--gold);}
     </a>
   </div>
 
-  <p class="footer-note">Picks lock when each match kicks off</p>
+  <p class="footer-note">Picks lock when the Final kicks off</p>
 </div>
 </body>
 </html>

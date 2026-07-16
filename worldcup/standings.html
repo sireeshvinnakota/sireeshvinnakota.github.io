@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WC 2026 — Group Stage Predictions</title>
+<title>WC 2026 — The Final Predictions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -82,7 +82,7 @@ h1 a{color:inherit;text-decoration:none}
 .tooltip-team{font-weight:700;margin-bottom:5px;font-size:13px}
 .tooltip-names{line-height:1.8}
 .tooltip-count{font-size:10px;color:var(--muted);margin-top:4px}
-/* ── Bracket view (R32) ── */
+/* ── Bracket view (knockout stages) ── */
 #bracket-view{display:none;}
 .bracket-match{
   background:var(--pitch-mid);border:1px solid var(--border);
@@ -105,6 +105,7 @@ h1 a{color:inherit;text-decoration:none}
   display:flex;flex-direction:column;gap:3px;
 }
 .bracket-team-name{font-size:13px;font-weight:600;color:var(--white);}
+.bracket-team-wager{font-size:11px;color:var(--gold);opacity:.85;}
 .bracket-team.winner .bracket-team-name{color:var(--gold);}
 .bracket-team.loser .bracket-team-name{color:var(--muted);opacity:.55;}
 .bracket-bar-wrap{margin-top:8px;}
@@ -116,7 +117,7 @@ h1 a{color:inherit;text-decoration:none}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP <span>2026</span><br>PREDICTIONS</a></h1>
-    <p class="subtitle" id="stage-subtitle">Group Stage &mdash; How everyone voted</p>
+    <p class="subtitle" id="stage-subtitle">The Final &mdash; How everyone picked</p>
   </header>
   <div class="top-bar">
     <a href="index.html" class="back-link">⌂ Home</a>
@@ -128,12 +129,12 @@ h1 a{color:inherit;text-decoration:none}
   </div>
   <!-- Stage tab switcher -->
   <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
-    <button class="filter-btn active" id="tab-groups" onclick="switchStage('groups')">⚽ Group Stage</button>
+    <button class="filter-btn" id="tab-final" onclick="switchStage('final')">👑 Final</button>
+    <button class="filter-btn" id="tab-groups" onclick="switchStage('groups')">⚽ Group Stage</button>
     <button class="filter-btn" id="tab-r32" onclick="switchStage('r32')">🏆 Round of 32</button>
     <button class="filter-btn" id="tab-r16" onclick="switchStage('r16')">🥈 Round of 16</button>
     <button class="filter-btn" id="tab-qf" onclick="switchStage('qf')">🥇 Quarterfinals</button>
     <button class="filter-btn" id="tab-sf" onclick="switchStage('sf')">🔥 Semifinals</button>
-    <button class="filter-btn" id="tab-final" onclick="switchStage('final')">👑 Final</button>
   </div>
   <div id="stats-bar" class="stats-bar" style="display:none"></div>
   <div class="legend">
@@ -143,7 +144,7 @@ h1 a{color:inherit;text-decoration:none}
     <div class="legend-item"><div class="legend-dot" style="background:var(--col-away)"></div>Away team</div>
     <div class="legend-item" style="margin-left:auto;font-style:italic">Hover a segment for names</div>
   </div>
-  <div class="filter-row" id="filter-row">
+  <div class="filter-row" id="filter-row" style="display:none">
     <button class="filter-btn active" id="btn-all" onclick="setFilter('all',this)">All Groups</button>
     <div class="group-select-wrap">
       <select class="group-select" id="group-select" onchange="onGroupSelect(this)">
@@ -168,10 +169,12 @@ h1 a{color:inherit;text-decoration:none}
     <button class="filter-btn today-btn" id="btn-today" onclick="setFilter('today',this)">Today</button>
     <button class="filter-btn" id="btn-tomorrow" onclick="setFilter('tomorrow',this)">Tomorrow</button>
   </div>
-  <div id="main-content">
+  <div id="main-content" style="display:none">
     <div class="loading-wrap"><div class="spinner"></div><p>Loading predictions&hellip;</p></div>
   </div>
-  <div id="bracket-view" style="display:none;"></div>
+  <div id="bracket-view" style="display:block">
+    <div class="loading-wrap"><div class="spinner"></div><p>Loading the Final&hellip;</p></div>
+  </div>
 </div>
 <div class="tooltip" id="tooltip">
   <div class="tooltip-team" id="tt-team"></div>
@@ -181,15 +184,16 @@ h1 a{color:inherit;text-decoration:none}
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxdVZ_jskYcRR7uaVSuC2vZ8uTN402uYSgbEXh4pyY9CB8O8D88xMcoITXLpadTSw0/exec";
 
-let currentStage = 'groups'; // 'groups' | 'r32' | 'r16' | 'qf' | 'sf' | 'final'
+let currentStage = 'final'; // 'final' | 'groups' | 'r32' | 'r16' | 'qf' | 'sf'
 
-// Knockout stage registry — same shape as knockouts.html / Apps Script STAGES
+// Knockout stage registry — same shape as knockouts.html / Apps Script STAGES.
+// 'final' also carries a wagerField so we can show cumulative points wagered.
 const KO_STAGES = {
+  final: { short:'Final', label:'The Final',     getAction:'getFinal', picksField:'finalpicks', resultsField:'finalresults', dataField:'finaldata', wagerField:'finalwager' },
   r32:   { short:'R32',   label:'Round of 32',   getAction:'getR32',   picksField:'r32picks',   resultsField:'r32results',   dataField:'r32data'   },
   r16:   { short:'R16',   label:'Round of 16',   getAction:'getR16',   picksField:'r16picks',   resultsField:'r16results',   dataField:'r16data'   },
   qf:    { short:'QF',    label:'Quarterfinals', getAction:'getQF',    picksField:'qfpicks',    resultsField:'qfresults',    dataField:'qfdata'    },
   sf:    { short:'SF',    label:'Semifinals',    getAction:'getSF',    picksField:'sfpicks',    resultsField:'sfresults',    dataField:'sfdata'    },
-  final: { short:'Final', label:'The Final',     getAction:'getFinal', picksField:'finalpicks', resultsField:'finalresults', dataField:'finaldata' },
 };
 let koData = {}; // key -> {matches, results, data}
 
@@ -295,21 +299,25 @@ const SCHEDULE = {
     ["Colombia","Congo DR","Jun 23","10:00 PM ET","Estadio Akron, Zapopan"],
     ["Colombia","Portugal","Jun 27","7:30 PM ET","Hard Rock Stadium, Miami Gardens"],
     ["Colombia","Uzbekistan","Jun 17","10:00 PM ET","Estadio Azteca, Mexico City"],
-    ["Congo DR","Portugal","Jun 17","7:30 PM ET","NRG Stadium, Houston"],
-    ["Congo DR","Uzbekistan","Jun 27","1:00 PM ET","NRG Stadium, Houston"],
-    ["Portugal","Uzbekistan","Jun 23","1:00 PM ET","NRG Stadium, Houston"],
+    ["Congo DR","Portugal","Jun 17","4:00 PM ET","Estadio Azteca, Mexico City"],
+    ["Congo DR","Uzbekistan","Jun 27","7:30 PM ET","Estadio Azteca, Mexico City"],
+    ["Portugal","Uzbekistan","Jun 23","6:30 PM ET","Lincoln Financial Field, Philadelphia"],
   ],
   L:[
-    ["Croatia","England","Jun 17","4:00 PM ET","AT&T Stadium, Arlington"],
-    ["Croatia","Ghana","Jun 27","5:00 PM ET","Lincoln Financial Field, Philadelphia"],
-    ["Croatia","Panama","Jun 23","7:00 PM ET","BMO Field, Toronto"],
-    ["England","Ghana","Jun 23","4:00 PM ET","Gillette Stadium, Foxborough"],
-    ["England","Panama","Jun 27","5:00 PM ET","MetLife Stadium, East Rutherford"],
-    ["Ghana","Panama","Jun 17","7:00 PM ET","BMO Field, Toronto"],
+    ["Croatia","England","Jun 17","1:00 PM ET","Lincoln Financial Field, Philadelphia"],
+    ["Croatia","Ghana","Jun 23","1:00 PM ET","NRG Stadium, Houston"],
+    ["Croatia","Panama","Jun 28","3:00 PM ET","NRG Stadium, Houston"],
+    ["England","Ghana","Jun 28","3:00 PM ET","AT&T Stadium, Arlington"],
+    ["England","Panama","Jun 23","4:00 PM ET","AT&T Stadium, Arlington"],
+    ["Ghana","Panama","Jun 17","7:00 PM ET","Gillette Stadium, Foxborough"],
   ],
 };
 
-function getMatches(t){const m=[];for(let i=0;i<t.length;i++)for(let j=i+1;j<t.length;j++)m.push([t[i],t[j]]);return m}
+function getMatches(teams){
+  const m=[];
+  for(let i=0;i<teams.length;i++) for(let j=i+1;j<teams.length;j++) m.push([teams[i],teams[j]]);
+  return m;
+}
 
 let allData=[], results={}, currentFilter='all';
 
@@ -352,130 +360,39 @@ async function loadData(){
       const jk=await responses[i+1].json();
       koData[key]={matches:jk.matches||[], results:jk[def.resultsField]||{}, data:jk[def.dataField]||[]};
     }
-    if(currentStage==='groups') render(); else renderBracket(currentStage);
+    applyStageView();
     document.getElementById('last-updated').textContent='Updated '+new Date().toLocaleTimeString();
   }catch{
-    document.getElementById('main-content').innerHTML='<div class="empty-state"><p>Could not load predictions. Check your connection.</p></div>';
+    document.getElementById('bracket-view').innerHTML='<div class="empty-state"><p>Could not load predictions. Check your connection.</p></div>';
     document.getElementById('last-updated').textContent='Error';
   }
 }
 
 function switchStage(stage){
   currentStage=stage;
+  applyStageView();
+}
+
+// Toggles tab/UI visibility for the current stage and renders it.
+// Split out from switchStage so the initial load (defaulting to 'final')
+// doesn't need a second network round-trip to get the UI into a consistent state.
+function applyStageView(){
+  const stage=currentStage;
   ['groups',...Object.keys(KO_STAGES)].forEach(s=>{
     const el=document.getElementById('tab-'+s);
     if(el) el.classList.toggle('active', stage===s);
   });
   document.getElementById('filter-row').style.display = stage==='groups' ? '' : 'none';
   document.getElementById('stats-bar').style.display = stage==='groups' ? '' : 'none';
-  const legend=document.querySelector('.legend');
-  if(legend) legend.style.display = '';
   document.getElementById('stage-subtitle').textContent = stage==='groups'
     ? 'Group Stage \u2014 How everyone voted'
     : (KO_STAGES[stage].label + ' \u2014 How everyone picked');
   if(stage==='groups'){ render(); } else { renderBracket(stage); }
 }
 
-function renderBracket(stage){
-  document.getElementById('main-content').style.display='none';
-  const bv=document.getElementById('bracket-view');
-  bv.style.display='block';
-
-  const def=KO_STAGES[stage];
-  const stageState=koData[stage]||{matches:[],results:{},data:[]};
-  const matches=stageState.matches, stageResults=stageState.results, stageData=stageState.data;
-
-  if(!matches.length){
-    bv.innerHTML='<div class="empty-state"><p>'+esc(def.label)+' matchups not yet available.</p></div>';
-    return;
-  }
-
-  let html='';
-  matches.forEach((m,idx)=>{
-    const {id,slot,home,away}=m;
-    const result=stageResults[id]||'';
-    const isIP=result==='IP';
-    const isFinal=!!result&&!isIP;
-
-    // Count votes
-    const homePickers=[], awayPickers=[];
-    stageData.forEach(p=>{
-      const pick=(p[def.picksField]||{})[id]||'';
-      if(pick===home) homePickers.push(p.name);
-      else if(pick===away) awayPickers.push(p.name);
-    });
-    const total=homePickers.length+awayPickers.length;
-    const homePct=total>0?Math.round(homePickers.length/total*100):50;
-    const awayPct=total>0?100-homePct:50;
-
-    const badgeHtml=isIP
-      ?'<span class="bracket-badge ip">LIVE</span>'
-      :isFinal?'<span class="bracket-badge">FT</span>':'';
-
-    const homeWinner=isFinal&&result===home;
-    const awayWinner=isFinal&&result===away;
-
-    const homeCls=homeWinner?' winner':awayWinner?' loser':'';
-    const awayCls=awayWinner?' winner':homeWinner?' loser':'';
-
-    const homeDisplay=home||'TBD';
-    const awayDisplay=away||'TBD';
-
-    // Build shared segmented bar (same as group stage)
-    let barHtml;
-    if(!home||!away){
-      barHtml='<div class="no-votes"><span class="no-votes-text">TBD</span></div>';
-    } else if(total===0){
-      barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
-    } else {
-      const MIN=8;
-      const homeWinnerCls=homeWinner?' winner':'';
-      const awayWinnerCls=awayWinner?' winner':'';
-      let segs='';
-      if(homePickers.length>0){
-        const lbl=homePct>=MIN?homeDisplay.split(' ')[0]+' '+homePct+'%':'';
-        segs+=`<div class="bar-seg seg-home${homeWinnerCls}" style="flex:${homePct}" data-label="${escA(homeDisplay)}" data-names="${encodeURIComponent(JSON.stringify(homePickers))}" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">${lbl}</span></div>`;
-      }
-      if(awayPickers.length>0){
-        const lbl=awayPct>=MIN?awayDisplay.split(' ')[0]+' '+awayPct+'%':'';
-        segs+=`<div class="bar-seg seg-away${awayWinnerCls}" style="flex:${awayPct}" data-label="${escA(awayDisplay)}" data-names="${encodeURIComponent(JSON.stringify(awayPickers))}" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">${lbl}</span></div>`;
-      }
-      barHtml=`<div class="bar-track">${segs}</div>`;
-    }
-
-    html+=`<div class="bracket-match">
-      <div class="bracket-header">
-        <span class="bracket-num">Match ${idx+1}</span>
-        <span class="bracket-slot">${esc(slot||'')}</span>
-        ${badgeHtml}
-      </div>
-      <div class="bracket-teams">
-        <div class="bracket-team${homeCls}">
-          <div class="bracket-team-name">${esc(homeDisplay)}</div>
-        </div>
-        <div class="bracket-team${awayCls}">
-          <div class="bracket-team-name">${esc(awayDisplay)}</div>
-        </div>
-      </div>
-      <div class="bracket-bar-wrap" style="padding:8px 14px 10px;">
-        ${barHtml}
-      </div>
-    </div>`;
-  });
-  bv.innerHTML=html;
-}
-
-function getDateLabel(offsetDays){
-  const d=new Date();
-  d.setDate(d.getDate()+offsetDays);
-  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); // e.g. "Jun 9"
-}
-
 function setFilter(g,btn){
   currentFilter=g;
-  // Reset all button states
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  // Reset dropdown
+  document.querySelectorAll('.filter-btn').forEach(b=>{ if(b.id!=='tab-groups' && !b.id.startsWith('tab-')) b.classList.remove('active'); });
   const sel=document.getElementById('group-select');
   sel.value='';sel.classList.remove('active');
   if(btn) btn.classList.add('active');
@@ -485,7 +402,7 @@ function setFilter(g,btn){
 function onGroupSelect(sel){
   if(!sel.value){setFilter('all',document.getElementById('btn-all'));return;}
   currentFilter=sel.value;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.filter-row .filter-btn').forEach(b=>b.classList.remove('active'));
   sel.classList.add('active');
   render();
 }
@@ -501,7 +418,7 @@ function render(){
       +'<div class="stat"><strong>'+Math.round(total/Math.max(allData.length,1))+'</strong>Avg picks/person</div>';
   }
   if(!allData.length){
-    document.getElementById('main-content').innerHTML='<div class="empty-state"><p>No predictions yet. <a href="predict.html">Be the first!</a></p></div>';
+    document.getElementById('main-content').innerHTML='<div class="empty-state"><p>No group stage predictions on file.</p></div>';
     return;
   }
 
@@ -528,7 +445,7 @@ function render(){
       html+='</div>';
     });
     if(!anyMatch){
-      html='<div class="empty-state"><p>No group stage matches '+labelMap[currentFilter].toLowerCase()+'.<br><span style="font-size:12px;color:var(--muted)">The group stage runs June 11–27.</span></p></div>';
+      html='<div class="empty-state"><p>No group stage matches '+labelMap[currentFilter].toLowerCase()+'.<br><span style="font-size:12px;color:var(--muted)">The group stage ran June 11\u201327.</span></p></div>';
     }
   } else {
     const groups=currentFilter==='all'?Object.keys(GROUPS):[currentFilter];
@@ -595,6 +512,110 @@ function buildMatchRow(letter,mi,home,away,schedEntry){
     +'</div>'
     +'<div class="vote-col"><div class="vote-bar-wrap">'+barHtml+'</div></div>'
     +'</div>';
+}
+
+function renderBracket(stage){
+  document.getElementById('main-content').style.display='none';
+  const bv=document.getElementById('bracket-view');
+  bv.style.display='block';
+
+  const def=KO_STAGES[stage];
+  const stageState=koData[stage]||{matches:[],results:{},data:[]};
+  const matches=stageState.matches, stageResults=stageState.results, stageData=stageState.data;
+
+  if(!matches.length){
+    bv.innerHTML='<div class="empty-state"><p>'+esc(def.label)+' matchup not yet available.</p></div>';
+    return;
+  }
+
+  let html='';
+  matches.forEach((m,idx)=>{
+    const {id,slot,home,away}=m;
+    const result=stageResults[id]||'';
+    const isIP=result==='IP';
+    const isFinal=!!result&&!isIP;
+
+    // Count votes (and, for stages with a wagerField, cumulative points wagered)
+    const homePickers=[], awayPickers=[];
+    let homeWager=0, awayWager=0;
+    stageData.forEach(p=>{
+      const pick=(p[def.picksField]||{})[id]||'';
+      const wager=def.wagerField?Number(p[def.wagerField]||0):0;
+      if(pick===home){ homePickers.push(p.name); homeWager+=wager; }
+      else if(pick===away){ awayPickers.push(p.name); awayWager+=wager; }
+    });
+    const total=homePickers.length+awayPickers.length;
+    const homePct=total>0?Math.round(homePickers.length/total*100):50;
+    const awayPct=total>0?100-homePct:50;
+
+    const badgeHtml=isIP
+      ?'<span class="bracket-badge ip">LIVE</span>'
+      :isFinal?'<span class="bracket-badge">FT</span>':'';
+
+    const homeWinner=isFinal&&result===home;
+    const awayWinner=isFinal&&result===away;
+
+    const homeCls=homeWinner?' winner':awayWinner?' loser':'';
+    const awayCls=awayWinner?' winner':homeWinner?' loser':'';
+
+    const homeDisplay=home||'TBD';
+    const awayDisplay=away||'TBD';
+
+    const homeWagerHtml = (def.wagerField && total>0)
+      ? '<div class="bracket-team-wager">\ud83e\ude99 '+homeWager+' pts wagered</div>' : '';
+    const awayWagerHtml = (def.wagerField && total>0)
+      ? '<div class="bracket-team-wager">\ud83e\ude99 '+awayWager+' pts wagered</div>' : '';
+
+    // Build shared segmented bar (same as group stage)
+    let barHtml;
+    if(!home||!away){
+      barHtml='<div class="no-votes"><span class="no-votes-text">TBD</span></div>';
+    } else if(total===0){
+      barHtml='<div class="no-votes"><span class="no-votes-text">No picks yet</span></div>';
+    } else {
+      const MIN=8;
+      const homeWinnerCls=homeWinner?' winner':'';
+      const awayWinnerCls=awayWinner?' winner':'';
+      let segs='';
+      if(homePickers.length>0){
+        const lbl=homePct>=MIN?homeDisplay.split(' ')[0]+' '+homePct+'%':'';
+        segs+=`<div class="bar-seg seg-home${homeWinnerCls}" style="flex:${homePct}" data-label="${escA(homeDisplay)}" data-names="${encodeURIComponent(JSON.stringify(homePickers))}" data-color="var(--col-home)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">${lbl}</span></div>`;
+      }
+      if(awayPickers.length>0){
+        const lbl=awayPct>=MIN?awayDisplay.split(' ')[0]+' '+awayPct+'%':'';
+        segs+=`<div class="bar-seg seg-away${awayWinnerCls}" style="flex:${awayPct}" data-label="${escA(awayDisplay)}" data-names="${encodeURIComponent(JSON.stringify(awayPickers))}" data-color="var(--col-away)" onmouseenter="onSeg(event,this)" onmouseleave="hideTip()"><span class="seg-label">${lbl}</span></div>`;
+      }
+      barHtml=`<div class="bar-track">${segs}</div>`;
+    }
+
+    html+=`<div class="bracket-match">
+      <div class="bracket-header">
+        <span class="bracket-num">${stage==='final'?'The Final':'Match '+(idx+1)}</span>
+        <span class="bracket-slot">${esc(slot||'')}</span>
+        ${badgeHtml}
+      </div>
+      <div class="bracket-teams">
+        <div class="bracket-team${homeCls}">
+          <div class="bracket-team-name">${esc(homeDisplay)}</div>
+          ${homeWagerHtml}
+        </div>
+        <div class="bracket-team${awayCls}">
+          <div class="bracket-team-name">${esc(awayDisplay)}</div>
+          ${awayWagerHtml}
+        </div>
+      </div>
+      <div class="bracket-bar-wrap" style="padding:8px 14px 10px;">
+        ${barHtml}
+      </div>
+    </div>`;
+  });
+  bv.innerHTML=html;
+}
+
+function getDateLabel(offsetDays){
+  const d=new Date();
+  d.setDate(d.getDate()+offsetDays);
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); // e.g. "Jun 9"
 }
 
 function onSeg(e,el){

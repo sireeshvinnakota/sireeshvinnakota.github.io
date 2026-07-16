@@ -84,21 +84,6 @@ option{background:#0D3D2B;color:var(--text);}
   border-radius:var(--radius);color:#ff8a8a;font-size:13px;
 }
 
-.divider{
-  display:flex;align-items:center;gap:12px;
-  margin:22px 0;color:var(--muted);font-size:11px;
-}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
-
-.btn-new{
-  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.08em;
-  background:transparent;color:var(--gold);border:1px solid rgba(232,200,74,0.4);
-  border-radius:var(--radius);padding:12px 36px;width:100%;
-  cursor:pointer;transition:background .15s,border-color .15s,transform .1s;
-}
-.btn-new:hover{background:rgba(232,200,74,0.08);border-color:var(--gold);transform:translateY(-1px);}
-.btn-new:active{transform:translateY(0);}
-
 .spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-inline{color:var(--muted);font-size:12px;padding:8px 0;}
@@ -108,14 +93,6 @@ option{background:#0D3D2B;color:var(--text);}
   color:var(--muted);font-size:13px;text-decoration:none;transition:color .15s;
 }
 .back-link:hover{color:var(--gold);}
-
-/* intent badge */
-.intent-badge{
-  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:3px 8px;border-radius:3px;margin-bottom:8px;
-}
-.intent-badge.new{background:rgba(232,200,74,.15);border:1px solid rgba(232,200,74,.3);color:var(--gold);}
-.intent-badge.edit{background:rgba(138,168,154,.12);border:1px solid rgba(138,168,154,.25);color:var(--muted);}
 </style>
 </head>
 <body>
@@ -123,10 +100,10 @@ option{background:#0D3D2B;color:var(--text);}
   <header>
     <p class="eyebrow">USA &middot; Canada &middot; Mexico</p>
     <h1><a href="index.html">WORLD CUP<br><span>2026</span></a></h1>
-    <p class="subtitle" id="page-subtitle">Sign in to continue</p>
+    <p class="subtitle">Sign in to make your Final pick &amp; wager</p>
   </header>
 
-  <!-- ── Returning user: verify identity ── -->
+  <!-- ── Sign in: verify identity ── -->
   <div class="auth-card" id="login-card">
     <div class="card-title">Find Your Account</div>
     <p class="card-sub">Select your name and enter the email you used when signing up.</p>
@@ -146,9 +123,6 @@ option{background:#0D3D2B;color:var(--text);}
 
     <button class="btn-verify hidden" id="btn-verify" onclick="verifyUser()">Sign In &amp; Continue →</button>
     <div class="auth-error hidden" id="auth-error"></div>
-
-    <div class="divider" id="new-divider">or</div>
-    <button class="btn-new" id="btn-new" onclick="goNew()">✦ New here? Submit picks for the first time</button>
   </div>
 
   <a href="index.html" class="back-link">⌂ Back to home</a>
@@ -156,16 +130,6 @@ option{background:#0D3D2B;color:var(--text);}
 
 <script>
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxdVZ_jskYcRR7uaVSuC2vZ8uTN402uYSgbEXh4pyY9CB8O8D88xMcoITXLpadTSw0/exec";
-
-// Read intent from URL: ?intent=edit (default) or ?intent=new
-// We also read ?stage for deep-linking back from stage-select
-const params = new URLSearchParams(location.search);
-const intent = params.get('intent') || 'edit';
-
-// Update subtitle based on intent
-if (intent === 'edit') {
-  document.getElementById('page-subtitle').textContent = 'Sign in to view or edit your picks';
-}
 
 let allParticipants = [];
 
@@ -225,17 +189,9 @@ function verifyUser() {
     return;
   }
 
-  // Store user in sessionStorage and forward to R32 knockouts
+  // Store user in sessionStorage and forward straight to the Final
   sessionStorage.setItem('wc2026_user', JSON.stringify(match));
-  sessionStorage.setItem('wc2026_intent', 'edit');
-  window.location.href = 'stage-select.html?intent=edit';
-}
-
-function goNew() {
-  // No auth needed for new submissions — go straight to R32 knockouts
-  sessionStorage.removeItem('wc2026_user');
-  sessionStorage.setItem('wc2026_intent', 'new');
-  window.location.href = 'knockouts.html?mode=new';
+  window.location.href = 'knockouts.html?mode=edit&stage=final';
 }
 
 loadNames();
