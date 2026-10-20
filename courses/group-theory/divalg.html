@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sireesh | Discussion Notes, Oct 1</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+  <style>
+    /* ── Callouts (same look as the Calc II notes) ─────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); }
+    .callout-proof      .callout-title { background: hsl(0,0%,91%); color: hsl(0,0%,28%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title { background: hsl(35,70%,89%); color: hsl(30,65%,28%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title { background: hsl(15,55%,89%); color: hsl(15,60%,28%); }
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-proof      .callout-title { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
+    .latex-dark .callout-question   { border-color: hsl(30,75%,55%); }
+    .latex-dark .callout-question   .callout-title { background: hsl(30,35%,22%); color: hsl(30,70%,75%); }
+    .latex-dark .callout-exercise   { border-color: hsl(15,65%,55%); }
+    .latex-dark .callout-exercise   .callout-title { background: hsl(15,35%,22%); color: hsl(15,65%,76%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* ── Collapsible callouts (like Obsidian's > [!type]- ) ────────────────── */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+      letter-spacing: 0.01em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before { content: "\25B6\00a0"; font-size: 0.75em; opacity: 0.7; }
+    details.callout[open] > summary::before { content: "\25BC\00a0"; }
+
+    details.callout-proof    > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); }
+    details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    details.callout-note     > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark details.callout-proof    > summary { background: hsl(0,0%,20%);    color: hsl(0,0%,72%); }
+    .latex-dark details.callout-question > summary { background: hsl(30,35%,22%);  color: hsl(30,70%,75%); }
+    .latex-dark details.callout-note     > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* Wide display math scrolls instead of overflowing */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+
+    /* Tables in notes: keep the cells centered and compact */
+    table.center-cells td,
+    table.center-cells th { text-align: center; }
+  </style>
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="../../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <figure class="centered">
+    <img src="../../images/sketch.jpeg" loading="lazy" alt="Sireesh" width="300" height="200" />
+    <figcaption>
+      A sketch from a student (credit in progress).
+    </figcaption>
+  </figure>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Notes from the October 1 discussion section of MATH120A: Introduction to Group Theory (Fall 2026). We review induction, prove the Division Algorithm, work a linear congruence, and start looking at group tables.
+      <br /><br />
+      <a href="grouptheory.html">&larr; Back to the course page</a>
+      <br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#induction">Recall: Induction</a></li>
+      <li><a href="#division">The Division Algorithm</a>
+      </li>
+      <li><a href="#problems">Problems</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+
+      <!-- ───────────────────────── Induction ───────────────────────── -->
+      <h2 id="induction">Recall: Induction</h2>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Proposition (Induction)</div>
+        <div class="callout-body">
+          <p>
+            Let $S(n)$ be a statement about integers $n \in \mathbb{N}$. Suppose $S(n_0)$ is true for some $n_0 \in \mathbb{N}$, and that for all integers $k \ge n_0$, $S(k) \implies S(k+1)$. Then $S(n)$ is true for all $n \ge n_0$.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>Every number $10^{n+1} + 3\cdot 10^{n} + 5$ is divisible by $9$, for all $n \in \mathbb{N}$.</p>
+          <p><strong>Base case</strong> ($n = 1$):</p>
+          $$10^2 + 3\cdot 10 + 5 = 135 = 15 \cdot 9. \checkmark$$
+          <p><strong>Inductive step.</strong> Suppose the statement holds for $n = n_0$. Then</p>
+          $$
+          \begin{aligned}
+          10^{(n_0+1)+1} + 3\cdot 10^{n_0+1} + 5
+            &= 10^{n_0+2} + 3\cdot 10^{n_0}\cdot 10 + (50 - 45) \\
+            &= 10\left(10^{n_0+1} + 3\cdot 10^{n_0} + 5\right) - 45.
+          \end{aligned}
+          $$
+          <p>The bracketed term is divisible by $9$ by assumption, and so is $45$, so the whole expression is divisible by $9$.</p>
+        </div>
+      </div>
+
+      <!-- ───────────────────── Division Algorithm ───────────────────── -->
+      <h2 id="division">The Division Algorithm</h2>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Theorem (Division Algorithm)</div>
+        <div class="callout-body">
+          <p>
+            Let $a, b \in \mathbb{Z}$ with $b \gt 0$. Then there exist unique $q, r \in \mathbb{Z}$ such that
+            $$a = bq + r \quad \text{with} \quad 0 \le r \lt b.$$
+          </p>
+          <details class="callout callout-question">
+        <summary>Why?</summary>
+        <div class="callout-body">
+          <p>Construct the set</p>
+          $$S = \{\, a - bk \mid k \in \mathbb{Z},\ a - bk \ge 0 \,\}.$$
+          <p>If $0 \in S$, we are done, since then $b \mid a$ (take $r = 0$). If not, we will show $S \neq \emptyset$. Then by the well-ordering principle, $S$ has a least element.</p>
+          <p><strong>Case $a \ge 0$.</strong> Then $a = a - b\cdot 0 \in S$. &#10003;</p>
+          <p><strong>Case $a \lt 0$.</strong> Then $a - 2a(b) = a(1 - 2b) \in S$. &#10003; (Both $a$ and $1 - 2b$ are negative, so the product is positive.)</p>
+          <p>So pick the (unique) $q$ for which the least element of $S$ is attained, and define $r = a - bq$.</p>
+           <p>Why is $r \lt b$?</p> <p>Suppose not, so $r \ge b$. Then</p>
+          $$a - b(q+1) = a - bq - b = r - b \ge 0,$$
+          <p>so $a - b(q+1) \in S$ and is smaller than $r$. This contradicts the minimality of $r$ (that is, our choice of $q$).</p> <p>We show uniqueness. Suppose not. Then there are two different pairs with
+            $$a = bq + r \qquad \text{and} \qquad a = bq' + r'.$$
+          </p>
+          <p>Setting these equal, $bq + r = bq' + r'$, so</p>
+          $$b(q - q') = r' - r \implies b \mid r' - r \implies r' - r = 0,$$
+          <p>since $|r' - r| \lt b$. Then $r = r'$, and so $q = q'$ as well, a contradiction. $\blacksquare$</p>
+        </div>
+      </details>
+        </div>
+      </div>
+
+      
+
+      
+
+      <!-- ───────────────────────── Problems ───────────────────────── -->
+      <h2 id="problems">Problems</h2>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>Solve $3x \equiv 2 \pmod 7$.</p>
+          <p><strong>Step 1.</strong> Find a multiplicative inverse of $3$ modulo $7$. List some multiples of $3$:</p>
+
+          <table class="center-cells">
+            <tbody>
+              <tr><th scope="row">$k$</th><td>$-3$</td><td>$-2$</td><td>$-1$</td><td>$0$</td><td>$1$</td><td>$2$</td><td>$3$</td></tr>
+              <tr><th scope="row">$3k$</th><td>$-9$</td><td>$-6$</td><td>$-3$</td><td>$0$</td><td>$3$</td><td>$6$</td><td>$9$</td></tr>
+            </tbody>
+          </table>
+
+          <p>We see $3\cdot(-2) = -6 \equiv 1 \pmod 7$, so the inverse of $3$ is $-2 \equiv 5 \pmod 7$.</p>
+          <p><strong>Step 2.</strong> Multiply across by the inverse:</p>
+          $$5 \cdot 3x \equiv 5 \cdot 2 \pmod 7,$$
+          $$x \equiv 10 \pmod 7,$$
+          $$x \equiv 3 \pmod 7.$$
+          <p>Check: $3 \cdot 3 = 9 \equiv 2 \pmod 7$. &#10003;</p>
+        </div>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>Does the table below form a group?</p>
+
+          <table class="center-cells">
+            <thead>
+              <tr><th scope="col">$\circ$</th><th scope="col">$a$</th><th scope="col">$b$</th><th scope="col">$c$</th><th scope="col">$d$</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">$a$</th><td>$a$</td><td>$c$</td><td>$d$</td><td>$a$</td></tr>
+              <tr><th scope="row">$b$</th><td>$b$</td><td>$b$</td><td>$c$</td><td>$d$</td></tr>
+              <tr><th scope="row">$c$</th><td>$c$</td><td>$d$</td><td>$a$</td><td>$b$</td></tr>
+              <tr><th scope="row">$d$</th><td>$d$</td><td>$a$</td><td>$b$</td><td>$c$</td></tr>
+            </tbody>
+          </table>
+          <details class="callout callout-note">
+        <summary>Answer</summary>
+        <div class="callout-body">
+          <p><strong>No.</strong> What's the identity?</p>
+        </div>
+      </details>
+        </div>
+      </div>
+
+      
+
+      <div class="callout callout-exercise">
+        <div class="callout-title">Exercise</div>
+        <div class="callout-body">
+          <p>Write out the Cayley table for the symmetries of a triangle,
+            $$D_3 = \{1,\ r,\ r^2,\ s,\ sr,\ sr^2\}.$$
+          </p>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (localStorage.getItem('darkMode') === 'true')
+        document.body.classList.add('latex-dark');
+      if (localStorage.getItem('typeface') === 'libertinus') {
+        document.body.classList.add('libertinus');
+        document.getElementById('typeface').textContent = 'Libertinus';
+      }
+    } catch (e) {}
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    try {
+      localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+    } catch (e) {}
+  });
+
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    try {
+      localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+    } catch (e) {}
+  });
+
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../../index.html';
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+
+</body>
+</html>
