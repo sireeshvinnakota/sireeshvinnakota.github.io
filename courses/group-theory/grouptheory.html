@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sireesh | Intro to Group Theory</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="../../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <figure class="centered">
+  <img src="../../images/sketch.jpeg" loading="lazy" alt="Sireesh" width="300" height="200" />
+  <figcaption>
+    A sketch from a student (credit in progress).
+  </figcaption>
+</figure>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Group theory is one of the most exciting courses in the major, and the start of a very exciting journey through mathematical history. In this class, we will cover one of the most fundamental structures in algebra, the group.
+      <br /><br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#aboutthecourse">About the Course</a></li>
+      <li><a href="#notes">Discussion Notes</a></li>
+      <li><a href="#syllabus">Syllabus and Timeline</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+      <h2 id="aboutthecourse">About the Course</h2>
+      <p>Coming soon :)</p>
+      <h2 id="notes">Discussion Notes</h2>
+      <p>The following notes are based on the course, which in turn follows <a href="https://judsonbooks.org/aata-files/aata-20260811.pdf">Judson</a> (though my preferred textbook is, by a very large margin, <a href="https://www.wiley.com/en-us/shop/general-introductory-mathematics/abstract-algebra-3rd-edition-p-9780471433347">Dummit and Foote</a>). </p>
+
+      <!-- <hr style="border:none; border-top:1px solid var(--footnotes-border-color); margin:2rem 0; opacity:0.4;" /> -->
+
+      <section id="section-two">
+        <h2 id="syllabus">Syllabus and Timeline</h2>
+        <p>Coming soon :)</p>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (localStorage.getItem('darkMode') === 'true')
+        document.body.classList.add('latex-dark');
+      if (localStorage.getItem('typeface') === 'libertinus') {
+        document.body.classList.add('libertinus');
+        document.getElementById('typeface').textContent = 'Libertinus';
+      }
+    } catch (e) {}
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    try {
+      localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+    } catch (e) {}
+  });
+
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    try {
+      localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+    } catch (e) {}
+  });
+
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../../index.html';
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+
+</body>
+</html>
