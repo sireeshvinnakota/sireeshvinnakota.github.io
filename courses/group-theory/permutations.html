@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sireesh | Discussion Notes, Oct 13&ndash;15</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+  <style>
+    /* ── Callouts (same look as the Calc II notes) ─────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); }
+    .callout-proof      .callout-title { background: hsl(0,0%,91%); color: hsl(0,0%,28%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title { background: hsl(35,70%,89%); color: hsl(30,65%,28%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title { background: hsl(15,55%,89%); color: hsl(15,60%,28%); }
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-proof      .callout-title { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
+    .latex-dark .callout-question   { border-color: hsl(30,75%,55%); }
+    .latex-dark .callout-question   .callout-title { background: hsl(30,35%,22%); color: hsl(30,70%,75%); }
+    .latex-dark .callout-exercise   { border-color: hsl(15,65%,55%); }
+    .latex-dark .callout-exercise   .callout-title { background: hsl(15,35%,22%); color: hsl(15,65%,76%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* ── Collapsible callouts (like Obsidian's > [!type]- ) ────────────────── */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+      letter-spacing: 0.01em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before { content: "\25B6\00a0"; font-size: 0.75em; opacity: 0.7; }
+    details.callout[open] > summary::before { content: "\25BC\00a0"; }
+
+    details.callout-proof    > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); }
+    details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    details.callout-note     > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark details.callout-proof    > summary { background: hsl(0,0%,20%);    color: hsl(0,0%,72%); }
+    .latex-dark details.callout-question > summary { background: hsl(30,35%,22%);  color: hsl(30,70%,75%); }
+    .latex-dark details.callout-note     > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* Wide display math scrolls instead of overflowing */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+
+    /* Tables in notes: keep the cells centered and compact */
+    table.center-cells td,
+    table.center-cells th { text-align: center; }
+
+    /* Subgroup lattice diagram */
+    .lattice { text-align: center; margin: 1.2em 0; overflow-x: auto; }
+    .lattice svg { max-width: 100%; height: auto; color: inherit; }
+  </style>
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="../../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <figure class="centered">
+    <img src="../../images/sketch.jpeg" loading="lazy" alt="Sireesh" width="300" height="200" />
+    <figcaption>
+      A sketch from a student (credit in progress).
+    </figcaption>
+  </figure>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Notes from the October 13 and 15 discussion sections of MATH120A: Introduction to Group Theory (Fall 2026). We finish up cyclic groups, looking at the orders of elements and counting generators, and then introduce permutation groups, cycle notation, and the alternating group $A_4$.
+      <br /><br />
+      <a href="grouptheory.html">&larr; Back to the course page</a>
+      <br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#cyclic">More on Cyclic Groups</a></li>
+      <li><a href="#permutations">Permutation Groups</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+
+      <p>We have the following result.</p>
+
+      <!-- ───────────────────── More on Cyclic Groups ───────────────────── -->
+      <h2 id="cyclic">More on Cyclic Groups</h2>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Theorem</div>
+        <div class="callout-body">
+          <p>Let $G$ be a cyclic group of order $n$, and let $a \in G$ be a generator. Then for any $b = a^k$, the order of $b$ is $\dfrac{n}{d}$ where $d = \gcd(n, k)$.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>What's the order of $6$ in $\mathbb{Z}_8$?
+            $$\overline{6} = {\overline{6}, \overline{4}, \overline{2}, \overline{0}} \quad \leadsto \quad \gcd(6, 8) = \gcd(2 \cdot 3,\ 2 \cdot 2 \cdot 2) = 2.$$</p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>Let $G$ be a cyclic group of order $p$, for $p$ a prime. What are all possible orders?
+            $$\gcd(p, *) \in \{1, p\}$$
+            $\therefore$ any element is either the identity or a generator!</p>
+        </div>
+      </div>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Corollary</div>
+        <div class="callout-body">
+          <p>The generators of $\mathbb{Z}_n$ are $r$ s.t. $\gcd(r, n) = 1$.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Let $p$ be a prime; how many generators are there for $\mathbb{Z}_{p^2}$?</p>
+          <details class="callout callout-note">
+            <summary>Solution</summary>
+            <div class="callout-body">
+              <p>Note that $\gcd(p^2, *) \in {1, p, p^2}$ and so any el't sorts into order $1$ (identity), $p$ (the element $p$ and its multiples) and $p^2$ (everything else).
+                $$\therefore\ (p)(p-1). \qquad \square$$</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>$p = 3$, $\mathbb{Z}_9 = {\overline{0}, \overline{1}, \dots, \overline{9}}$.</p>
+          <details class="callout callout-note">
+            <summary>Solution</summary>
+            <div class="callout-body">
+              <table class="center-cells">
+                <thead>
+                  <tr><th scope="col">element</th><th scope="col">0</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th><th scope="col">7</th><th scope="col">8</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">order</th><td>1</td><td>9</td><td>9</td><td>3</td><td>9</td><td>9</td><td>3</td><td>9</td><td>9</td></tr>
+                </tbody>
+              </table>
+              $$9 \cdot \prod \left(1 - \frac{1}{p}\right) = 9\left(1 - \frac{1}{3}\right) = 6$$
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Show that, for $n &gt; 2$, $\mathbb{Z}_n$ has an even number of generators.</p>
+          <details class="callout callout-note">
+            <summary>Solution</summary>
+            <div class="callout-body">
+              <p>Want to show, for $n &gt; 2$,
+                $$2 \mid \left| { k \in \mathbb{Z} \mid 0 \leq k &lt; n,\ \gcd(k, n) = 1 } \right|.$$
+                <strong>Claim.</strong> If $a$ generates, then $-a$ also generates.</p>
+              <blockquote>
+                <p><em>Why?</em> $\gcd(a, n) = 1$, then $\gcd(-a, n) = \gcd(n - a, n) = \gcd(n, a) = 1$.</p>
+              </blockquote>
+              <p><strong>Claim.</strong> If $n &gt; 2$, $a \neq -a$.</p>
+              <blockquote>
+                <p><em>Why?</em> Suppose so. Then $\operatorname{ord}(a) = 2$, so since $n \neq 2$, $a$ cannot generate. $\square$</p>
+              </blockquote>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ───────────────────── Permutation Groups ───────────────────── -->
+      <h2 id="permutations">Permutation Groups</h2>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>Let $[n] = {1, \dots, n}$ be a finite set of $n$ el'ts. Define a <strong>permutation</strong> as
+            $$\sigma : [n] \longrightarrow [n]$$
+            such that $\sigma$ is one-to-one and onto. The set of such forms a group under composition.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>Let $n = 3$. $S_3$ are the permutations of ${1, 2, 3}$. We can write
+            $$1 \mapsto 2, \quad 2 \mapsto 3, \quad 3 \mapsto 1 \qquad \text{as} \qquad (1\ 2\ 3).$$</p>
+          <div class="callout callout-question">
+            <div class="callout-title">Question</div>
+            <div class="callout-body">
+              <p>What's the order of this el't?</p>
+              <blockquote>
+                <p><em>Answer:</em></p>
+                $$(1\ 2\ 3)(1\ 2\ 3) = (1\ 3\ 2)$$
+                $$(1\ 2\ 3)(1\ 3\ 2) = (1)(2)(3) \equiv \mathbb{1}$$
+                <p>Thus the order is $3$.</p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>Compute the product of $(1\ 3\ 5)$ and $(3\ 4\ 7)$ in $S_7$.</p>
+          <details class="callout callout-note">
+            <summary>Solution</summary>
+            <div class="callout-body">
+              $$(1\ 3\ 5)(3\ 4\ 7) = (1\ 3\ 4\ 7\ 5)$$
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>Is this group abelian?</p>
+        </div>
+      </div>
+
+      <p>In $S_3$, consider $(1\ 2)$ and $(2\ 3)$:
+        $$(2\ 3)(1\ 2) = (1\ 3\ 2)$$
+        $$(1\ 2)(2\ 3) = (1\ 2\ 3)$$</p>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>How do we generalize this argument?</p>
+        </div>
+      </div>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Theorem</div>
+        <div class="callout-body">
+          <p>Every permutation in $S_n$ can be represented as a product of disjoint cycles.</p>
+          <details class="callout callout-proof">
+            <summary>Sketch of Proof</summary>
+            <div class="callout-body">
+              <p>We'll start by "tracking each number." $[n] = {1, \dots, n}$, so $\forall, \sigma \in S_n$, write
+                $$X_1 = { \sigma(1), \sigma^2(1), \dots }.$$
+                $S_n$ is finite, and $[n]$ is finite, so $X_1$ must be. Let $i \in [n] \setminus X_1$. Then
+                $$X_2 = { \sigma(i), \sigma^2(i), \dots }$$
+                and $X_1 \cap X_2 = \emptyset$. Repeat this process recursively; it must stop in finite steps since $[n]$ is finite. Define the cycle:
+                $$\sigma_i(x) = \begin{cases} \sigma(x) &amp; x \in X_i \ x &amp; x \notin X_i \end{cases}$$
+                Then $\sigma = \prod \sigma_i$, these are all disjoint. $\square$</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <p>Another way to represent permutations is through "building blocks," called <strong>transpositions</strong>:
+        $$(a_1\ \cdots\ a_n) = (a_1\ a_n) \cdots (a_1\ a_2)$$
+      </p>
+      <p>If we can represent a permutation w/ an even number of transpositions, it's <strong>even</strong>; else it's <strong>odd</strong>.</p>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>Consider $A_n = { \sigma \in S_n \mid \sigma \text{ even} }$. Then $A_n \leq S_n$.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>What does $A_4$ look like?</p>
+        </div>
+      </div>
+
+      <p>$S_4$ has $4! = 4 \cdot 3 \cdot 2 \cdot 1 = 24$ el'ts, so $A_4$ should have $12$. Look for:</p>
+
+      <ol>
+        <li>Odd length cycles:
+          <ul>
+            <li>$(1)(2)(3)(4) = \mathbb{1}$</li>
+            <li>$(1\ 2\ 3),\ (1\ 3\ 2)$</li>
+            <li>$(1\ 3\ 4),\ (1\ 4\ 3)$</li>
+            <li>$(1\ 2\ 4),\ (1\ 4\ 2)$</li>
+            <li>$(2\ 3\ 4),\ (2\ 4\ 3)$</li>
+          </ul>
+        </li>
+        <li>Products of an even # of disjoint transpositions:
+          <ul>
+            <li>$(1\ 2)(3\ 4)$, $(1\ 3)(2\ 4)$, $(1\ 4)(2\ 3)$</li>
+          </ul>
+        </li>
+      </ol>
+
+      <p>Subgroup lattice:</p>
+
+      <div class="lattice">
+        <svg viewBox="0 0 780 290" width="780" role="img" aria-label="Subgroup lattice of A4: A4 at the top, joined to a subgroup generated by (1 2 3) and (1 3 2), which has 3 others, and to the Klein four-group generated by (1 2)(3 4) and (1 3)(2 4). The Klein four-group is joined to the subgroup generated by (1 2)(3 4), which has 2 others. The three-cycle subgroups and the order-two subgroups are each joined to the trivial subgroup.">
+          <g stroke="currentColor" stroke-width="1.5" fill="none">
+            <line x1="362" y1="38"  x2="240" y2="84" />
+            <line x1="398" y1="38"  x2="520" y2="84" />
+            <line x1="190" y1="114" x2="368" y2="252" />
+            <line x1="610" y1="114" x2="610" y2="152" />
+            <line x1="560" y1="182" x2="402" y2="252" />
+          </g>
+          <g fill="currentColor" font-family="'Latin Modern Math','STIX Two Math','Times New Roman',serif" font-size="16" text-anchor="middle">
+            <text x="380" y="28" font-size="20"><tspan font-style="italic">A</tspan><tspan font-size="14" dy="5">4</tspan></text>
+            <text x="140" y="104">⟨(1 2 3), (1 3 2)⟩ and 3 others</text>
+            <text x="610" y="104">⟨(1 2)(3 4), (1 3)(2 4)⟩ ≃ <tspan font-style="italic">V</tspan><tspan font-size="12" dy="4">4</tspan></text>
+            <text x="610" y="172" dy="-4">⟨(1 2)(3 4)⟩ and 2 others</text>
+            <text x="380" y="272" font-size="18">{1}</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>What do we notice about the orders of groups?</p>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (localStorage.getItem('darkMode') === 'true')
+        document.body.classList.add('latex-dark');
+      if (localStorage.getItem('typeface') === 'libertinus') {
+        document.body.classList.add('libertinus');
+        document.getElementById('typeface').textContent = 'Libertinus';
+      }
+    } catch (e) {}
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    try {
+      localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+    } catch (e) {}
+  });
+
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    try {
+      localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+    } catch (e) {}
+  });
+
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../../index.html';
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+
+</body>
+</html>

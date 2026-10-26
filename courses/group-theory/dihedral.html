@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sireesh | Discussion Notes, Oct 20</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+  <style>
+    /* ── Callouts (same look as the Calc II notes) ─────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); }
+    .callout-proof      .callout-title { background: hsl(0,0%,91%); color: hsl(0,0%,28%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title { background: hsl(35,70%,89%); color: hsl(30,65%,28%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title { background: hsl(15,55%,89%); color: hsl(15,60%,28%); }
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-proof      .callout-title { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
+    .latex-dark .callout-question   { border-color: hsl(30,75%,55%); }
+    .latex-dark .callout-question   .callout-title { background: hsl(30,35%,22%); color: hsl(30,70%,75%); }
+    .latex-dark .callout-exercise   { border-color: hsl(15,65%,55%); }
+    .latex-dark .callout-exercise   .callout-title { background: hsl(15,35%,22%); color: hsl(15,65%,76%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* ── Collapsible callouts (like Obsidian's > [!type]- ) ────────────────── */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+      letter-spacing: 0.01em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before { content: "\25B6\00a0"; font-size: 0.75em; opacity: 0.7; }
+    details.callout[open] > summary::before { content: "\25BC\00a0"; }
+
+    details.callout-proof    > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); }
+    details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    details.callout-note     > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark details.callout-proof    > summary { background: hsl(0,0%,20%);    color: hsl(0,0%,72%); }
+    .latex-dark details.callout-question > summary { background: hsl(30,35%,22%);  color: hsl(30,70%,75%); }
+    .latex-dark details.callout-note     > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* Wide display math scrolls instead of overflowing */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+
+    /* Tables in notes: keep the cells centered and compact */
+    table.center-cells td,
+    table.center-cells th { text-align: center; }
+
+    /* Diagrams (redrawn from TikZ) */
+    .diagram { text-align: center; margin: 1.2em 0; overflow-x: auto; }
+    .diagram svg { max-width: 100%; height: auto; color: inherit; }
+  </style>
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="../../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <figure class="centered">
+    <img src="../../images/sketch.jpeg" loading="lazy" alt="Sireesh" width="300" height="200" />
+    <figcaption>
+      A sketch from a student (credit in progress).
+    </figcaption>
+  </figure>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Notes from the October 20 discussion section of MATH120A: Introduction to Group Theory (Fall 2026). We recall symmetric groups and compute the orders of permutations from their cycle types, and then introduce the dihedral groups as the symmetries of a regular polygon.
+      <br /><br />
+      <a href="grouptheory.html">&larr; Back to the course page</a>
+      <br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#symmetric">Recall: Symmetric groups</a></li>
+      <li><a href="#dihedral">Dihedral Groups</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+
+      <!-- ───────────────────── Recall: Symmetric groups ───────────────────── -->
+      <h2 id="symmetric">Recall: Symmetric groups</h2>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>Let $[n] = {1, \dots, n}$, and consider a permutation $\sigma : [n] \longrightarrow [n]$ (one-to-one and onto). The collection of all such, together w/ composition, form the <strong>symmetric group</strong> $S_n$.</p>
+        </div>
+      </div>
+
+      <p>We can represent these in three ways:</p>
+      <ol>
+        <li>Cycle notation.</li>
+        <li>Transpositions: for a cycle $(a_1\ \cdots\ a_n)$ we can write
+          $$(a_1\ \cdots\ a_n) = (a_1\ a_n) \cdots (a_1\ a_3)(a_1\ a_2).$$
+        </li>
+        <li>Disjoint cycles. (This was a theorem.)</li>
+      </ol>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>What's the order of an element?</p>
+        </div>
+      </div>
+
+      <p>Start w/ the building blocks:
+        $$|(a_1\ \cdots\ a_n)| = n.$$
+      </p>
+
+      <p>What if we have two?
+        $$(a_1\ \cdots\ a_m)(b_1\ \cdots\ b_n)$$
+        First is $\mathbb{1}$ every $m$, second every $n$. Thus we have:</p>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Fact</div>
+        <div class="callout-body">
+          <p>A cycle of type $(n_1, \dots, n_m)$ has order $\operatorname{lcm}(n_1, \dots, n_m)$.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>Show that $A_{10}$ contains an element of order $15$.</p>
+          <details class="callout callout-proof">
+            <summary>Proof</summary>
+            <div class="callout-body">
+              <p>Note that order $15 = \operatorname{lcm}(3, 5)$. Are these in $A_{10}$?</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Does $A_8$ contain an element of order $26$?</p>
+          <details class="callout callout-proof">
+            <summary>Proof</summary>
+            <div class="callout-body">
+              <p>No. These are either $26$-cycles or of type $(2, 13)$. Can't happen.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>What are all the cycle types in $A_4$?</p>
+          <details class="callout callout-note">
+            <summary>Solution</summary>
+            <div class="callout-body">
+              <ul>
+                <li>$(1, 1, 1, 1)$</li>
+                <li>$(2, 2)$</li>
+                <li>$(3)$</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ───────────────────────── Dihedral Groups ───────────────────────── -->
+      <h2 id="dihedral">Dihedral Groups</h2>
+
+      <p>Consider $n &gt; 0$ a positive integer, and construct a regular $n$-gon. We can say vertices are at
+        $$\alpha_j = \left(e^{2\pi i / n}\right)^j.$$
+      </p>
+
+      <div class="diagram">
+        <svg viewBox="-150 -150 300 300" width="300" role="img" aria-label="A regular octagon (n = 8) inscribed in the unit circle, with the x and y axes drawn and a cross marking each vertex.">
+          <g stroke="currentColor" stroke-width="1.2" fill="none">
+            <line x1="-130" y1="0" x2="130" y2="0" />
+            <line x1="0" y1="-130" x2="0" y2="130" />
+            <polygon points="100,0 70.71,-70.71 0,-100 -70.71,-70.71 -100,0 -70.71,70.71 0,100 70.71,70.71" />
+          </g>
+          <g stroke="currentColor" stroke-width="1.5" fill="none">
+            <path d="M95,-5 L105,5 M95,5 L105,-5" />
+            <path d="M65.71,-75.71 L75.71,-65.71 M65.71,-65.71 L75.71,-75.71" />
+            <path d="M-5,-105 L5,-95 M-5,-95 L5,-105" />
+            <path d="M-75.71,-75.71 L-65.71,-65.71 M-75.71,-65.71 L-65.71,-75.71" />
+            <path d="M-105,-5 L-95,5 M-105,5 L-95,-5" />
+            <path d="M-75.71,65.71 L-65.71,75.71 M-75.71,75.71 L-65.71,65.71" />
+            <path d="M-5,95 L5,105 M-5,105 L5,95" />
+            <path d="M65.71,65.71 L75.71,75.71 M65.71,75.71 L75.71,65.71" />
+          </g>
+          <text x="110" y="114" fill="currentColor" font-family="'Latin Modern Math','STIX Two Math','Times New Roman',serif" font-size="16" text-anchor="middle">(<tspan font-style="italic">n</tspan>=8)</text>
+        </svg>
+      </div>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Claim</div>
+        <div class="callout-body">
+          <p>There are $2n$ possible symmetries of the $n$-gon.</p>
+          <details class="callout callout-question">
+            <summary>Why?</summary>
+            <div class="callout-body">
+              <p>There are $n$ choices for the first vertex, and for a given vertex $k$, moving CCW returns either $k+1$ or $k-1$.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>The set $D_n = { r, s, rs, \dots }$ is called the <strong>dihedral group</strong> under composition.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Proposition</div>
+        <div class="callout-body">
+          <p>Define $r$ = CCW rotation by $2\pi/n$ rad, $s$ = flipping/reflecting across the $x$-axis. Then $D_n = \langle r, s \rangle$, with $r^n = 1$, $s^2 = 1$, and $srs = r^{-1}$.</p>
+          <details class="callout callout-note">
+            <summary>Solution</summary>
+            <div class="callout-body">
+              <p>Track the vertices after operations</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>Is $D_n$ abelian?</p>
+        </div>
+      </div>
+
+      <p>Let $n = 3$, consider $r, s$. Triangle vertices are labeled $1, 2, 3$ and we track the labels at the angles $0°, 120°, 240°$.</p>
+
+      <div class="diagram">
+        <svg viewBox="-70 -75 440 255" width="440" role="img" aria-label="Top row: a triangle labeled 1, 2, 3 at the angles 0, 120, 240 degrees, an arrow r to a triangle labeled 3, 1, 2, an arrow s to a triangle labeled 3, 2, 1. Bottom row: a triangle labeled 1, 2, 3, an arrow s to a triangle labeled 1, 3, 2, an arrow r to a triangle labeled 2, 1, 3.">
+          <defs>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor" />
+            </marker>
+          </defs>
+          <g stroke="currentColor" stroke-width="1.2" fill="none">
+            <!-- Row 1 triangles -->
+            <polygon points="30,0 -15,-26 -15,26" transform="translate(0,0)" />
+            <polygon points="30,0 -15,-26 -15,26" transform="translate(150,0)" />
+            <polygon points="30,0 -15,-26 -15,26" transform="translate(300,0)" />
+            <!-- Row 2 triangles -->
+            <polygon points="30,0 -15,-26 -15,26" transform="translate(0,105)" />
+            <polygon points="30,0 -15,-26 -15,26" transform="translate(150,105)" />
+            <polygon points="30,0 -15,-26 -15,26" transform="translate(300,105)" />
+            <!-- Arrows -->
+            <line x1="54"  y1="0"   x2="96"  y2="0"   marker-end="url(#arrowhead)" />
+            <line x1="204" y1="0"   x2="246" y2="0"   marker-end="url(#arrowhead)" />
+            <line x1="54"  y1="105" x2="96"  y2="105" marker-end="url(#arrowhead)" />
+            <line x1="204" y1="105" x2="246" y2="105" marker-end="url(#arrowhead)" />
+          </g>
+          <g fill="currentColor" font-family="'Latin Modern Math','STIX Two Math','Times New Roman',serif" font-size="16" text-anchor="middle">
+            <!-- Row 1 vertex labels: angles 0, 120, 240 -->
+            <g transform="translate(0,0)">
+              <text x="42" y="0" dy="0.35em">1</text><text x="-21" y="-36" dy="0.35em">2</text><text x="-21" y="36" dy="0.35em">3</text>
+            </g>
+            <g transform="translate(150,0)">
+              <text x="42" y="0" dy="0.35em">3</text><text x="-21" y="-36" dy="0.35em">1</text><text x="-21" y="36" dy="0.35em">2</text>
+            </g>
+            <g transform="translate(300,0)">
+              <text x="42" y="0" dy="0.35em">3</text><text x="-21" y="-36" dy="0.35em">2</text><text x="-21" y="36" dy="0.35em">1</text>
+            </g>
+            <!-- Row 2 vertex labels -->
+            <g transform="translate(0,105)">
+              <text x="42" y="0" dy="0.35em">1</text><text x="-21" y="-36" dy="0.35em">2</text><text x="-21" y="36" dy="0.35em">3</text>
+            </g>
+            <g transform="translate(150,105)">
+              <text x="42" y="0" dy="0.35em">1</text><text x="-21" y="-36" dy="0.35em">3</text><text x="-21" y="36" dy="0.35em">2</text>
+            </g>
+            <g transform="translate(300,105)">
+              <text x="42" y="0" dy="0.35em">2</text><text x="-21" y="-36" dy="0.35em">1</text><text x="-21" y="36" dy="0.35em">3</text>
+            </g>
+            <!-- Arrow labels -->
+            <text x="75"  y="-8" font-style="italic">r</text>
+            <text x="225" y="-8" font-style="italic">s</text>
+            <text x="75"  y="97" font-style="italic">s</text>
+            <text x="225" y="97" font-style="italic">r</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>How do we generalize this argument?</p>
+        </div>
+      </div>
+
+      <p>Notice from above that
+        $$srs = r^{-1} \iff sr = r^{-1}s.$$
+      </p>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>What do subgroups of the dihedral group look like?</p>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (localStorage.getItem('darkMode') === 'true')
+        document.body.classList.add('latex-dark');
+      if (localStorage.getItem('typeface') === 'libertinus') {
+        document.body.classList.add('libertinus');
+        document.getElementById('typeface').textContent = 'Libertinus';
+      }
+    } catch (e) {}
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    try {
+      localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+    } catch (e) {}
+  });
+
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    try {
+      localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+    } catch (e) {}
+  });
+
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../../index.html';
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+
+</body>
+</html>
