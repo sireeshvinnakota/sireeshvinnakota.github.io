@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sireesh | Discussion Notes, Oct 6</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+  <style>
+    /* ── Callouts (same look as the Calc II notes) ─────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); }
+    .callout-proof      .callout-title { background: hsl(0,0%,91%); color: hsl(0,0%,28%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title { background: hsl(35,70%,89%); color: hsl(30,65%,28%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title { background: hsl(15,55%,89%); color: hsl(15,60%,28%); }
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-proof      .callout-title { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
+    .latex-dark .callout-question   { border-color: hsl(30,75%,55%); }
+    .latex-dark .callout-question   .callout-title { background: hsl(30,35%,22%); color: hsl(30,70%,75%); }
+    .latex-dark .callout-exercise   { border-color: hsl(15,65%,55%); }
+    .latex-dark .callout-exercise   .callout-title { background: hsl(15,35%,22%); color: hsl(15,65%,76%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* ── Collapsible callouts (like Obsidian's > [!type]- ) ────────────────── */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+      letter-spacing: 0.01em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before { content: "\25B6\00a0"; font-size: 0.75em; opacity: 0.7; }
+    details.callout[open] > summary::before { content: "\25BC\00a0"; }
+
+    details.callout-proof    > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); }
+    details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    details.callout-note     > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark details.callout-proof    > summary { background: hsl(0,0%,20%);    color: hsl(0,0%,72%); }
+    .latex-dark details.callout-question > summary { background: hsl(30,35%,22%);  color: hsl(30,70%,75%); }
+    .latex-dark details.callout-note     > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* Wide display math scrolls instead of overflowing */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+
+    /* Tables in notes: keep the cells centered and compact */
+    table.center-cells td,
+    table.center-cells th { text-align: center; }
+
+    /* Subgroup lattice diagram */
+    .lattice { text-align: center; margin: 1.2em 0; }
+    .lattice svg { max-width: 100%; height: auto; color: inherit; }
+  </style>
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="../../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <figure class="centered">
+    <img src="../../images/sketch.jpeg" loading="lazy" alt="Sireesh" width="300" height="200" />
+    <figcaption>
+      A sketch from a student (credit in progress).
+    </figcaption>
+  </figure>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Notes from the October 6 discussion section of MATH120A: Introduction to Group Theory (Fall 2026). We add the non-zero complex numbers to our list of examples of groups, study subgroups, and begin looking at cyclic groups.
+      <br /><br />
+      <a href="grouptheory.html">&larr; Back to the course page</a>
+      <br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#examples">Examples of Groups</a></li>
+      <li><a href="#subgroups">Subgroups</a>
+        <ol>
+          <li><a href="#cyclic">Cyclic groups</a></li>
+        </ol>
+      </li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+
+      <!-- ───────────────────── Examples of Groups ───────────────────── -->
+      <h2 id="examples">Examples of Groups</h2>
+
+      <ol>
+        <li>Integers: $(\mathbb{Z},+)$. Remember that this does <em>not</em> form a group under multiplication (think about inverses)</li>
+        <li>Integers modulo $n$: $(\mathbb{Z}/n\mathbb{Z}, +)$. There is an associated multiplicative group called the <em>group of units</em> $(U(n), \times)$</li>
+        <li>Symmetries of a (regular) polygon.</li>
+      </ol>
+
+      <p>We will add a new one to the list:</p>
+
+      <p>
+        $\mathbb{C}^\times$: Consider the non-zero complex numbers:
+        $$\mathbb{C}^\times = \left \{ a + bi \mid a,b \in \mathbb{R},a,b \text{ not simultaneously 0} \right \}$$
+      </p>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Claim</div>
+        <div class="callout-body">
+          <p>$\mathbb{C}^\times$ forms a multiplicative group.</p>
+          <details class="callout callout-note">
+            <summary>Proof Sketch</summary>
+            <div class="callout-body">
+              <p>Check closure, associativity, inverse, and identity. As a hint, associativity comes down to checking that</p>
+              $$(a+bi)[(c+di)(e+fi)] \stackrel{?}{=} [(a+bi)(c+di)](e+fi)$$
+              <p>Similarly, inverse comes down to solving</p>
+              $$z \cdot \alpha = 1 \Rightarrow \alpha = \frac{1}{a + bi} = \frac{a}{a^2 + b^2} - i \frac{b}{a^2 + b^2}$$
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>Is this group commutative?</p>
+        </div>
+      </div>
+
+      <!-- ───────────────────────── Subgroups ───────────────────────── -->
+      <h2 id="subgroups">Subgroups</h2>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>Let $(G,\circ)$ be a group. A <strong>subgroup</strong> is a subset $H \subseteq G$ such that $(H,\circ)$ is also a group with the <em>same operation</em>. In this case, we write $H \leq G$.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-theorem">
+        <div class="callout-title">Proposition (Subgroup Criterion)</div>
+        <div class="callout-body">
+          <p>Let $\emptyset \neq H \subseteq G$. Then $(H,\circ)$ is a subgroup if and only if for all $g,h \in H$, $g h^{-1} \in H$.</p>
+          <details class="callout callout-proof">
+            <summary>Proof Sketch</summary>
+            <div class="callout-body">
+              <p>The forwards direction is clear from the axioms. In the converse direction, see first that $g \in H$ implies that $g g^{-1} = e_{G} \in H$, so identity holds. Next, we have $e_{G} g^{-1} = g^{-1} \in H$  implies that inverse holds. Since associativity holds for the entire group, $H$ inherits the property, so it remains to check closure. For any $h_{1}, h_{2} \in H$, consider the product</p>
+              $$h_{1} h_{2} = h_{1} (h_{2}^{-1})^{-1} \in H$$
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-exercise">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Find all subgroups of the Quaternion group $Q_{8}$</p>
+        </div>
+      </div>
+
+      $$Q_8 = \langle 1, i, j, k \mid i^2 = j^2 = k^2 = -1,\ ij = k,\ jk = i,\ ki = j,\ ji = -k,\ kj = -i,\ ik = -j \rangle$$
+
+      <p>Subgroup lattice:</p>
+
+      <div class="lattice">
+        <svg viewBox="0 0 420 240" width="420" role="img" aria-label="Subgroup lattice of Q8: Q8 at the top, joined to the subgroups generated by i, j, and k, each joined to the subgroup generated by -1, which is joined to the trivial subgroup generated by 1.">
+          <g stroke="currentColor" stroke-width="1.5" fill="none">
+            <line x1="210" y1="34" x2="90"  y2="76" />
+            <line x1="210" y1="34" x2="210" y2="76" />
+            <line x1="210" y1="34" x2="330" y2="76" />
+            <line x1="90"  y1="104" x2="210" y2="146" />
+            <line x1="210" y1="104" x2="210" y2="146" />
+            <line x1="330" y1="104" x2="210" y2="146" />
+            <line x1="210" y1="174" x2="210" y2="206" />
+          </g>
+          <g fill="currentColor" font-family="'Latin Modern Math','STIX Two Math','Times New Roman',serif" font-size="20" text-anchor="middle">
+            <text x="210" y="26"><tspan font-style="italic">Q</tspan><tspan font-size="14" dy="5">8</tspan></text>
+            <text x="90"  y="97">⟨<tspan font-style="italic">i</tspan>⟩</text>
+            <text x="210" y="97">⟨<tspan font-style="italic">j</tspan>⟩</text>
+            <text x="330" y="97">⟨<tspan font-style="italic">k</tspan>⟩</text>
+            <text x="210" y="167">⟨−1⟩</text>
+            <text x="210" y="228">⟨1⟩</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="callout callout-exercise">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>
+            Let $gAg^{-1} = \{ gag^{-1} \mid a \in A \}$. Define the <strong>normalizer</strong> of $A$ in a group $G$ as
+            $$N_G(A) = \{ g \in G \mid gAg^{-1} = A \}.$$
+            Show this is a subgroup of $G$.
+          </p>
+          <details class="callout callout-proof">
+            <summary>Proof</summary>
+            <div class="callout-body">
+              <p>We'll show it is non-empty. Let $e \in G$ be the identity. Then</p>
+              $$eAe = A,$$
+              <p>so $e \in N_G(A)$. Next, we show the subgroup criterion. Let $g, h \in N_G(A)$. Then</p>
+              $$gAg^{-1} = A, \qquad hAh^{-1} = A.$$
+              <p>We want to show</p>
+              $$gh^{-1}A(gh^{-1})^{-1} = A.$$
+              <p>First, see</p>
+              $$gh^{-1}A(gh^{-1})^{-1} = gh^{-1}A\,hg^{-1}.$$
+              <p><strong>Claim.</strong> If $h \in N_G(A)$, then $h^{-1} \in N_G(A)$.</p>
+              <blockquote>
+                <p><em>Why?</em> $h \in N_G(A) \implies hAh^{-1} = A \implies \forall a \in A,\ hah^{-1} = b \in A$ (also $\forall b,\ \exists a$).</p>
+                $$\Updownarrow$$
+                $$\forall a \in A,\quad a = h^{-1}bh, \qquad h \in N_G(A).$$
+              </blockquote>
+              <p>Using the claim,</p>
+              $$gh^{-1}A\,hg^{-1} = gAg^{-1} = A$$
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ───────────────────────── Cyclic groups ───────────────────────── -->
+      <h3 id="cyclic">Cyclic groups</h3>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>A group $(G, \circ)$ is <strong>cyclic</strong> if $\exists g \in G$ such that $\forall h \in G,\ \exists n$ such that $h = g^n$. Write $G = \langle g \rangle$.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Examples</div>
+        <div class="callout-body">
+          <ol>
+            <li>$\mathbb{Z} = \langle 1 \rangle$.</li>
+            <li>$\mathbb{Z}/n\mathbb{Z} = \langle \overline{1} \rangle$.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>If $(G, \circ)$ is a group, then $\forall a \in G$, $\langle a \rangle \leq G$ forms a subgroup, called the <strong>cyclic subgroup.</strong></p>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Examples</div>
+        <div class="callout-body">
+          <ol>
+            <li>$2 \in \mathbb{Z}$, $\langle 2 \rangle \leq \mathbb{Z}$.</li>
+            <li>$i \in Q_8$, $\langle i \rangle = \{i, -1, -i, 1\} \leq Q_8$.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="callout callout-definition">
+        <div class="callout-title">Definition</div>
+        <div class="callout-body">
+          <p>The <strong>order</strong> of $a \in G$ is the size of $\langle a \rangle$. If $\langle a \rangle = G$, $a$ is a <strong>generator</strong>.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>What are the generators of $\mathbb{Z}/n\mathbb{Z}$?</p>
+        </div>
+      </div>
+
+      <p>$m \in \mathbb{Z}/n\mathbb{Z}$ such that $\gcd(m, n) = 1$.</p>
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>How many numbers in $\{0, \dots, n-1\}$ have $\gcd = 1$?</p>
+        </div>
+      </div>
+
+      $$\phi(n) = n \prod_{p \mid n} \left(1 - \frac{1}{p}\right) \quad \leadsto \quad \text{Euler totient function.}$$
+
+      <div class="callout callout-question">
+        <div class="callout-title">Question</div>
+        <div class="callout-body">
+          <p>How to find an order $k$ subgroup of $\mathbb{Z}/n\mathbb{Z}$?</p>
+        </div>
+      </div>
+
+      <p>If $b = a^{\ell}$, then $|b| = \dfrac{n}{d}$ with $d = \gcd(\ell, n)$.</p>
+
+      <div class="callout callout-exercise">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Find the generators of the subgroup of order $7$ in $\mathbb{Z}/42\mathbb{Z}$.</p>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (localStorage.getItem('darkMode') === 'true')
+        document.body.classList.add('latex-dark');
+      if (localStorage.getItem('typeface') === 'libertinus') {
+        document.body.classList.add('libertinus');
+        document.getElementById('typeface').textContent = 'Libertinus';
+      }
+    } catch (e) {}
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    try {
+      localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+    } catch (e) {}
+  });
+
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    try {
+      localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+    } catch (e) {}
+  });
+
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../../index.html';
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+
+</body>
+</html>
