@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sireesh | Midterm</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../prism/prism.css" />
+  <style>
+    /* ── Callouts (same look as the Calc II notes) ─────────────────────────── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 4px;
+      margin: 1.2em 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .callout-title {
+      font-weight: bold;
+      font-size: 0.92em;
+      padding: 0.45em 0.9em;
+      letter-spacing: 0.01em;
+    }
+    .callout-body {
+      padding: 0.6em 1em 0.7em;
+      font-size: 0.97em;
+    }
+    .callout-body p:first-child { margin-top: 0; }
+    .callout-body p:last-child  { margin-bottom: 0; }
+
+    .callout-theorem    { border-color: hsl(220,65%,52%); background: hsl(220,55%,97%); }
+    .callout-theorem    .callout-title { background: hsl(220,55%,90%); color: hsl(220,60%,28%); }
+    .callout-definition { border-color: hsl(340,60%,52%); background: hsl(340,50%,97%); }
+    .callout-definition .callout-title { background: hsl(340,50%,91%); color: hsl(340,55%,30%); }
+    .callout-example    { border-color: hsl(270,50%,58%); background: hsl(270,40%,97%); }
+    .callout-example    .callout-title { background: hsl(270,40%,91%); color: hsl(270,50%,32%); }
+    .callout-proof      { border-color: hsl(0,0%,60%);    background: hsl(0,0%,98%); }
+    .callout-proof      .callout-title { background: hsl(0,0%,91%); color: hsl(0,0%,28%); }
+    .callout-question   { border-color: hsl(30,80%,52%);  background: hsl(35,75%,97%); }
+    .callout-question   .callout-title { background: hsl(35,70%,89%); color: hsl(30,65%,28%); }
+    .callout-exercise   { border-color: hsl(15,70%,52%);  background: hsl(15,60%,97%); }
+    .callout-exercise   .callout-title { background: hsl(15,55%,89%); color: hsl(15,60%,28%); }
+    .callout-note       { border-color: hsl(210,70%,55%); background: hsl(210,60%,96%); }
+    .callout-note       .callout-title { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark .callout { background: hsl(0,0%,14%); }
+    .latex-dark .callout-theorem    { border-color: hsl(220,55%,60%); }
+    .latex-dark .callout-theorem    .callout-title { background: hsl(220,35%,22%); color: hsl(220,60%,80%); }
+    .latex-dark .callout-definition { border-color: hsl(340,50%,60%); }
+    .latex-dark .callout-definition .callout-title { background: hsl(340,30%,22%); color: hsl(340,55%,78%); }
+    .latex-dark .callout-example    { border-color: hsl(270,45%,62%); }
+    .latex-dark .callout-example    .callout-title { background: hsl(270,28%,22%); color: hsl(270,50%,80%); }
+    .latex-dark .callout-proof      .callout-title { background: hsl(0,0%,20%); color: hsl(0,0%,72%); }
+    .latex-dark .callout-question   { border-color: hsl(30,75%,55%); }
+    .latex-dark .callout-question   .callout-title { background: hsl(30,35%,22%); color: hsl(30,70%,75%); }
+    .latex-dark .callout-exercise   { border-color: hsl(15,65%,55%); }
+    .latex-dark .callout-exercise   .callout-title { background: hsl(15,35%,22%); color: hsl(15,65%,76%); }
+    .latex-dark .callout-note       { border-color: hsl(210,60%,55%); }
+    .latex-dark .callout-note       .callout-title { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* ── Collapsible callouts (like Obsidian's > [!type]- ) ────────────────── */
+    details.callout > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.45em 0.9em;
+      font-weight: bold;
+      font-size: 0.92em;
+      letter-spacing: 0.01em;
+    }
+    details.callout > summary::-webkit-details-marker { display: none; }
+    details.callout > summary::before { content: "\25B6\00a0"; font-size: 0.75em; opacity: 0.7; }
+    details.callout[open] > summary::before { content: "\25BC\00a0"; }
+
+    details.callout-proof    > summary { background: hsl(0,0%,91%);    color: hsl(0,0%,28%); }
+    details.callout-question > summary { background: hsl(35,70%,89%);  color: hsl(30,65%,28%); }
+    details.callout-note     > summary { background: hsl(210,60%,90%); color: hsl(210,60%,30%); }
+
+    .latex-dark details.callout-proof    > summary { background: hsl(0,0%,20%);    color: hsl(0,0%,72%); }
+    .latex-dark details.callout-question > summary { background: hsl(30,35%,22%);  color: hsl(30,70%,75%); }
+    .latex-dark details.callout-note     > summary { background: hsl(210,35%,22%); color: hsl(210,60%,78%); }
+
+    /* Wide display math scrolls instead of overflowing */
+    mjx-container[display="true"] {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+
+    /* Tables in notes: keep the cells centered and compact */
+    table.center-cells td,
+    table.center-cells th { text-align: center; }
+  </style>
+</head>
+
+<body id="top">
+  <header>
+    <h1>
+      <a href="../../index.html" class="no-style-link">
+        <span class="latex">S <span>i</span>R<span>e</span>E<span>s</span>H</span>.tex
+      </a>
+    </h1>
+    <p class="author">
+      <a href="../../index.html" class="no-style-link">Sireesh Vinnakota</a><br />
+      Graduate Student in Mathematics
+    </p>
+  </header>
+
+  <figure class="centered">
+    <img src="../../images/sketch.jpeg" loading="lazy" alt="Sireesh" width="300" height="200" />
+    <figcaption>
+      A sketch from a student (credit in progress).
+    </figcaption>
+  </figure>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Midterm problems for MATH120A: Introduction to Group Theory (Fall 2026), each with a sketch of a solution.
+      <br /><br />
+      <a href="grouptheory.html">&larr; Back to the course page</a>
+      <br />
+      <button id="home-button">Home</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+      <button id="typeface-toggle">Typeface: <span id="typeface">Latin Modern</span></button>
+    </p>
+  </div>
+
+  <main>
+    <article>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Consider the group $U(20)$ of units of $\mathbb{Z}_{20}$ under multiplication mod $20$.</p>
+          <ol>
+            <li>List the elements of U(20) and find the inverse of 7.</li>
+            <li>Show that $H = \{1, 9, 11, 19\}$ is a subgroup of $U(20)$.</li>
+          </ol>
+          <details class="callout callout-note">
+            <summary>Sketch of Solution</summary>
+            <div class="callout-body">
+              <p>$U(20) = \left \{ k \in \mathbb{Z}_{20} \mid \mathrm{gcd}(k,20) = 1 \right \}$. This gives us:
+                $$\left \{ 1, 3, 7, 9, 11,13,17,19 \right \}$$
+                . $7*3 = 21$. Towards subgroup, see that $19^2 = 1$, $11^2 = 1$, and $9^2 = 1$ so it's closed under inverses. Products are a bit more work, but $19*11 \equiv 9$, $9 * 11 \equiv 19$, and $19*9 \equiv 11$.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Let $G$ be a group such that for all $g \in G$, $g^2 = e$. Show that $G$ must be abelian.</p>
+          <details class="callout callout-proof">
+            <summary>Sketch of Solution</summary>
+            <div class="callout-body">
+              <p>See that for any $a,b \in G$ multiplying on the left by $a$ and right by $b$ in:
+                $$e = (ab)^2 = abab \quad \text{ gives } \quad ab = a(abab) b = \cancelto{e}{a^2} ba \cancelto{e}{b^2} = ba$$</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Let $H$ and $K$ be subgroups of $G$. Prove that $H \cup K$ is a subgroup if and only if either $H \subset K$ or $K \subset H$.</p>
+          <details class="callout callout-proof">
+            <summary>Sketch of Solution</summary>
+            <div class="callout-body">
+              <p>The converse direction is trivial. We show forwards; suppose for contradiction that neither $H \subset K$ nor $K \subset H$; then there exists $h \in H \setminus K$ and $k \in K \setminus H$; the product
+                $$hk \in H \cup K \quad \text{ implying either } \quad hk \in H \text{ or } hk \in K$$
+                Suppose the former, then $h^{-1} hk = k \in H$, contradiction. <em>Mutatis mutandis</em> for the latter.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Example</div>
+        <div class="callout-body">
+          <p>Denote by $\sigma = (1357)(246)$ and $\tau = (12)(34)(567)$ in $S_{7}$</p>
+          <ol>
+            <li>Compute $\sigma \circ \tau$ in terms of disjoint cycles.</li>
+            <li>What is the order of $\sigma$, $\tau$, and $\sigma \circ \tau$?</li>
+            <li>Which of $\sigma$, $\tau$, and $\sigma \circ \tau$ are elements of $A_{7}$?</li>
+          </ol>
+          <details class="callout callout-proof">
+            <summary>Sketch of Solution</summary>
+            <div class="callout-body">
+              <p>We show 1:
+                $$\sigma \tau = (145236)(7)$$
+                Compute orders by computing cycle types: $\sigma$ is of type $(3,4)$, $\tau$ is of type $(2,2,3)$, and $\sigma \tau$ is of type $(6)$. The orders are, respectively, 12, 6, and 6. Finally, see that $\tau$ is the only one of even sign.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout callout-example">
+        <div class="callout-title">Problem</div>
+        <div class="callout-body">
+          <p>Prove that every group of prime order is cyclic</p>
+          <details class="callout callout-proof">
+            <summary>Sketch of Solution</summary>
+            <div class="callout-body">
+              <p>Let $G$ be a group of prime order. By Lagrange's theorem, if we pick any $g \in G$, the subgroup $H = \langle g \rangle = \left \{ e, g, g^2, \dots \right \}$ must satisfy
+                $$|H| \mid |G| = p \quad \text{ implying } \quad |H| \in \left \{ 1,p \right \}$$
+                $|H| = 1$ exclusively in the case $g = e$; if $|H| = p$, then $g$ is a generator for $G$ and we're done.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer>
+    Template by <a href="https://github.com/vincentdoerig/latex-css">Vincent Doerig</a>.
+  </footer>
+
+  <script>
+  MathJax = { tex: { inlineMath: [['$', '$']] } };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (localStorage.getItem('darkMode') === 'true')
+        document.body.classList.add('latex-dark');
+      if (localStorage.getItem('typeface') === 'libertinus') {
+        document.body.classList.add('libertinus');
+        document.getElementById('typeface').textContent = 'Libertinus';
+      }
+    } catch (e) {}
+  });
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('latex-dark');
+    try {
+      localStorage.setItem('darkMode', document.body.classList.contains('latex-dark'));
+    } catch (e) {}
+  });
+
+  document.getElementById('typeface-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('libertinus');
+    const lib = document.body.classList.contains('libertinus');
+    document.getElementById('typeface').textContent = lib ? 'Libertinus' : 'Latin Modern';
+    try {
+      localStorage.setItem('typeface', lib ? 'libertinus' : 'latin-modern');
+    } catch (e) {}
+  });
+
+  document.getElementById('home-button').addEventListener('click', () => {
+    window.location.href = '../../index.html';
+  });
+  </script>
+
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script async src="../../prism/prism.js"></script>
+
+</body>
+</html>
